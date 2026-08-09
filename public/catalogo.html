@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Catálogo - Bibliotech</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Montserrat:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#d6e3ff",
+                        "surface-tint": "#895121",
+                        "on-secondary-fixed": "#0e1c30",
+                        "on-secondary-container": "#56637b",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb781",
+                        "surface-variant": "#eedfe0",
+                        "surface-container-low": "#fff0f1",
+                        "on-primary-fixed": "#2f1400",
+                        "primary-fixed": "#ffdcc4",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#fab5af",
+                        "outline-variant": "#d7c3b6",
+                        "surface-bright": "#fff8f7",
+                        "inverse-surface": "#372e2f",
+                        "on-background": "#211a1b",
+                        "on-tertiary-fixed": "#350f0d",
+                        "primary-container": "#9f6332",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#52443a",
+                        "background": "#fff8f7",
+                        "outline": "#857469",
+                        "secondary-fixed-dim": "#bac7e3",
+                        "surface-container": "#f9eaeb",
+                        "primary": "#824b1c",
+                        "surface-container-highest": "#eedfe0",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#e5d7d8",
+                        "tertiary": "#7f4a46",
+                        "secondary": "#525f77",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#6c3a0b",
+                        "inverse-primary": "#ffb781",
+                        "on-tertiary-container": "#fff5f3",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#f3e5e6",
+                        "tertiary-container": "#9b625e",
+                        "on-error-container": "#93000a",
+                        "surface": "#fff8f7",
+                        "on-primary-container": "#fff5f0",
+                        "on-secondary-fixed-variant": "#3a475e",
+                        "on-tertiary-fixed-variant": "#6a3935",
+                        "secondary-container": "#d3e0fc",
+                        "tertiary-fixed": "#ffdad6",
+                        "inverse-on-surface": "#fcedee",
+                        "on-surface": "#211a1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "unit": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .book-cover-ratio {
+            padding-bottom: 150%;
+            /* 2:3 ratio */
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+    <!-- TopAppBar -->
+    <header class="bg-surface/80 dark:bg-background/80 backdrop-blur-md shadow-sm docked full-width top-0 sticky z-40">
+        <div
+            class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto z-40">
+            <!-- Brand -->
+            <div class="flex items-center gap-4">
+                <div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+                    Bibliotech
+                </div>
+            </div>
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex gap-8">
+                <a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
+                    href="#">
+                    Catálogo
+                </a>
+                <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
+                    href="#">
+                    Mis Libros
+                </a>
+                <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
+                    href="#">
+                    Ayuda
+                </a>
+            </nav>
+            <!-- Trailing Actions -->
+            <div class="flex items-center gap-4">
+                <button aria-label="Notificaciones"
+                    class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                </button>
+                <button aria-label="Perfil"
+                    class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
+                    <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                </button>
+                <!-- Mobile Menu Toggle -->
+                <button class="md:hidden text-primary p-2">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+        <!-- Header & Filters -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div>
+                <h1
+                    class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-2">
+                    Explorar Catálogo</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant">Descubre nuestra colección curada de textos
+                    académicos y literatura universal.</p>
+            </div>
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-2">
+                <button
+                    class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors shadow-sm">
+                    Todos
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
+                    Ficción
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
+                    Historia
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
+                    Ciencias
+                </button>
+            </div>
+        </div>
+        <!-- Book Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
+            <!-- Card 1 -->
+            <article
+                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
+                <div class="relative w-full rounded overflow-hidden mb-3">
+                    <div class="book-cover-ratio"></div>
+                    <img class="absolute inset-0 w-full h-full object-cover"
+                        data-alt="A meticulously detailed vintage book cover design for 'El Arte de la Guerra'. The cover is bound in deep crimson leather with elegant gold foil stamping forming intricate academic geometric patterns. The spine features classic raised bands. Set against a soft, clean white modern library desk background, illuminated by bright, diffused high-key light that highlights the rich textures of the leather and the shine of the gold foil, embodying an academic modernism aesthetic."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuApuZ5gMbBT0mc6xeqMhEn-YBRYn1eu6KBc0Mivp-M2s7bGiB1Q5jwnWt58uwxd7CnOS_VYWG4l-EB4-y3lLz0IY3H9RdpV56ZFQ444esj80AiWnWX0TpEWKWyVT0TNpHYXVAC4JLYfYsV6FJ5uYcYpAiKmMgqYP9KaXpFtcGpWWNKoRuLZ3oJD_O6e-FK2H7EQ0DMuHT8vYoR4ukokkRFBCYMKq00ztPxDva0fWEeETS1hIEMbyFcGsw" />
+                    <!-- Availability Indicator -->
+                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
+                        title="Disponible"></div>
+                </div>
+                <div class="flex-grow flex flex-col">
+                    <span
+                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Historia</span>
+                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">El Arte
+                        de la Guerra</h3>
+                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Sun Tzu</p>
+                    <button
+                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
+                        Solicitar Préstamo
+                    </button>
+                </div>
+            </article>
+            <!-- Card 2 -->
+            <article
+                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
+                <div class="relative w-full rounded overflow-hidden mb-3">
+                    <div class="book-cover-ratio"></div>
+                    <img class="absolute inset-0 w-full h-full object-cover"
+                        data-alt="A minimalist and highly elegant book cover for a modern science textbook titled 'Principios de Astrofísica'. The cover features a stark, deep navy blue background with a single, precise silver embossed geometric diagram of an orbit. It rests on a pristine, light-colored wooden library table. The lighting is crisp and cool, casting soft, calculated shadows that emphasize the clean lines and modern, sophisticated academic style of the design."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2wWdkx1ZgUJzRR2vSkKdiw8iMJ2DSWWvK1Rat6F6sCIUBg2izgrJiVSsfHaZsucGVusegx7tjsGULXd3AOxVt0dmioRh0EVo6nb5XaR3Q-05lHvILEexbdIzTBPGPldVMx_LW7VXFQvKqzOFkJy4jIKJvmgVWnHvyQTVaJRRItqXfqRqRcVLw7656gfmR52R6QJRvH1tGC9cfS4fPeR_T0q5rNaf1lfyRg0758ChQeS1ezbQseNNA3g" />
+                    <!-- Availability Indicator -->
+                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-amber-500 border-2 border-surface shadow-sm"
+                        title="Última copia"></div>
+                </div>
+                <div class="flex-grow flex flex-col">
+                    <span
+                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Ciencias</span>
+                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">
+                        Principios de Astrofísica</h3>
+                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Neil deGrasse Tyson</p>
+                    <button
+                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
+                        Solicitar Préstamo
+                    </button>
+                </div>
+            </article>
+            <!-- Card 3 -->
+            <article
+                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
+                <div class="relative w-full rounded overflow-hidden mb-3">
+                    <div class="book-cover-ratio"></div>
+                    <img class="absolute inset-0 w-full h-full object-cover"
+                        data-alt="A beautifully crafted classic fiction book cover for 'Don Quijote'. The cover is designed with a modern twist on antique aesthetics, using a rich, warm brown textured paper background adorned with subtle, abstract windmill motifs in a slightly darker tonal shade. The typography is modern serif, pressed cleanly into the cover. It sits on a bright, minimalist marble surface, bathed in warm, inviting natural light that creates a serene, scholarly atmosphere."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-3AOCWVsL9MRXOFME9OJySQquKIibt8ks1q7vkGiOKtKv4vGt4OgNq52xCA_NUWweLSY-vhNtAA8IHERxMcDkH4e0dJW3pUI5r0EaBgQd_1VvwL7EZGQ62fwAErpYorcUQZhAPT9TXFDWTt_bd4ML_D2Fv7jz1G81KiC4x78S2X7s38HJMYdjNXwQfBVolYnueSnBTEq0DA72VugBOrvlYYAVyJ8U-QhYHajJtQ88R_YdU6jXGV7vnw" />
+                    <!-- Availability Indicator -->
+                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
+                        title="Disponible"></div>
+                </div>
+                <div class="flex-grow flex flex-col">
+                    <span
+                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Ficción
+                        Clásica</span>
+                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">Don
+                        Quijote de la Mancha</h3>
+                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Miguel de Cervantes</p>
+                    <button
+                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
+                        Solicitar Préstamo
+                    </button>
+                </div>
+            </article>
+            <!-- Card 4 -->
+            <article
+                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300 opacity-75">
+                <div class="relative w-full rounded overflow-hidden mb-3">
+                    <div class="book-cover-ratio"></div>
+                    <img class="absolute inset-0 w-full h-full object-cover grayscale"
+                        data-alt="A stark, contemporary essay collection book cover. The design relies entirely on sophisticated typography on a pristine off-white canvas. The title is set in large, bold, black sans-serif font, aligned sharply to the left grid, creating a sense of ordered structure. The book is placed upright in a bright, modern archive setting, with soft, diffuse lighting ensuring high contrast and readability, perfectly reflecting the 'Modernismo Académico' visual identity."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMM9L-it9VoCPxSXMcOgu0ZOTY7ZSt-08UDp1rENxRQhCz5G81bsEBxbv5IgOfwyfnUU0X0LShbj13O1tYT7n8XUvk95t2QgjvlVxe091pfSMmPWPnPMtrukPKQKCjgpITdsVkNf0VRz4ck-CnEikLy77jHK-pDyyabu3Xrq5-JptaGZ64_NA_gsx0ken8NPKdDNgmNElfKx8Bq7FxfUQMHsT4ruqKFU65mYIV0AZDLKvDC81CtooIZQ" />
+                    <!-- Availability Indicator -->
+                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-red-500 border-2 border-surface shadow-sm"
+                        title="No disponible"></div>
+                </div>
+                <div class="flex-grow flex flex-col">
+                    <span
+                        class="text-[12px] font-label-md text-secondary font-medium tracking-wide uppercase mb-1">Ensayo</span>
+                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">
+                        Pensamiento Estructural</h3>
+                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Ana R. Silva</p>
+                    <button
+                        class="mt-auto w-full py-2 bg-surface-variant text-on-surface-variant font-label-md text-label-md rounded cursor-not-allowed">
+                        En Préstamo
+                    </button>
+                </div>
+            </article>
+            <!-- Card 5 -->
+            <article
+                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
+                <div class="relative w-full rounded overflow-hidden mb-3">
+                    <div class="book-cover-ratio"></div>
+                    <img class="absolute inset-0 w-full h-full object-cover"
+                        data-alt="A striking modern philosophy book cover utilizing tonal layers. The cover art features overlapping translucent geometric shapes in warm shades of terracotta, ochre, and deep brown, creating a sense of depth and academic rigor. The title is presented in crisp white modern font. The book is photographed from a top-down angle on a clean, light cream background under soft, high-key studio lighting, emphasizing the minimal yet sophisticated aesthetic."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjfJf1uaS4Y2R3cKBCdmrDtGP2bPcFctIDYVYYv_tzuMRbuVEi0wfAbLG6LoUq2Li6wrACGBniydMC9jrOC24O5QTlXMhWgBoR0IxWCfuZrgWI2M1Cu3uUJvILLXxx9sNms1XX21_nFOUw7WqcoEdcKMpV40barsj5Af01GkL6CFROqJgmqdqH-cKGL16mTHnLGMoJK1AHkt1GzmwurYL3_pG-PJm_IxkIbAaimovBIH0lSs0wSpxDAg" />
+                    <!-- Availability Indicator -->
+                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
+                        title="Disponible"></div>
+                </div>
+                <div class="flex-grow flex flex-col">
+                    <span
+                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Filosofía</span>
+                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">Ética
+                        Contemporánea</h3>
+                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Luis García</p>
+                    <button
+                        class="mt-auto w-full py-2 border border-secondary text-secondary font-label-md text-label-md rounded hover:bg-surface-container-high transition-all">
+                        Ver Detalles
+                    </button>
+                </div>
+            </article>
+        </div>
+    </main>
+</body>
+
+</html>

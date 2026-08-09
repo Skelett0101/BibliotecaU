@@ -155,15 +155,15 @@
         <!-- Navigation Links -->
         <ul class="flex-1 space-y-1">
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
+                    href="panel.html">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-md text-body-md">Panel Control</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="inventario.html">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="font-body-md text-body-md">Libros</span>
                 </a>
@@ -176,15 +176,15 @@
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
-                    href="panel.html">
+                  <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="prestamo.html">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
                     <span class="font-body-md text-body-md">Préstamos</span>
                 </a>
             </li>
             <li>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                    href="recargos.html">
                     <span class="material-symbols-outlined">payments</span>
                     <span class="font-body-md text-body-md">Recargos</span>
                 </a>
@@ -201,8 +201,8 @@
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                        href="#">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out cursor-pointer"
+                        onclick="Auth.logout()">
                         <span class="material-symbols-outlined">logout</span>
                         <span class="font-body-md text-body-md">Cerrar Sesión</span>
                     </a>
@@ -211,207 +211,257 @@
         </div>
     </nav>
     <!-- Main Content Area -->
-    <main class="flex-1 ml-64 p-margin-desktop bg-background overflow-y-auto h-screen">
-        <!-- Header Actions -->
-        <div class="flex justify-between items-center mb-8">
+    <main class="ml-64 flex-1 flex flex-col h-screen overflow-y-auto">
+        <!-- Header Section -->
+        <header
+            class="px-margin-desktop py-8 flex justify-between items-end shrink-0 sticky top-0 bg-background/95 backdrop-blur-sm z-30">
             <div>
-                <h2 class="font-headline-lg text-headline-lg text-on-background mb-1">Gestión de Préstamos</h2>
-                <p class="font-body-md text-body-md text-secondary">Administra las salidas y devoluciones del acervo.
-                </p>
+                <h2 class="font-display-lg text-display-lg text-on-surface">Resumen General</h2>
+                <p class="font-body-lg text-body-lg text-secondary mt-2">Visión general del estado de la biblioteca.</p>
             </div>
-            <button
-                class="bg-primary-container text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg flex items-center gap-2 hover-lift transition-all">
-                <span class="material-symbols-outlined">add</span>
-                Nuevo Préstamo
-            </button>
-        </div>
-        <!-- Bento Grid Statistics -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Stat Card 1 -->
-            <div
-                class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex flex-col justify-between hover-lift relative overflow-hidden">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="font-label-md text-label-md text-on-surface-variant">Libros Totales</p>
-                    <span class="material-symbols-outlined text-secondary opacity-50">library_books</span>
-                </div>
-                <h3 class="font-display-lg text-display-lg text-on-background">12,450</h3>
-                <div class="absolute -bottom-4 -right-4 text-primary/5">
-                    <span class="material-symbols-outlined text-9xl">library_books</span>
-                </div>
-            </div>
-            <!-- Stat Card 2 -->
-            <div
-                class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex flex-col justify-between hover-lift relative overflow-hidden">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="font-label-md text-label-md text-on-surface-variant">Préstamos Activos</p>
-                    <span class="material-symbols-outlined text-primary-container opacity-80"
-                        style="font-variation-settings: 'FILL' 1;">sync_alt</span>
-                </div>
-                <h3 class="font-display-lg text-display-lg text-on-background">342</h3>
-                <p class="font-label-md text-label-md text-secondary mt-2 flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm text-tertiary">trending_up</span> +12% esta semana
-                </p>
-            </div>
-            <!-- Stat Card 3 -->
-            <div
-                class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex flex-col justify-between hover-lift relative overflow-hidden">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="font-label-md text-label-md text-on-surface-variant">Recargos Pendientes</p>
-                    <span class="material-symbols-outlined text-error opacity-70">account_balance_wallet</span>
-                </div>
-                <h3 class="font-display-lg text-display-lg text-on-background">$4,250</h3>
-                <p class="font-label-md text-label-md text-secondary mt-2">En 45 usuarios</p>
-            </div>
-        </div>
-        <!-- Data Table Section -->
-        <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
-            <div class="p-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface/50">
-                <h3 class="font-headline-md text-headline-md text-on-background text-lg">Préstamos Recientes</h3>
+            <div class="flex items-center gap-4">
                 <div class="relative">
                     <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
                     <input
-                        class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface input-glow font-body-md text-body-md text-on-background w-64 transition-all focus:w-80"
-                        placeholder="Buscar préstamo..." type="text" />
+                        class="pl-10 pr-4 py-2 bg-surface rounded-full border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-body-md w-64 shadow-sm"
+                        placeholder="Buscar libro, usuario..." type="text" />
+                </div>
+                <button
+                    class="w-10 h-10 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container hover:text-primary transition-colors relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+                </button>
+            </div>
+        </header>
+        <!-- Dashboard Content Grid -->
+        <div class="p-margin-desktop pt-0 flex-1 flex flex-col gap-gutter">
+            <!-- KPIs (Bento style row) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter shrink-0">
+                <!-- KPI 1 -->
+                <div
+                    class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-[64px] text-primary">library_books</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-primary-container"></span> Total Libros
+                    </p>
+                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">12,450</h3>
+                    <p class="font-body-md text-sm text-secondary mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-green-600">trending_up</span>
+                        <span class="text-green-600 font-medium">+124</span> este mes
+                    </p>
+                </div>
+                <!-- KPI 2 -->
+                <div
+                    class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-[64px] text-primary">sync_alt</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-tertiary-container"></span> Préstamos Activos
+                    </p>
+                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">842</h3>
+                    <div class="w-full bg-surface-variant h-1.5 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-tertiary-container h-full rounded-full w-[65%]"></div>
+                    </div>
+                    <p class="font-body-md text-sm text-secondary mt-2">65% de capacidad óptima</p>
+                </div>
+                <!-- KPI 3 -->
+                <div
+                    class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-[64px] text-primary">group</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-secondary"></span> Usuarios Registrados
+                    </p>
+                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">3,120</h3>
+                    <p class="font-body-md text-sm text-secondary mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-green-600">trending_up</span>
+                        <span class="text-green-600 font-medium">+45</span> nuevos esta semana
+                    </p>
+                </div>
+                <!-- KPI 4 -->
+                <div
+                    class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-[64px] text-error">warning</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-error"></span> Recargos Pendientes
+                    </p>
+                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">$450<span
+                            class="text-lg text-secondary font-normal">.00</span></h3>
+                    <p class="font-body-md text-sm text-error mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">priority_high</span>
+                        24 usuarios en mora
+                    </p>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-[#2A374D] text-on-primary font-label-md text-label-md">
-                            <th class="py-3 px-6 font-medium">ID Préstamo</th>
-                            <th class="py-3 px-6 font-medium">Usuario</th>
-                            <th class="py-3 px-6 font-medium">Libro</th>
-                            <th class="py-3 px-6 font-medium">Fecha Inicio</th>
-                            <th class="py-3 px-6 font-medium">Fecha Fin</th>
-                            <th class="py-3 px-6 font-medium text-center">Estado</th>
-                            <th class="py-3 px-6 font-medium text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="font-body-md text-body-md text-on-background divide-y divide-outline-variant/20">
-                        <!-- Row 1 -->
-                        <tr class="hover:bg-surface-container-low/50 transition-colors">
-                            <td class="py-4 px-6 text-secondary font-mono text-sm">PR-2023-0891</td>
-                            <td class="py-4 px-6 flex items-center gap-3">
+            <!-- Main Charts & Feed Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter flex-1 min-h-[400px]">
+                <!-- Chart Area (Spans 2 columns) -->
+                <div class="lg:col-span-2 bg-surface rounded-xl p-6 shadow-sm border border-black/5 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface">Préstamos por Categoría</h3>
+                        <div class="flex gap-2">
+                            <select
+                                class="bg-surface-container text-on-surface font-label-md text-sm py-1.5 px-3 rounded-lg border-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+                                <option>Últimos 30 días</option>
+                                <option>Este Año</option>
+                                <option>Histórico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Faux Chart Visualization using flex -->
+                    <div class="flex-1 flex items-end gap-4 p-4 border-l border-b border-outline-variant relative">
+                        <!-- Y-axis labels -->
+                        <div
+                            class="absolute left-[-30px] h-full flex flex-col justify-between text-xs text-secondary font-label-md py-4">
+                            <span>150</span>
+                            <span>100</span>
+                            <span>50</span>
+                            <span>0</span>
+                        </div>
+                        <!-- Bars -->
+                        <div class="flex-1 flex flex-col items-center justify-end group">
+                            <div
+                                class="w-full max-w-[40px] bg-primary/20 group-hover:bg-primary/40 rounded-t-sm h-[80%] transition-colors relative cursor-pointer">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container text-xs font-bold">
-                                    AL
-                                </div>
-                                <span>Ana López</span>
-                            </td>
-                            <td class="py-4 px-6 font-medium">Cien Años de Soledad</td>
-                            <td class="py-4 px-6 text-on-surface-variant">12 Oct 2023</td>
-                            <td class="py-4 px-6 text-on-surface-variant">26 Oct 2023</td>
-                            <td class="py-4 px-6 text-center">
-                                <span
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#E8F5E9] text-[#2E7D32] border border-[#A5D6A7]">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-[#2E7D32]"></span>
-                                    Devuelto
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-right">
-                                <button
-                                    class="text-secondary hover:text-primary transition-colors p-1 rounded-md hover:bg-surface-container-high"
-                                    title="Ver Detalles">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <!-- Row 2 -->
-                        <tr class="bg-surface-container-lowest hover:bg-surface-container-low/50 transition-colors">
-                            <td class="py-4 px-6 text-secondary font-mono text-sm">PR-2023-0904</td>
-                            <td class="py-4 px-6 flex items-center gap-3">
+                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    120</div>
+                            </div>
+                            <span
+                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Ficción</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center justify-end group">
+                            <div
+                                class="w-full max-w-[40px] bg-primary/40 group-hover:bg-primary/60 rounded-t-sm h-[60%] transition-colors relative cursor-pointer">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed text-xs font-bold">
-                                    CG
-                                </div>
-                                <span>Carlos Gómez</span>
-                            </td>
-                            <td class="py-4 px-6 font-medium">El Aleph</td>
-                            <td class="py-4 px-6 text-on-surface-variant">15 Oct 2023</td>
-                            <td class="py-4 px-6 text-on-surface-variant">29 Oct 2023</td>
-                            <td class="py-4 px-6 text-center">
-                                <span
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#FFF8E1] text-[#F57F17] border border-[#FFE082]">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-[#F57F17]"></span>
-                                    Pendiente
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-right flex justify-end gap-2">
-                                <button
-                                    class="text-secondary hover:text-primary transition-colors p-1 rounded-md hover:bg-surface-container-high"
-                                    title="Notificar">
-                                    <span class="material-symbols-outlined text-[20px]">mail</span>
-                                </button>
-                                <button
-                                    class="text-secondary hover:text-primary transition-colors p-1 rounded-md hover:bg-surface-container-high"
-                                    title="Ver Detalles">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <!-- Row 3 -->
-                        <tr class="hover:bg-surface-container-low/50 transition-colors">
-                            <td class="py-4 px-6 text-secondary font-mono text-sm">PR-2023-0855</td>
-                            <td class="py-4 px-6 flex items-center gap-3">
+                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    95</div>
+                            </div>
+                            <span
+                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Historia</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center justify-end group">
+                            <div
+                                class="w-full max-w-[40px] bg-primary/60 group-hover:bg-primary/80 rounded-t-sm h-[95%] transition-colors relative cursor-pointer">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-on-tertiary-fixed text-xs font-bold">
-                                    MR
-                                </div>
-                                <span>María Rodríguez</span>
-                            </td>
-                            <td class="py-4 px-6 font-medium">Ficciones</td>
-                            <td class="py-4 px-6 text-on-surface-variant">01 Oct 2023</td>
-                            <td class="py-4 px-6 text-on-surface-variant">15 Oct 2023</td>
-                            <td class="py-4 px-6 text-center">
+                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    145</div>
+                            </div>
+                            <span
+                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Ciencia</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center justify-end group">
+                            <div
+                                class="w-full max-w-[40px] bg-primary/80 group-hover:bg-primary rounded-t-sm h-[40%] transition-colors relative cursor-pointer">
+                                <div
+                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    60</div>
+                            </div>
+                            <span
+                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Arte</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center justify-end group">
+                            <div
+                                class="w-full max-w-[40px] bg-primary/50 group-hover:bg-primary/70 rounded-t-sm h-[55%] transition-colors relative cursor-pointer">
+                                <div
+                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    85</div>
+                            </div>
+                            <span
+                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Filosofía</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Activity Feed -->
+                <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-headline-md text-[20px] text-on-surface">Actividad Reciente</h3>
+                        <button class="text-primary font-label-md text-sm hover:underline">Ver todo</button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+                        <!-- Feed Item 1 -->
+                        <div class="flex gap-4 items-start group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0 mt-1">
+                                <span class="material-symbols-outlined text-sm text-on-secondary-container">book</span>
+                            </div>
+                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
+                                <p class="font-body-md text-sm text-on-surface">
+                                    <span class="font-medium">Ana Martínez</span> retiró <span
+                                        class="italic font-medium">Cien años de soledad</span>
+                                </p>
+                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 10 min
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Feed Item 2 -->
+                        <div class="flex gap-4 items-start group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
+                                <span class="material-symbols-outlined text-sm text-green-700">keyboard_return</span>
+                            </div>
+                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
+                                <p class="font-body-md text-sm text-on-surface">
+                                    <span class="font-medium">Carlos Ruiz</span> devolvió <span
+                                        class="italic font-medium">Breve historia del tiempo</span>
+                                </p>
+                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 45 min
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Feed Item 3 -->
+                        <div class="flex gap-4 items-start group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center shrink-0 mt-1">
+                                <span class="material-symbols-outlined text-sm text-on-error-container">warning</span>
+                            </div>
+                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
+                                <p class="font-body-md text-sm text-on-surface">
+                                    Aviso de mora generado para <span class="font-medium">Elena Gómez</span>
+                                </p>
+                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 2 horas
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Feed Item 4 -->
+                        <div class="flex gap-4 items-start group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0 mt-1">
                                 <span
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#FFEBEE] text-[#C62828] border border-[#EF9A9A]">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-[#C62828]"></span>
-                                    Mora
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-right flex justify-end gap-2">
-                                <button
-                                    class="text-secondary hover:text-primary transition-colors p-1 rounded-md hover:bg-surface-container-high"
-                                    title="Gestionar Recargo">
-                                    <span class="material-symbols-outlined text-[20px]">payments</span>
-                                </button>
-                                <button
-                                    class="text-secondary hover:text-primary transition-colors p-1 rounded-md hover:bg-surface-container-high"
-                                    title="Ver Detalles">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Pagination -->
-            <div class="p-4 border-t border-outline-variant/30 flex items-center justify-between bg-surface/50">
-                <span class="font-label-md text-label-md text-secondary">Mostrando 1 a 3 de 342 registros</span>
-                <div class="flex gap-2">
-                    <button
-                        class="px-3 py-1 border border-outline-variant rounded-md text-secondary hover:bg-surface-container-high disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled="">Anterior</button>
-                    <button class="px-3 py-1 bg-[#2A374D] text-on-primary rounded-md">1</button>
-                    <button
-                        class="px-3 py-1 border border-outline-variant rounded-md text-secondary hover:bg-surface-container-high">2</button>
-                    <button
-                        class="px-3 py-1 border border-outline-variant rounded-md text-secondary hover:bg-surface-container-high">3</button>
-                    <button
-                        class="px-3 py-1 border border-outline-variant rounded-md text-secondary hover:bg-surface-container-high">Siguiente</button>
+                                    class="material-symbols-outlined text-sm text-on-surface-variant">person_add</span>
+                            </div>
+                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
+                                <p class="font-body-md text-sm text-on-surface">
+                                    Nuevo usuario registrado: <span class="font-medium">Luis Fernández</span>
+                                </p>
+                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 3 horas
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- Bottom padding for scroll -->
+            <div class="h-8 shrink-0"></div>
         </div>
     </main>
 
 
-<script src="/js/auth.js"></script>
-    <!-- Cargar la lógica del panel -->
-     <script>
-                // Si el token sigue activo, rebota de inmediato al panel sin mostrar el formulario
-                Auth.verificarPaginaPublica();
-            </script>
+    <script src="/js/auth.js"></script>
+    <script>
+
+        Auth.verificarPaginaPrivada(['admin', 'bibliotecario', 'becario']);
+    </script>
     <script src="/js/panel.js"></script>
 </body>
 

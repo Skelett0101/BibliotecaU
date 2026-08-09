@@ -156,14 +156,14 @@
         <ul class="flex-1 space-y-1">
             <li>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                    href="panel.html">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-md text-body-md">Panel Control</span>
                 </a>
             </li>
             <li>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                    href="inventario.html">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="font-body-md text-body-md">Libros</span>
                 </a>
@@ -177,14 +177,14 @@
             </li>
             <li>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="panel.html">
+                    href="prestamo.html">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
                     <span class="font-body-md text-body-md">Préstamos</span>
                 </a>
             </li>
             <li>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="#">
+                    href="recargos.html">
                     <span class="material-symbols-outlined">payments</span>
                     <span class="font-body-md text-body-md">Recargos</span>
                 </a>
@@ -201,8 +201,8 @@
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                        href="#">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out cursor-pointer"
+                        onclick="Auth.logout()">
                         <span class="material-symbols-outlined">logout</span>
                         <span class="font-body-md text-body-md">Cerrar Sesión</span>
                     </a>
@@ -212,7 +212,7 @@
     </nav>
     <!-- Main Content Area -->
     <!-- Main Content Area -->
-    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-[#F9F8F6] min-h-screen">
+    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto  bg-[#F9F8F6] min-h-screen">
         <!-- Top Mobile Header (visible only on mobile) -->
         <header class="md:hidden flex items-center justify-between mb-8 bg-surface p-4 rounded-xl shadow-sm">
             <div class="flex items-center gap-2">
@@ -366,14 +366,11 @@
         </div>
     </main>
 
-<!-- Cargar primero el guardián de autenticación -->
     <script src="/js/auth.js"></script>
-     <script>
-                // Si el token sigue activo, rebota de inmediato al panel sin mostrar el formulario
-                Auth.verificarPaginaPublica();
-            </script>
-            
-    <!-- Cargar la lógica de registro de usuarios -->
+    <script>
+
+        Auth.verificarPaginaPrivada(['admin', 'bibliotecario']);
+    </script>
     <script src="/js/registro_us.js"></script>
 </body>
 

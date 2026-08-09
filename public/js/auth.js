@@ -22,7 +22,7 @@ const Auth = {
         window.location.replace('/login.html');
     },
 
-    // 🔍 Decodifica la expiración del Token en el cliente
+    //  Decodifica la expiración del Token en el cliente
     isTokenExpired(token) {
         try {
             const payloadBase64 = token.split('.')[1];
@@ -35,7 +35,7 @@ const Auth = {
         }
     },
 
-    // 🛡️ VERIFICAR PÁGINA PRIVADA (Con validación de Rol y Expiración)
+    //  VERIFICAR PÁGINA PRIVADA (Con validación de Rol y Expiración)
     verificarPaginaPrivada(rolesPermitidos = []) {
         const token = this.getToken();
         const rol = this.getRol();
@@ -61,21 +61,18 @@ const Auth = {
         return true;
     },
 
-    // 🔓 VERIFICAR PÁGINA PÚBLICA (Evita ver el login si ya tiene sesión)
+   //  LIMPIAR SESIÓN AL ENTRAR A LOGIN (Si regresa con las flechas)
     verificarPaginaPublica() {
         const token = this.getToken();
-        const rol = this.getRol();
 
-        if (token && !this.isTokenExpired(token)) {
-            if (rol === 'admin' || rol === 'bibliotecario' || rol === 'becario') {
-                window.location.replace('/panel.html');
-            } else {
-                window.location.replace('/catalogo.html');
-            }
+        // Si existe un token al estar en login.html, lo destruimos de inmediato
+        if (token) {
+           
+            sessionStorage.clear();
         }
     },
 
-    // 🌐 FETCH SEGURO DINÁMICO
+    //  FETCH SEGURO DINÁMICO
     async peticionSegura(url, opciones = {}) {
         const token = this.getToken();
 
@@ -115,15 +112,18 @@ const Auth = {
 };
 
 
-// 🛡️ PROTECCIÓN CONTINUA CONTRA NAVEGACIÓN POR FLECHAS (BFCache)
+
+//  PROTECCIÓN CONTINUA CONTRA NAVEGACIÓN POR FLECHAS
 window.addEventListener('pageshow', function () {
-    const esPaginaLogin = window.location.pathname.endsWith('login.html');
-    
+    const esPaginaLogin = window.location.pathname.endsWith('login.html') || window.location.pathname === '/';
+
     if (esPaginaLogin) {
-        // Si cae al login pero su token sigue activo, lo manda al panel
+        // Si cae al login, elimina cualquier token activo inmediatamente
         Auth.verificarPaginaPublica();
+        // Redirige al login si hay token activo
     } else {
-        // Si cae a una página privada sin token (o token expirado), lo manda al login
+        // Si intenta ir adelante a una página privada sin token, lo saca
         Auth.verificarPaginaPrivada();
+      // Redirige al login si no hay token o está expirado
     }
 });
