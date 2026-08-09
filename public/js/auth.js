@@ -118,12 +118,12 @@ window.addEventListener('pageshow', function () {
     const esPaginaLogin = window.location.pathname.endsWith('login.html') || window.location.pathname === '/';
 
     if (esPaginaLogin) {
-        // Si cae al login, elimina cualquier token activo inmediatamente
+        
         Auth.verificarPaginaPublica();
-        // Redirige al login si hay token activo
+       
     } else {
-        // Si intenta ir adelante a una página privada sin token, lo saca
+        
         Auth.verificarPaginaPrivada();
-      // Redirige al login si no hay token o está expirado
+     
     }
 });

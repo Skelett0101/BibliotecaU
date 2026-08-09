@@ -2,9 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import prisma from '../config/db';
 
-
-// 2. Función para registrar usuarios desde el panel administrativo
-export const registrarUsuarioPanel = async (req: Request, res: Response): Promise<void> => {
+// Registrar usuario desde el panel
+export const registrarUsuario = async (req: Request, res: Response): Promise<void> => {
     try {
         const { matricula_usu, contra_usu, nombre_usu, rol_usu } = req.body;
 
@@ -35,17 +34,16 @@ export const registrarUsuarioPanel = async (req: Request, res: Response): Promis
         });
 
         res.status(201).json({ 
-            mensaje: ` ¡Éxito! Usuario ${nuevoUsuario.nombre_usu} creado con el rol de [${nuevoUsuario.rol_usu.toUpperCase()}]` 
+            mensaje: `¡Éxito! Usuario ${nuevoUsuario.nombre_usu} creado con el rol de [${nuevoUsuario.rol_usu.toUpperCase()}]` 
         });
 
     } catch (error) {
-        console.error("Error al registrar usuario desde panel:", error);
+        console.error("Error al registrar usuario:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
-
-// Obtener lista de usuarios para la tabla del panel
+// Obtener lista de usuarios para la tabla
 export const obtenerUsuarios = async (req: Request, res: Response): Promise<void> => {
     try {
         const usuarios = await prisma.usuario.findMany({
@@ -55,7 +53,7 @@ export const obtenerUsuarios = async (req: Request, res: Response): Promise<void
                 nombre_usu: true,
                 rol_usu: true
             },
-            orderBy: { id_usuario: 'desc' } // Los más recientes primero
+            orderBy: { id_usuario: 'desc' }
         });
 
         res.status(200).json(usuarios);

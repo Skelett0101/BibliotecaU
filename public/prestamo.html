@@ -400,6 +400,14 @@
             </div>
         </div>
     </main>
+
+
+    <script src="/js/auth.js"></script>
+    <script>
+
+        Auth.verificarPaginaPrivada(['admin', 'bibliotecario', 'becario']);
+    </script>
+
     <script>
         // Set today's date in 'fecha_inicio'
         document.addEventListener('DOMContentLoaded', () => {
@@ -414,6 +422,7 @@
             if (fechaFinInput) fechaFinInput.value = returnDate.toISOString().split('T')[0];
         });
     </script>
+    <script src="/js/ui.js"></script>
 
 </body>
 

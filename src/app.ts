@@ -1,11 +1,12 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import path from 'path'; // Se agrega para manejar las rutas de los archivos
+import path from 'path'; 
 import testRoutes from './routes/authRoutes';
 import authRoutes from './routes/authRoutes';
-import pruebaRoutes from './routes/pruebaRoutes';
 
-import adminRoutes from './routes/adminRoutes';
+import usuarioRoutes from './routes/usuarioRoutes';
+
+
 
 
 const app: Application = express();
@@ -23,8 +24,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Todas las rutas del backend deben empezar con /api para no chocar con el frontend
 app.use('/api', testRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/prueba', pruebaRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+
 
 // 3. Fallback para el Frontend (Opcional, útil si usas un router en el cliente)
 // Si alguien entra a una ruta que no es de la API, le devolvemos el index.html

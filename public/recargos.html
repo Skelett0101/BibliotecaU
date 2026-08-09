@@ -176,14 +176,14 @@
                 </a>
             </li>
             <li>
-               <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
                     href="prestamo.html">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
                     <span class="font-body-md text-body-md">Préstamos</span>
                 </a>
             </li>
             <li>
-                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
                     href="recargos.html">
                     <span class="material-symbols-outlined">payments</span>
                     <span class="font-body-md text-body-md">Recargos</span>
@@ -449,6 +449,12 @@
             </div>
         </div>
     </main>
+    <script src="/js/auth.js"></script>
+    <script>
+
+        Auth.verificarPaginaPrivada(['admin', 'bibliotecario', 'becario']);
+    </script>
+    <script src="/js/ui.js"></script>
 </body>
 
 </html>

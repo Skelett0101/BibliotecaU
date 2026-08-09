@@ -3,22 +3,120 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+
 generator client {
   provider = "prisma-client-js"
 }
+
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-// ... tus modelos abajo
 
 
+// 1. Categoría
+model Categoria {
+  id_categoria Int     @id @default(autoincrement())
+  nombre_cat   String  @db.VarChar(100)
+  
+  libros       Libro[]
+}
+
+// 2. Autor
+model Autor_libro {
+  id_autor    Int           @id @default(autoincrement())
+  nombre_au   String        @db.VarChar(100)
+  apellido_au String        @db.VarChar(100)
+  
+  libros      Libro_Autor[]
+}
+
+// 3. Libro
+model Libro {
+  id_libro       Int                 @id @default(autoincrement())
+  id_categoria   Int
+  nombre_li      String              @db.VarChar(255)
+  editorial_li   String?             @db.VarChar(100)
+  ISBN_li        String?             @db.VarChar(20)
+  url_imagen_li  String?             @db.Text
+  ano_li         Int?
+  serie_li       String?             @db.VarChar(100)
+  idioma_li      String?             @db.VarChar(50)
+
+  categoria      Categoria           @relation(fields: [id_categoria], references: [id_categoria])
+  ejemplares     Ejemplares_fisicos[]
+  autores        Libro_Autor[]
+}
+
+// 4. Tabla Pivote: Libro_Autor (Llave Compuesta)
+model Libro_Autor {
+  id_libro Int
+  id_autor Int
+
+  libro    Libro       @relation(fields: [id_libro], references: [id_libro], onDelete: Cascade)
+  autor    Autor_libro @relation(fields: [id_autor], references: [id_autor], onDelete: Cascade)
+
+  @@id([id_libro, id_autor]) // LLAVE COMPUESTA
+}
+
+// 5. Ejemplares Físicos
+model Ejemplares_fisicos {
+  id_ejemplar       Int                @id @default(autoincrement())
+  id_libro          Int
+  estado_fis        String             @db.VarChar(50)
+  estante_libro_fis String?            @db.VarChar(50)
+
+  libro             Libro              @relation(fields: [id_libro], references: [id_libro])
+  detallesPrestamo  Detalle_prestamo[]
+}
+
+// 6. Usuario
 model Usuario {
-  id_usuario    Int     @id @default(autoincrement())
-  matricula_usu String  @unique
-  contra_usu    String  // Aquí guardaremos el hash, no la contraseña real
-  rol_usu       String  @default("alumno") // Puede ser "alumno", "admin", "bibliotecario"
-  nombre_usu    String
+  id_usuario    Int        @id @default(autoincrement())
+  matricula_usu String     @unique @db.VarChar(50)
+  contra_usu    String     @db.VarChar(255)
+  rol_usu       String     @db.VarChar(50)
+  nombre_usu    String     @db.VarChar(150)
+
+  prestamos     Prestamo[]
+}
+
+// 7. Préstamo
+model Prestamo {
+  id_prestamo               Int                @id @default(autoincrement())
+  id_usuario                Int
+  fecha_inicio_pre          DateTime           @default(now())
+  fecha_fin_pre             DateTime
+  no_folio_pre              String?            @db.VarChar(50)
+  estado_pre                String             @db.VarChar(50)
+  fecha_devolucion_real_pre DateTime?
+
+  usuario                   Usuario            @relation(fields: [id_usuario], references: [id_usuario])
+  detalles                  Detalle_prestamo[]
+  recargos                  Recargo[]
+}
+
+// 8. Tabla Pivote: Detalle_prestamo (Llave Compuesta)
+model Detalle_prestamo {
+  id_prestamo Int
+  id_ejemplar Int
+
+  prestamo    Prestamo           @relation(fields: [id_prestamo], references: [id_prestamo], onDelete: Cascade)
+  ejemplar    Ejemplares_fisicos @relation(fields: [id_ejemplar], references: [id_ejemplar], onDelete: Cascade)
+
+  @@id([id_prestamo, id_ejemplar]) // LLAVE COMPUESTA
+}
+
+// 9. Recargo
+model Recargo {
+  id_recargo       Int       @id @default(autoincrement())
+  id_prestamo      Int
+  monto_rec        Decimal   @db.Decimal(10, 2)
+  dias_retraso_rec Int
+  estado_pago_rec  String    @db.VarChar(50)
+  fecha_pago_rec   DateTime?
+
+  prestamo         Prestamo  @relation(fields: [id_prestamo], references: [id_prestamo])
 }

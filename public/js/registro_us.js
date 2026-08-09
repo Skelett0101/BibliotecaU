@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 🛡️ 1. Verificamos la sesión de inmediato. Si no hay token, el método bota al usuario al login.
+    // Si no hay token el método bota al usuario al login.
    if (!Auth.verificarPaginaPrivada(['admin', 'bibliotecario'])) return;
 
-    // 2. Cargamos los usuarios usando la petición segura centralizada
+   
     cargarUsuarios();
 
-    // 3. Evento para registrar nuevo usuario
+// registro de usuario
     document.getElementById('formRegistroUsuario').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const contra_usu = document.getElementById('password').value;
 
         try {
-            // 🚀 Usamos Auth.peticionSegura (adiós a los headers manuales y al token repetido)
-            const respuesta = await Auth.peticionSegura('/api/admin/registrar-usuario', {
+            //  Auth.peticionSegura
+            const respuesta = await Auth.peticionSegura('/api/usuarios', {
                 method: 'POST',
                 body: JSON.stringify({ matricula_usu, nombre_usu, rol_usu, contra_usu })
             });
@@ -27,15 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultado = await respuesta.json();
 
             if (respuesta.ok) {
-                alert(resultado.mensaje);
+                await UI.alert(resultado.mensaje);
                 document.getElementById('formRegistroUsuario').reset();
-                cargarUsuarios(); // Recargamos la tabla para que aparezca el nuevo usuario
+                cargarUsuarios(); 
             } else {
-                alert("⛔ Error: " + resultado.error);
+                await UI.alert(" Error: " + resultado.error);
             }
         } catch (error) {
             console.error("Error en la petición:", error);
-            alert("Error de conexión con el servidor.");
+            await UI.alert("Error de conexión con el servidor.");
         }
     });
 });
@@ -47,8 +47,8 @@ async function cargarUsuarios() {
     const tbody = document.getElementById('tablaUsuariosBody');
 
     try {
-        // 🚀 Petición GET limpia utilizando el núcleo de autenticación
-        const respuesta = await Auth.peticionSegura('/api/admin/usuarios', {
+        
+        const respuesta = await Auth.peticionSegura('/api/usuarios', {
             method: 'GET'
         });
 
@@ -58,10 +58,10 @@ async function cargarUsuarios() {
         }
 
         const usuarios = await respuesta.json();
-        tbody.innerHTML = ''; // Limpiamos la tabla antes de pintar
+        tbody.innerHTML = ''; 
 
         usuarios.forEach(user => {
-            // Generar iniciales para el avatar
+            
             const iniciales = user.nombre_usu ? user.nombre_usu.substring(0, 2).toUpperCase() : "US";
 
             const fila = `

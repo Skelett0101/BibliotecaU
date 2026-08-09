@@ -219,20 +219,7 @@
                 <h2 class="font-display-lg text-display-lg text-on-surface">Resumen General</h2>
                 <p class="font-body-lg text-body-lg text-secondary mt-2">Visión general del estado de la biblioteca.</p>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-                    <input
-                        class="pl-10 pr-4 py-2 bg-surface rounded-full border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-body-md w-64 shadow-sm"
-                        placeholder="Buscar libro, usuario..." type="text" />
-                </div>
-                <button
-                    class="w-10 h-10 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container hover:text-primary transition-colors relative">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-                </button>
-            </div>
+          
         </header>
         <!-- Dashboard Content Grid -->
         <div class="p-margin-desktop pt-0 flex-1 flex flex-col gap-gutter">
@@ -463,6 +450,7 @@
         Auth.verificarPaginaPrivada(['admin', 'bibliotecario', 'becario']);
     </script>
     <script src="/js/panel.js"></script>
+    <script src="/js/ui.js"></script>
 </body>
 
 </html>
