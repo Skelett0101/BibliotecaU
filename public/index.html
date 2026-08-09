@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Roles - Biblioteca</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .caja { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { padding: 10px; margin: 5px; cursor: pointer; }
+        .bloqueado { background-color: #ff4c4c; color: white; border: none; }
+        .permitido { background-color: #4caf50; color: white; border: none; }
+        #consola { background: black; color: lime; padding: 10px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <h1>📚 Biblioteca Escolar - Prueba de Roles</h1>
+
+    <!-- FORMULARIO DE REGISTRO / LOGIN -->
+    <div class="caja" id="caja-auth">
+        <h3>1. Identifícate</h3>
+        <input type="text" id="matricula" placeholder="Matrícula" value="12345">
+        <input type="password" id="contra" placeholder="Contraseña" value="123">
+        <select id="rol">
+            <option value="alumno">Alumno (Sin privilegios)</option>
+            <option value="becario">Becario (Medio)</option>
+            <option value="bibliotecario">Bibliotecario (Jefe)</option>
+        </select>
+        <br><br>
+        <button onclick="registrar()">Registrar Nuevo</button>
+        <button onclick="login()">Iniciar Sesión</button>
+    </div>
+
+    <!-- PANEL DE CONTROL (Oculto al inicio) -->
+    <div class="caja" id="caja-panel" style="display: none;">
+        <h3 id="bienvenida">Bienvenido</h3>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
+        <hr>
+        <h3>2. Intenta abrir las puertas (Peticiones al Backend):</h3>
+        <button class="permitido" onclick="probarRuta('/api/prueba/catalogo')">🚪 Puerta 1: Ver Catálogo</button>
+        <button class="permitido" onclick="probarRuta('/api/prueba/prestar')">🚪 Puerta 2: Prestar Libro</button>
+        <button class="bloqueado" onclick="probarRuta('/api/prueba/recargos')">🚪 Puerta 3: Borrar Recargos</button>
+    </div>
+
+    <!-- CONSOLA DE RESULTADOS -->
+    <div class="caja">
+        <h3>Consola del Servidor:</h3>
+        <div id="consola">Esperando acciones...</div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bibliotech - Panel Administrativo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Montserrat:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#d6e3ff",
+                        "surface-tint": "#895121",
+                        "on-secondary-fixed": "#0e1c30",
+                        "on-secondary-container": "#56637b",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb781",
+                        "surface-variant": "#eedfe0",
+                        "surface-container-low": "#fff0f1",
+                        "on-primary-fixed": "#2f1400",
+                        "primary-fixed": "#ffdcc4",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#fab5af",
+                        "outline-variant": "#d7c3b6",
+                        "surface-bright": "#fff8f7",
+                        "inverse-surface": "#372e2f",
+                        "on-background": "#211a1b",
+                        "on-tertiary-fixed": "#350f0d",
+                        "primary-container": "#9f6332",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#52443a",
+                        "background": "#fff8f7",
+                        "outline": "#857469",
+                        "secondary-fixed-dim": "#bac7e3",
+                        "surface-container": "#f9eaeb",
+                        "primary": "#824b1c",
+                        "surface-container-highest": "#eedfe0",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#e5d7d8",
+                        "tertiary": "#7f4a46",
+                        "secondary": "#525f77",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#6c3a0b",
+                        "inverse-primary": "#ffb781",
+                        "on-tertiary-container": "#fff5f3",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#f3e5e6",
+                        "tertiary-container": "#9b625e",
+                        "on-error-container": "#93000a",
+                        "surface": "#fff8f7",
+                        "on-primary-container": "#fff5f0",
+                        "on-secondary-fixed-variant": "#3a475e",
+                        "on-tertiary-fixed-variant": "#6a3935",
+                        "secondary-container": "#d3e0fc",
+                        "tertiary-fixed": "#ffdad6",
+                        "inverse-on-surface": "#fcedee",
+                        "on-surface": "#211a1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "unit": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles that aren't pure utility classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Form inputs focus effect */
+        .input-glow:focus {
+            border-color: #824b1c;
+            box-shadow: 0 0 0 3px rgba(130, 75, 28, 0.2);
+            outline: none;
+        }
+
+        /* Tonal elevation hover effect */
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(130, 75, 28, 0.1), 0 4px 6px -4px rgba(130, 75, 28, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex overflow-hidden">
+    <!-- SideNavBar -->
+    <nav
+        class="bg-surface dark:bg-inverse-surface shadow-sm h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-gutter px-4 z-50">
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-8 px-2">
+            <div
+                class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_library</span>
+            </div>
+            <div>
+                <h1
+                    class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">
+                    Bibliotech</h1>
+                <p class="font-label-md text-label-md text-secondary">Modernismo Académico</p>
+            </div>
+        </div>
+        <!-- Navigation Links -->
+        <ul class="flex-1 space-y-1">
+            <li>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md text-body-md">Panel Control</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="#">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="font-body-md text-body-md">Libros</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
+                    href="registro_us.html">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-md text-body-md">Usuarios</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="panel.html">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+                    <span class="font-body-md text-body-md">Préstamos</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                    href="#">
+                    <span class="material-symbols-outlined">payments</span>
+                    <span class="font-body-md text-body-md">Recargos</span>
+                </a>
+            </li>
+        </ul>
+        <!-- Footer Links -->
+        <div class="mt-auto border-t border-outline-variant pt-4">
+            <ul class="space-y-1">
+                <li>
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                        href="#">
+                        <span class="material-symbols-outlined">settings</span>
+                        <span class="font-body-md text-body-md">Ajustes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
+                        href="#">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-body-md text-body-md">Cerrar Sesión</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main Content Area -->
+    <!-- Main Content Area -->
+    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-[#F9F8F6] min-h-screen">
+        <!-- Top Mobile Header (visible only on mobile) -->
+        <header class="md:hidden flex items-center justify-between mb-8 bg-surface p-4 rounded-xl shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container">local_library</span>
+                <h1 class="font-headline-md text-headline-md font-bold text-primary m-0 text-xl">Bibliotech</h1>
+            </div>
+            <button class="text-on-surface">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </header>
+        <!-- Page Header -->
+        <div class="mb-10 max-w-container-max mx-auto">
+            <h1
+                class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2 tracking-tight">
+                Gestión de Usuarios</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Registra y administra las cuentas de
+                la biblioteca. Mantén el orden en la comunidad académica.</p>
+        </div>
+        <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+            <!-- Registration Form (Bento Grid Style) -->
+            <section class="lg:col-span-4 xl:col-span-3">
+                <div class="glass-card rounded-xl p-6 h-full">
+                    <div class="flex items-center gap-2 mb-6 border-b border-outline-variant/30 pb-4">
+                        <span class="material-symbols-outlined text-primary-container">person_add</span>
+                        <h2 class="font-headline-md text-headline-md text-lg m-0 text-on-surface">Nuevo Registro</h2>
+                    </div>
+                    <form id="formRegistroUsuario" class="space-y-5">
+                        <!-- Matrícula -->
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                                for="matricula">Matrícula</label>
+                            <input
+                                class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm"
+                                id="matricula" placeholder="Ej. A01234567" type="text" required />
+                        </div>
+                        <!-- Nombre Completo -->
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                                for="nombre">Nombre Completo</label>
+                            <input
+                                class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm"
+                                id="nombre" placeholder="Nombre Apellido" type="text" required />
+                        </div>
+                        <!-- Rol / Categoría -->
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="rol">Rol
+                                / Categoría</label>
+                            <div class="relative">
+                                <select
+                                    class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm appearance-none pr-10"
+                                    id="rol" required>
+                                    <option disabled selected value="">Seleccione un rol...</option>
+                                    <option value="alumno">Estudiante</option>
+                                    <option value="maestro">Profesor / Académico</option>
+                                    <option value="bibliotecario">Bibliotecario</option>
+                                    <option value="becario">Becario</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">expand_more</span>
+                            </div>
+                        </div>
+                        <!-- Contraseña -->
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                                for="password">Contraseña Inicial</label>
+                            <div class="relative">
+                                <input
+                                    class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm pr-10"
+                                    id="password" placeholder="••••••••" type="password" required />
+                            </div>
+                        </div>
+                        <!-- Submit -->
+                        <div class="pt-4">
+                            <button
+                                class="w-full py-3 px-4 rounded-lg btn-primary font-label-md text-label-md flex justify-center items-center gap-2"
+                                type="submit">
+                                <span class="material-symbols-outlined text-sm">how_to_reg</span>
+                                Registrar Usuario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!-- Users List Table (Glassmorphism Container) -->
+            <section class="lg:col-span-8 xl:col-span-9 h-full">
+                <div class="glass-card rounded-xl overflow-hidden h-full flex flex-col">
+                    <!-- Table Header & Tools -->
+                    <div
+                        class="p-6 border-b border-outline-variant/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface/50">
+                        <div>
+                            <h2 class="font-headline-md text-headline-md text-lg m-0 text-on-surface">Usuarios Recientes
+                            </h2>
+                            <p class="font-body-md text-sm text-on-surface-variant m-0 mt-1">Últimos registros en la
+                                plataforma</p>
+                        </div>
+                        <!-- Search and Filter -->
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <div class="relative flex-1 sm:w-64">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                                <input
+                                    class="w-full pl-9 pr-4 py-2 rounded-lg border-outline-variant bg-surface form-input-focus font-body-md text-sm"
+                                    placeholder="Buscar por nombre o matrícula..." type="text" />
+                            </div>
+                            <button aria-label="Filtrar"
+                                class="p-2 border border-[#2A374D] rounded-lg text-[#2A374D] hover:bg-surface-container transition-colors flex items-center justify-center">
+                                <span class="material-symbols-outlined text-sm">filter_list</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Table Data -->
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#2A374D] text-white">
+                                    <th class="px-6 py-3 font-label-md text-xs font-semibold uppercase tracking-wider">
+                                        Matrícula</th>
+                                    <th class="px-6 py-3 font-label-md text-xs font-semibold uppercase tracking-wider">
+                                        Usuario</th>
+                                    <th class="px-6 py-3 font-label-md text-xs font-semibold uppercase tracking-wider">
+                                        Rol</th>
+                                    <th class="px-6 py-3 font-label-md text-xs font-semibold uppercase tracking-wider">
+                                        Estado</th>
+                                    <th
+                                        class="px-6 py-3 font-label-md text-xs font-semibold uppercase tracking-wider text-right">
+                                        Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaUsuariosBody"
+                                class="font-body-md text-sm text-on-surface divide-y divide-outline-variant/20 bg-surface/30">
+                            </tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination (Simple) -->
+                    <div class="p-4 border-t border-outline-variant/30 flex justify-between items-center bg-surface/80">
+                        <span class="text-xs text-on-surface-variant font-label-md"></span>
+                        <div class="flex gap-1">
+                            <button
+                                class="p-1.5 rounded border border-outline-variant/50 text-on-surface-variant hover:bg-surface-container disabled:opacity-50"
+                                disabled=""><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+                            <button
+                                class="p-1.5 rounded border border-outline-variant/50 text-on-surface-variant hover:bg-surface-container"><span
+                                    class="material-symbols-outlined text-sm">chevron_right</span></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+<!-- Cargar primero el guardián de autenticación -->
+    <script src="/js/auth.js"></script>
+     <script>
+                // Si el token sigue activo, rebota de inmediato al panel sin mostrar el formulario
+                Auth.verificarPaginaPublica();
+            </script>
+            
+    <!-- Cargar la lógica de registro de usuarios -->
+    <script src="/js/registro_us.js"></script>
+</body>
+
+</html>
