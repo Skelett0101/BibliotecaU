@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LibriQuest - Consulta de Recargos</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#211a1b",
+                        "surface-tint": "#895121",
+                        "surface-container-high": "#f3e5e6",
+                        "tertiary-fixed-dim": "#fab5af",
+                        "on-tertiary-fixed-variant": "#6a3935",
+                        "on-secondary": "#ffffff",
+                        "primary": "#824b1c",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#372e2f",
+                        "tertiary": "#7f4a46",
+                        "background": "#fff8f7",
+                        "primary-fixed": "#ffdcc4",
+                        "primary-container": "#9f6332",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#3a475e",
+                        "inverse-on-surface": "#fcedee",
+                        "on-primary-fixed-variant": "#6c3a0b",
+                        "secondary": "#525f77",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#d6e3ff",
+                        "on-tertiary-fixed": "#350f0d",
+                        "secondary-container": "#d3e0fc",
+                        "tertiary-container": "#9b625e",
+                        "inverse-primary": "#ffb781",
+                        "outline-variant": "#d7c3b6",
+                        "surface-dim": "#e5d7d8",
+                        "surface": "#fff8f7",
+                        "surface-container-highest": "#eedfe0",
+                        "on-background": "#211a1b",
+                        "surface-container": "#f9eaeb",
+                        "on-tertiary-container": "#fff5f3",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fff8f7",
+                        "secondary-fixed-dim": "#bac7e3",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#52443a",
+                        "primary-fixed-dim": "#ffb781",
+                        "surface-variant": "#eedfe0",
+                        "tertiary-fixed": "#ffdad6",
+                        "outline": "#857469",
+                        "on-secondary-fixed": "#0e1c30",
+                        "on-primary-fixed": "#2f1400",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fff5f0",
+                        "on-secondary-container": "#56637b",
+                        "surface-container-low": "#fff0f1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col">
+    <!-- TopAppBar -->
+    <header class="bg-surface/80 dark:bg-background/80 backdrop-blur-md shadow-sm docked full-width top-0 sticky z-40">
+        <div
+            class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto z-40">
+            <!-- Brand -->
+            <div class="flex items-center gap-4">
+                <div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+                    Bibliotech
+                </div>
+            </div>
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex gap-8">
+                <a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
+                    href="#">
+                    Mis Recargos
+                </a>
+            
+            </nav>
+
+            <!-- Trailing Actions -->
+            <div class="flex items-center gap-4">
+                
+
+                <!-- Menú Desplegable de Perfil -->
+                <div class="relative group">
+                    <button aria-label="Perfil" id="btn-perfil"
+                        onclick="document.getElementById('menu-perfil').classList.toggle('hidden')"
+                        class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
+                        <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                    </button>
+
+                    <!-- Contenido del Menú -->
+                    <div id="menu-perfil"
+                        class="hidden absolute right-0 mt-2 w-56 bg-surface rounded-xl shadow-xl border border-outline-variant/30 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-outline-variant/30 mb-1">
+                            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Mi Cuenta
+                            </p>
+                        </div>
+                        <a href="MisPrestamosUs.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-primary">menu_book</span> Mis
+                            Préstamos
+                        </a>
+                        <a href="recragos.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-error">payments</span> Mis Multas
+                        </a>
+                        <a href="catalogo.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-primary">books_movies_and_music</span> Catalogo
+                        </a>
+                        <div class="border-t border-outline-variant/30 my-1"></div>
+                        <a href="#" onclick="Auth.logout()"
+                            class="px-4 py-2 text-sm text-error hover:bg-error-container/30 transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px]">logout</span> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="md:hidden text-primary p-2">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main
+        class="flex-grow pt-[104px] pb-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-2">
+                    Consulta de Recargos</h1>
+                <p class="font-body-md text-body-md text-secondary max-w-2xl">Revisa el historial y estado actual de las
+                    multas asociadas a tus préstamos. Los recargos pendientes requieren atención inmediata.</p>
+            </div>
+            <!-- Summary Stats -->
+            <div class="flex gap-4">
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-4 min-w-[140px]">
+                    <span class="font-label-md text-label-md text-secondary block mb-1">Pendiente Total</span>
+                    <span class="font-headline-md text-headline-md text-error">$14.50</span>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-4 min-w-[140px]">
+                    <span class="font-label-md text-label-md text-secondary block mb-1">Recargos Activos</span>
+                    <span class="font-headline-md text-headline-md text-on-surface">2</span>
+                </div>
+            </div>
+        </div>
+        <!-- Data Table Container (Glassmorphism/Minimalist Surface) -->
+        <div class="bg-surface border border-outline-variant/10 rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <!-- Toolbar -->
+            <div
+                class="p-4 border-b border-outline-variant/10 bg-surface-container-lowest flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary">filter_list</span>
+                    <span class="font-label-md text-label-md text-secondary">Filtros Activos: Ninguno</span>
+                </div>
+                <button
+                    class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">download</span> Descargar Estado
+                </button>
+            </div>
+            <!-- Table Scroll Area -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-[#2A374D] border-b border-outline-variant/20">
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary whitespace-nowrap">ID
+                                Recargo</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary">Préstamo Asociado (Libro)
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Monto</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Días Retraso
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-center">Estado</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Fecha de Pago
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/10 font-body-md text-body-md text-on-surface">
+                        <!-- Row 1: Pending (Alert) -->
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                            <td class="py-4 px-4 font-medium">REC-1042</td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0 border border-outline-variant/20">
+                                        <img alt="Portada libro" class="w-full h-full object-cover"
+                                            data-alt="A minimalist book cover design for 'El Aleph' by Jorge Luis Borges. The cover features abstract geometric shapes in deep blues and subtle gold accents on a pristine white background, conveying a sense of intellectual depth and modernism. The lighting is even, simulating a high-quality digital scan suitable for a modern academic library catalog."
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPuEuCo3bcFZHZe6lwhAp-nn7vk5cQHuaROfnn8xcWqMs8pWENj1NM1qn1cmn4KvN7Q1zVmNrTm7oxOPzNY53dtbQdsTPzPNF87I_WYe_cqMgbElsS4N9ty2dIPTSAlsf3jtxV5m2mq2f5UNT92_qHbB2diT5QQ1Y4zJM-pgcS4DBnDBYrrMssfrU0FavRTuh44sk_IWpBee2iNe7pq1SFiIal-FK2NGvX9fcqXmwKC0ZdUULDXtiDNw" />
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-on-surface group-hover:text-primary transition-colors">
+                                            El Aleph (PR-992)</p>
+                                        <p class="text-sm text-secondary">Venció: 12/Oct/2023</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 text-right font-medium text-error">$8.50</td>
+                            <td class="py-4 px-4 text-right text-error font-medium">17 días</td>
+                            <td class="py-4 px-4 text-center">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-md text-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                    Pendiente
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-right text-secondary italic">-</td>
+                            <td class="py-4 px-4 text-center">
+                                <button
+                                    class="bg-[#9F6332] text-white px-4 py-1.5 rounded font-label-md text-sm hover:shadow-md hover:-translate-y-0.5 transition-all">Pagar
+                                    Ahora</button>
+                            </td>
+                        </tr>
+                        <!-- Row 2: Pending (Warning/Less Severe) -->
+                        <tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
+                            <td class="py-4 px-4 font-medium">REC-1055</td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0 border border-outline-variant/20">
+                                        <img alt="Portada libro" class="w-full h-full object-cover"
+                                            data-alt="A minimalist book cover design for 'Cien años de soledad'. The cover uses a warm, sepia-toned palette with subtle line-art botanical illustrations against a parchment-like texture, evoking classic literature in a refined, modern presentation."
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHg1BDCaY3rrqN8XfxuWmSSgR2L8d8-4T1drDDmD7dkjdCNCvO6XmLT-AznymqiF0684Xt9Rdl0O8x6kYwmFqmJCToCEFLcERuMh80au0ImlTEVi9OLNwDreSqwvtxlgtn7lp_1avpxU_nrPW_Zmn2VLMXFwta2XovH2dJ8fln4T44rIwz_ZG6aUl7hFcHoOdheZ07bPabiatdxYl7Nw7T4dSYdiIbchdijflY8C0hvKfari8aEhWjEA" />
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-on-surface group-hover:text-primary transition-colors">
+                                            Cien años de soledad (PR-1004)</p>
+                                        <p class="text-sm text-secondary">Venció: 24/Oct/2023</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 text-right font-medium text-error">$6.00</td>
+                            <td class="py-4 px-4 text-right text-error font-medium">5 días</td>
+                            <td class="py-4 px-4 text-center">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-md text-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                    Pendiente
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-right text-secondary italic">-</td>
+                            <td class="py-4 px-4 text-center">
+                                <button
+                                    class="bg-[#9F6332] text-white px-4 py-1.5 rounded font-label-md text-sm hover:shadow-md hover:-translate-y-0.5 transition-all">Pagar
+                                    Ahora</button>
+                            </td>
+                        </tr>
+                        <!-- Row 3: Paid -->
+                        <tr class="hover:bg-surface-container-low transition-colors group opacity-80">
+                            <td class="py-4 px-4 font-medium text-secondary">REC-0982</td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0 border border-outline-variant/20 grayscale opacity-80">
+                                        <div
+                                            class="w-full h-full flex items-center justify-center bg-surface-variant text-secondary">
+                                            <span class="material-symbols-outlined text-xl">menu_book</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-on-surface group-hover:text-primary transition-colors">
+                                            Don Quijote de la Mancha (PR-877)</p>
+                                        <p class="text-sm text-secondary">Venció: 10/Sep/2023</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 text-right text-secondary">$3.50</td>
+                            <td class="py-4 px-4 text-right text-secondary">7 días</td>
+                            <td class="py-4 px-4 text-center">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-md text-xs border border-secondary-container">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                    Pagado
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-right text-on-surface">17/Sep/2023</td>
+                            <td class="py-4 px-4 text-center">
+                                <button
+                                    class="text-secondary hover:text-primary border border-transparent hover:border-outline-variant px-3 py-1.5 rounded transition-all flex items-center gap-1 justify-center mx-auto"
+                                    title="Ver Recibo">
+                                    <span class="material-symbols-outlined text-sm">receipt</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Row 4: Paid -->
+                        <tr
+                            class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group opacity-80">
+                            <td class="py-4 px-4 font-medium text-secondary">REC-0845</td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0 border border-outline-variant/20 grayscale opacity-80">
+                                        <div
+                                            class="w-full h-full flex items-center justify-center bg-surface-variant text-secondary">
+                                            <span class="material-symbols-outlined text-xl">menu_book</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-on-surface group-hover:text-primary transition-colors">
+                                            La Metamorfosis (PR-750)</p>
+                                        <p class="text-sm text-secondary">Venció: 01/Ago/2023</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 text-right text-secondary">$1.50</td>
+                            <td class="py-4 px-4 text-right text-secondary">3 días</td>
+                            <td class="py-4 px-4 text-center">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-md text-xs border border-secondary-container">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                    Pagado
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-right text-on-surface">04/Ago/2023</td>
+                            <td class="py-4 px-4 text-center">
+                                <button
+                                    class="text-secondary hover:text-primary border border-transparent hover:border-outline-variant px-3 py-1.5 rounded transition-all flex items-center gap-1 justify-center mx-auto"
+                                    title="Ver Recibo">
+                                    <span class="material-symbols-outlined text-sm">receipt</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination Footer -->
+            <div
+                class="p-4 border-t border-outline-variant/10 bg-surface-container-lowest flex items-center justify-between">
+                <span class="font-label-md text-label-md text-secondary">Mostrando 1-4 de 4 registros</span>
+                <div class="flex gap-1">
+                    <button class="p-1 rounded text-secondary hover:bg-surface-container-high disabled:opacity-50"
+                        disabled=""><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+                    <button
+                        class="w-8 h-8 rounded bg-primary-container text-on-primary-container font-label-md flex items-center justify-center">1</button>
+                    <button class="p-1 rounded text-secondary hover:bg-surface-container-high disabled:opacity-50"
+                        disabled=""><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Bottom Navigation (Mobile Only) - Suppressed as per instructions for a specific data view, but included if considered a primary tab destination. Assuming this is a sub-view of "Perfil" or "Mis Libros", we suppress it to focus on canvas, or keep it hidden md. Let's omit bottom nav to keep canvas focus on task. -->
+
+    <script src="/js/auth.js"></script>
+    <script>
+
+        Auth.verificarPaginaPrivada(['alumno', 'Maestro', 'admin']);
+    </script>
+
+</body>
+
+</html>

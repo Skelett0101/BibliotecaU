@@ -136,30 +136,55 @@
                     href="#">
                     Catálogo
                 </a>
-                <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
-                    href="#">
-                    Mis Libros
-                </a>
-                <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
-                    href="#">
-                    Ayuda
-                </a>
+            
             </nav>
+
             <!-- Trailing Actions -->
             <div class="flex items-center gap-4">
-                <button aria-label="Notificaciones"
-                    class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
-                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                </button>
-                <button aria-label="Perfil"
-                    class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
-                    <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-                </button>
+                
+
+                <!-- Menú Desplegable de Perfil -->
+                <div class="relative group">
+                    <button aria-label="Perfil" id="btn-perfil"
+                        onclick="document.getElementById('menu-perfil').classList.toggle('hidden')"
+                        class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high rounded-full p-2 transition-all active:scale-95 duration-150 flex items-center justify-center">
+                        <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                    </button>
+
+                    <!-- Contenido del Menú -->
+                    <div id="menu-perfil"
+                        class="hidden absolute right-0 mt-2 w-56 bg-surface rounded-xl shadow-xl border border-outline-variant/30 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-outline-variant/30 mb-1">
+                            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Mi Cuenta
+                            </p>
+                        </div>
+                        <a href="MisPrestamosUs.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-primary">menu_book</span> Mis
+                            Préstamos
+                        </a>
+                        <a href="recragos.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-error">payments</span> Mis Multas
+                        </a>
+                        <a href="catalogo.html"
+                            class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px] text-primary">books_movies_and_music</span> Catalogo
+                        </a>
+                        <div class="border-t border-outline-variant/30 my-1"></div>
+                        <a href="#" onclick="Auth.logout()"
+                            class="px-4 py-2 text-sm text-error hover:bg-error-container/30 transition-colors flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[20px]">logout</span> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Mobile Menu Toggle -->
                 <button class="md:hidden text-primary p-2">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
             </div>
+
         </div>
     </header>
     <!-- Main Content -->
@@ -213,61 +238,15 @@
                     <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">El Arte
                         de la Guerra</h3>
                     <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Sun Tzu</p>
-                    <button
+                    <!-- Cámbialo en todos tus artículos por algo como esto: -->
+                    <button onclick="abrirModalPrestamo(1, 'El Arte de la Guerra')"
                         class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
                         Solicitar Préstamo
                     </button>
                 </div>
             </article>
-            <!-- Card 2 -->
-            <article
-                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
-                <div class="relative w-full rounded overflow-hidden mb-3">
-                    <div class="book-cover-ratio"></div>
-                    <img class="absolute inset-0 w-full h-full object-cover"
-                        data-alt="A minimalist and highly elegant book cover for a modern science textbook titled 'Principios de Astrofísica'. The cover features a stark, deep navy blue background with a single, precise silver embossed geometric diagram of an orbit. It rests on a pristine, light-colored wooden library table. The lighting is crisp and cool, casting soft, calculated shadows that emphasize the clean lines and modern, sophisticated academic style of the design."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2wWdkx1ZgUJzRR2vSkKdiw8iMJ2DSWWvK1Rat6F6sCIUBg2izgrJiVSsfHaZsucGVusegx7tjsGULXd3AOxVt0dmioRh0EVo6nb5XaR3Q-05lHvILEexbdIzTBPGPldVMx_LW7VXFQvKqzOFkJy4jIKJvmgVWnHvyQTVaJRRItqXfqRqRcVLw7656gfmR52R6QJRvH1tGC9cfS4fPeR_T0q5rNaf1lfyRg0758ChQeS1ezbQseNNA3g" />
-                    <!-- Availability Indicator -->
-                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-amber-500 border-2 border-surface shadow-sm"
-                        title="Última copia"></div>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <span
-                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Ciencias</span>
-                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">
-                        Principios de Astrofísica</h3>
-                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Neil deGrasse Tyson</p>
-                    <button
-                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
-                        Solicitar Préstamo
-                    </button>
-                </div>
-            </article>
-            <!-- Card 3 -->
-            <article
-                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
-                <div class="relative w-full rounded overflow-hidden mb-3">
-                    <div class="book-cover-ratio"></div>
-                    <img class="absolute inset-0 w-full h-full object-cover"
-                        data-alt="A beautifully crafted classic fiction book cover for 'Don Quijote'. The cover is designed with a modern twist on antique aesthetics, using a rich, warm brown textured paper background adorned with subtle, abstract windmill motifs in a slightly darker tonal shade. The typography is modern serif, pressed cleanly into the cover. It sits on a bright, minimalist marble surface, bathed in warm, inviting natural light that creates a serene, scholarly atmosphere."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-3AOCWVsL9MRXOFME9OJySQquKIibt8ks1q7vkGiOKtKv4vGt4OgNq52xCA_NUWweLSY-vhNtAA8IHERxMcDkH4e0dJW3pUI5r0EaBgQd_1VvwL7EZGQ62fwAErpYorcUQZhAPT9TXFDWTt_bd4ML_D2Fv7jz1G81KiC4x78S2X7s38HJMYdjNXwQfBVolYnueSnBTEq0DA72VugBOrvlYYAVyJ8U-QhYHajJtQ88R_YdU6jXGV7vnw" />
-                    <!-- Availability Indicator -->
-                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
-                        title="Disponible"></div>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <span
-                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Ficción
-                        Clásica</span>
-                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">Don
-                        Quijote de la Mancha</h3>
-                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Miguel de Cervantes</p>
-                    <button
-                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
-                        Solicitar Préstamo
-                    </button>
-                </div>
-            </article>
+
+
             <!-- Card 4 -->
             <article
                 class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300 opacity-75">
@@ -292,33 +271,78 @@
                     </button>
                 </div>
             </article>
-            <!-- Card 5 -->
-            <article
-                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
-                <div class="relative w-full rounded overflow-hidden mb-3">
-                    <div class="book-cover-ratio"></div>
-                    <img class="absolute inset-0 w-full h-full object-cover"
-                        data-alt="A striking modern philosophy book cover utilizing tonal layers. The cover art features overlapping translucent geometric shapes in warm shades of terracotta, ochre, and deep brown, creating a sense of depth and academic rigor. The title is presented in crisp white modern font. The book is photographed from a top-down angle on a clean, light cream background under soft, high-key studio lighting, emphasizing the minimal yet sophisticated aesthetic."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjfJf1uaS4Y2R3cKBCdmrDtGP2bPcFctIDYVYYv_tzuMRbuVEi0wfAbLG6LoUq2Li6wrACGBniydMC9jrOC24O5QTlXMhWgBoR0IxWCfuZrgWI2M1Cu3uUJvILLXxx9sNms1XX21_nFOUw7WqcoEdcKMpV40barsj5Af01GkL6CFROqJgmqdqH-cKGL16mTHnLGMoJK1AHkt1GzmwurYL3_pG-PJm_IxkIbAaimovBIH0lSs0wSpxDAg" />
-                    <!-- Availability Indicator -->
-                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
-                        title="Disponible"></div>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <span
-                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Filosofía</span>
-                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">Ética
-                        Contemporánea</h3>
-                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Luis García</p>
-                    <button
-                        class="mt-auto w-full py-2 border border-secondary text-secondary font-label-md text-label-md rounded hover:bg-surface-container-high transition-all">
-                        Ver Detalles
-                    </button>
-                </div>
-            </article>
+
         </div>
     </main>
+
+    <!-- Modal Solicitud Préstamo -->
+    <div class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" id="modal-prestamo">
+        <!-- Backdrop oscuro -->
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="cerrarModalPrestamo()"></div>
+
+        <!-- Contenido del Modal -->
+        <div
+            class="relative w-full max-w-md bg-surface rounded-xl overflow-hidden shadow-2xl z-10 animate-in fade-in zoom-in duration-200">
+            <div
+                class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest">
+                <h3 class="font-headline-md text-lg text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">bookmark_add</span>
+                    Solicitud de Préstamo
+                </h3>
+                <button class="text-on-surface-variant hover:text-error transition-colors"
+                    onclick="cerrarModalPrestamo()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <form id="form-solicitar-prestamo" class="p-6 space-y-4">
+                <!-- ID Oculto del libro -->
+                <input type="hidden" id="prestamo-id-libro" />
+
+                <div>
+                    <label class="block font-label-md text-sm text-on-surface-variant mb-1">Título Seleccionado</label>
+                    <input type="text" id="prestamo-titulo-libro"
+                        class="w-full rounded-lg border border-outline-variant bg-surface-container-low px-4 py-2 text-on-surface font-body-md text-sm cursor-not-allowed"
+                        readonly />
+                </div>
+
+                <div>
+                    <label class="block font-label-md text-sm text-on-surface-variant mb-1">Fecha de Devolución
+                        Prevista</label>
+                    <input type="date" id="prestamo-fecha-fin" required
+                        class="w-full rounded-lg border border-outline-variant bg-surface px-4 py-2 text-on-surface font-body-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow" />
+                </div>
+
+                <div class="bg-secondary-container/30 p-3 rounded-lg flex items-start gap-2 mt-2">
+                    <span class="material-symbols-outlined text-primary text-sm mt-0.5">info</span>
+                    <p class="text-xs font-body-md text-on-surface-variant leading-relaxed">
+                        Tu solicitud será registrada bajo tu matrícula actual. Un bibliotecario te asignará un ejemplar
+                        físico disponible al momento de la entrega.
+                    </p>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant/30">
+                    <button type="button"
+                        class="px-4 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors font-label-md text-sm"
+                        onclick="cerrarModalPrestamo()">Cancelar</button>
+                    <button type="submit"
+                        class="px-6 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-sm shadow-sm hover:shadow-md transition-all">
+                        Confirmar Solicitud
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="/js/auth.js"></script>
+   
+   
     <script src="/js/ui.js"></script>
+
+
+    <script src="/js/catalogo.js"></script>
+
 </body>
 
 </html>
