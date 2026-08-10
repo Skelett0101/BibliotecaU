@@ -16,7 +16,7 @@ datasource db {
 
 
 
-// 1. Categoría
+
 model Categoria {
   id_categoria Int     @id @default(autoincrement())
   nombre_cat   String  @db.VarChar(100)
@@ -24,7 +24,7 @@ model Categoria {
   libros       Libro[]
 }
 
-// 2. Autor
+
 model Autor_libro {
   id_autor    Int           @id @default(autoincrement())
   nombre_au   String        @db.VarChar(100)
@@ -33,7 +33,7 @@ model Autor_libro {
   libros      Libro_Autor[]
 }
 
-// 3. Libro
+
 model Libro {
   id_libro       Int                 @id @default(autoincrement())
   id_categoria   Int
@@ -50,7 +50,7 @@ model Libro {
   autores        Libro_Autor[]
 }
 
-// 4. Tabla Pivote: Libro_Autor (Llave Compuesta)
+//  Compuesta
 model Libro_Autor {
   id_libro Int
   id_autor Int
@@ -61,7 +61,7 @@ model Libro_Autor {
   @@id([id_libro, id_autor]) // LLAVE COMPUESTA
 }
 
-// 5. Ejemplares Físicos
+
 model Ejemplares_fisicos {
   id_ejemplar       Int                @id @default(autoincrement())
   id_libro          Int
@@ -72,18 +72,19 @@ model Ejemplares_fisicos {
   detallesPrestamo  Detalle_prestamo[]
 }
 
-// 6. Usuario
+
 model Usuario {
   id_usuario    Int        @id @default(autoincrement())
   matricula_usu String     @unique @db.VarChar(50)
   contra_usu    String     @db.VarChar(255)
   rol_usu       String     @db.VarChar(50)
   nombre_usu    String     @db.VarChar(150)
+  estado_usu    String     @default("activo") @db.VarChar(50) 
 
   prestamos     Prestamo[]
 }
 
-// 7. Préstamo
+
 model Prestamo {
   id_prestamo               Int                @id @default(autoincrement())
   id_usuario                Int
@@ -98,7 +99,7 @@ model Prestamo {
   recargos                  Recargo[]
 }
 
-// 8. Tabla Pivote: Detalle_prestamo (Llave Compuesta)
+//  Compuesta
 model Detalle_prestamo {
   id_prestamo Int
   id_ejemplar Int
@@ -109,7 +110,7 @@ model Detalle_prestamo {
   @@id([id_prestamo, id_ejemplar]) // LLAVE COMPUESTA
 }
 
-// 9. Recargo
+
 model Recargo {
   id_recargo       Int       @id @default(autoincrement())
   id_prestamo      Int
