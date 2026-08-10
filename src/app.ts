@@ -3,10 +3,9 @@ import cors from 'cors';
 import path from 'path'; 
 import testRoutes from './routes/authRoutes';
 import authRoutes from './routes/authRoutes';
-
+import prestamoRoutes from './routes/prestamoRoutes'; 
+import reporteRoutes from './routes/reporteRoutes';
 import usuarioRoutes from './routes/usuarioRoutes';
-
-
 
 
 const app: Application = express();
@@ -35,7 +34,8 @@ app.use((req, res, next) => {
 app.use('/api', testRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
-
+app.use('/api/prestamos', prestamoRoutes);
+app.use('/api/reportes', reporteRoutes);
 
 // 3. Fallback para el Frontend (Opcional, útil si usas un router en el cliente)
 // Si alguien entra a una ruta que no es de la API, le devolvemos el index.html
