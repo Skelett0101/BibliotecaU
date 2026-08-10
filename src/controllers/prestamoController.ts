@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-
-// Instanciamos Prisma para poder hablar con la base de datos
-const prisma = new PrismaClient();
+// Importamos la conexión única global que ya tienes configurada
+import prisma from '../config/db';
 
 /**
  * Función para obtener todos los préstamos.

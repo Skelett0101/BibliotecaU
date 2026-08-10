@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-
-// Instanciamos Prisma para conectarnos a la base de datos
-const prisma = new PrismaClient();
+// Importamos la conexión global en lugar de instanciar una nueva
+import prisma from '../config/db';
 
 /**
  * Función para obtener el reporte general de inventario.
