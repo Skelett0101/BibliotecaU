@@ -1,21 +1,18 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { 
+    obtenerReporteInventario, 
+    obtenerReporteAtrasos, 
+    obtenerReporteLibrosTotales, 
+    obtenerReporteIngresos 
+} from '../controllers/reporteController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Puerta 1: Nivel Básico (Solo requiere Token) -> Entran Todos
-router.get('/catalogo', verificarToken, (req: Request, res: Response) => {
-    res.json({ mensaje: "✅ ¡Éxito! Estás viendo los libros del catálogo." });
-});
-
-// Puerta 2: Nivel Medio -> Solo Bibliotecario y Becario
-router.get('/prestar', verificarToken, verificarRol(['bibliotecario', 'becario']), (req: Request, res: Response) => {
-    res.json({ mensaje: "✅ ¡Éxito! Tienes permiso para prestar libros." });
-});
-
-// Puerta 3: Nivel Alto -> Solo Bibliotecario
-router.get('/recargos', verificarToken, verificarRol(['bibliotecario']), (req: Request, res: Response) => {
-    res.json({ mensaje: "✅ ¡Éxito! Tienes permiso de jefe para borrar recargos." });
-});
+// Todas las rutas de reportes avanzados son exclusivas del Administrador
+router.get('/inventario', verificarToken, verificarRol(['admin']), obtenerReporteInventario);
+router.get('/atrasos', verificarToken, verificarRol(['admin']), obtenerReporteAtrasos);
+router.get('/libros-totales', verificarToken, verificarRol(['admin']), obtenerReporteLibrosTotales);
+router.get('/ingresos', verificarToken, verificarRol(['admin']), obtenerReporteIngresos);
 
 export default router;

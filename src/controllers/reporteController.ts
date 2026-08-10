@@ -1,43 +1,98 @@
 import { Request, Response } from 'express';
-// Importamos la conexión global en lugar de instanciar una nueva
 import prisma from '../config/db';
 
-/**
- * Función para obtener el reporte general de inventario.
- * Exclusivo para administradores.
- */
+// (La función de inventario que ya tenías se mantiene aquí)
 export const obtenerReporteInventario = async (req: Request, res: Response): Promise<void> => {
     try {
-        // 1. Obtenemos todos los libros y contamos cuántos ejemplares físicos tiene cada uno
         const inventarioLibros = await prisma.libro.findMany({
             include: {
-                // Traemos el nombre de la categoría del libro
-                categoria: { 
-                    select: { nombre_cat: true } 
-                },
-                // Prisma cuenta automáticamente cuántos registros hay en la tabla relacionada
-                _count: {
-                    select: { ejemplares: true } 
+                categoria: { select: { nombre_cat: true } },
+                _count: { select: { ejemplares: true } }
+            }
+        });
+        const resumenEstados = await prisma.ejemplares_fisicos.groupBy({
+            by: ['estado_fis'],
+            _count: { estado_fis: true }
+        });
+        res.json({ libros: inventarioLibros, resumenEstados });
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al cargar el inventario.' });
+    }
+};
+
+/**
+ * 1. Exclusivo Admin: Usuarios con más atrasos / moras
+ */
+export const obtenerReporteAtrasos = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const usuariosAtrasos = await prisma.usuario.findMany({
+            where: {
+                prestamos: {
+                    some: {
+                        OR: [
+                            { estado_pre: 'MORA' },
+                            { estado_pre: 'ATRASADO' },
+                            { recargos: { some: { estado_pago_rec: 'PENDIENTE' } } }
+                        ]
+                    }
+                }
+            },
+            include: {
+                prestamos: {
+                    include: { recargos: true }
+                }
+            }
+        });
+        res.status(200).json(usuariosAtrasos);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al generar el reporte de atrasos.' });
+    }
+};
+
+/**
+ * 2. Exclusivo Admin: Libros totales en el sistema
+ */
+export const obtenerReporteLibrosTotales = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const totalLibros = await prisma.libro.count();
+        const totalEjemplaresFisicos = await prisma.ejemplares_fisicos.count();
+        const librosPorCategoria = await prisma.categoria.findMany({
+            include: {
+                _count: { select: { libros: true } }
+            }
+        });
+
+        res.status(200).json({
+            totalLibros,
+            totalEjemplaresFisicos,
+            librosPorCategoria
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener el total de libros.' });
+    }
+};
+
+/**
+ * 3. Exclusivo Admin: Ingresos por recargos
+ */
+export const obtenerReporteIngresos = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const recargos = await prisma.recargo.findMany({
+            include: {
+                prestamo: {
+                    include: { usuario: { select: { nombre_usu: true, matricula_usu: true } } }
                 }
             }
         });
 
-        // 2. Agrupamos los ejemplares por su estado físico (ej. "Bueno", "Dañado")
-        const resumenEstados = await prisma.ejemplares_fisicos.groupBy({
-            by: ['estado_fis'],
-            _count: {
-                estado_fis: true
-            }
-        });
+        // Calcular la suma total de ingresos por recargos pagados o pendientes
+        const totalIngresos = recargos.reduce((acc, curr) => acc + Number(curr.monto_rec), 0);
 
-        // 3. Enviamos un objeto JSON con ambos resultados al frontend
-        res.json({
-            libros: inventarioLibros,
-            resumenEstados: resumenEstados
+        res.status(200).json({
+            totalIngresos,
+            detalleRecargos: recargos
         });
-        
     } catch (error) {
-        console.error("Error al generar el reporte de inventario:", error);
-        res.status(500).json({ error: 'Ocurrió un error al cargar el inventario.' });
+        res.status(500).json({ error: 'Error al calcular los ingresos por recargos.' });
     }
 };
