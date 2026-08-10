@@ -234,8 +234,7 @@
             <div class="flex gap-3">
                 <button
                     class="btn-secondary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors">Cancelar</button>
-                <button
-                    class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2">
+                <button id="btn-guardar" class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">save</span>
                     Guardar Registro
                 </button>
@@ -263,30 +262,26 @@
                         <!-- ID Categoria -->
                         <div class="md:col-span-1">
                             <label class="form-label">Categoría (ID)</label>
-                            <select
-                                class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
-                                <option>CAT-01 (Ficción Clásica)</option>
-                                <option>CAT-02 (Ensayo Histórico)</option>
-                                <option>CAT-03 (Ciencias Exactas)</option>
+                            <select id="id_categoria" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                                <option value="1">CAT-01 (Ficción Clásica)</option>
+                                <option value="2">CAT-02 (Ensayo Histórico)</option>
+                                <option value="3">CAT-03 (Ciencias Exactas)</option>
                             </select>
                         </div>
                         <!-- Nombre -->
                         <div class="md:col-span-2">
                             <label class="form-label">Título del Libro (nombre_li)</label>
-                            <input class="w-full form-input placeholder:text-outline"
-                                placeholder="Ej. El ingenioso hidalgo Don Quijote de la Mancha" type="text" />
+                            <input id="nombre_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. El ingenioso hidalgo Don Quijote..." type="text" />
                         </div>
                         <!-- Editorial -->
                         <div class="md:col-span-1">
                             <label class="form-label">Editorial (editorial_li)</label>
-                            <input class="w-full form-input placeholder:text-outline"
-                                placeholder="Ej. Editorial Alfaguara" type="text" />
+                            <input id="editorial_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. Editorial Alfaguara" type="text" />
                         </div>
                         <!-- ISBN -->
                         <div class="md:col-span-1">
                             <label class="form-label">ISBN (ISBN_li)</label>
-                            <input class="w-full form-input placeholder:text-outline font-mono text-sm"
-                                placeholder="978-3-16-148410-0" type="text" />
+                            <input id="ISBN_li" class="w-full form-input placeholder:text-outline font-mono text-sm" placeholder="978-3-16-148410-0" type="text" />
                         </div>
                     </div>
                 </div>
@@ -300,18 +295,15 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <div>
                             <label class="form-label">Año de Publicación (año_li)</label>
-                            <input class="w-full form-input placeholder:text-outline" placeholder="2023"
-                                type="number" />
+                            <input id="ano_li" class="w-full form-input placeholder:text-outline" placeholder="2023" type="number" />
                         </div>
                         <div>
                             <label class="form-label">Serie/Colección (serie_li)</label>
-                            <input class="w-full form-input placeholder:text-outline" placeholder="Opcional"
-                                type="text" />
+                            <input id="serie_li" class="w-full form-input placeholder:text-outline" placeholder="Opcional" type="text" />
                         </div>
                         <div>
                             <label class="form-label">Idioma (idioma_li)</label>
-                            <select
-                                class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                            <select id="idioma_li" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
                                 <option>Español</option>
                                 <option>Inglés</option>
                                 <option>Francés</option>
@@ -344,8 +336,7 @@
                             </div>
                             <div class="md:col-span-4">
                                 <label class="form-label">Estado Físico (estado_fis)</label>
-                                <select
-                                    class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                                <select id="estado_fis" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
                                     <option>Excelente</option>
                                     <option>Bueno</option>
                                     <option>Regular (Desgaste visible)</option>
@@ -354,7 +345,7 @@
                             </div>
                             <div class="md:col-span-4">
                                 <label class="form-label">Estante (estante_libro_fis)</label>
-                                <input class="w-full form-input" placeholder="Ej. Pasillo A, Estante 3" type="text" />
+                                <input id="estante_libro_fis" class="w-full form-input" placeholder="Ej. Pasillo A, Estante 3" type="text" />
                             </div>
                             <div class="md:col-span-2 flex justify-end">
                                 <button
@@ -383,8 +374,7 @@
                         <p class="font-label-md text-label-md text-primary mb-1">Haz clic para subir imagen</p>
                         <p class="font-body-md text-body-md text-[12px] text-on-surface-variant">Ratio recomendado 2:3.
                             Máx 5MB (JPG, PNG)</p>
-                        <input class="mt-4 w-full form-input text-sm" placeholder="O introduce URL directa..."
-                            type="text" />
+                        <input id="url_imagen_li" class="mt-4 w-full form-input text-sm" placeholder="O introduce URL directa..." type="text" />
                     </div>
                 </div>
                 <!-- Agregados Recientemente (List) -->
@@ -452,10 +442,10 @@
 
     <script src="/js/auth.js"></script>
     <script>
-
-        Auth.verificarPaginaPrivada(['admin', 'bibliotecario', 'becario']);
+        Auth.verificarPaginaPrivada(['bibliotecario', 'becario', 'alumno']);
     </script>
     <script src="/js/ui.js"></script>
+    <script src="/js/inventario.js"></script>
 </body>
 
 </html>
