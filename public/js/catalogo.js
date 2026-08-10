@@ -1,4 +1,4 @@
-// 1. Manejo del menú de perfil desplegable
+// 1. Manejo del menú de perfil desplegable    TERMINADO
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('menu-perfil');
     const btn = document.getElementById('btn-perfil');
@@ -7,12 +7,11 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// 2. Control de Modal de Préstamo
+// 2. Control de Modal de Préstamo   PENDIENTE A MEDIAS
 function abrirModalPrestamo(idLibro, titulo) {
     document.getElementById('prestamo-id-libro').value = idLibro;
     document.getElementById('prestamo-titulo-libro').value = titulo;
 
-    // Fecha predeterminada de devolución (+7 días)
     const fechaPredeterminada = new Date();
     fechaPredeterminada.setDate(fechaPredeterminada.getDate() + 7);
     document.getElementById('prestamo-fecha-fin').value = fechaPredeterminada.toISOString().split('T')[0];
@@ -25,54 +24,7 @@ function cerrarModalPrestamo() {
     document.getElementById('form-solicitar-prestamo').reset();
 }
 
-// 3. Procesar Solicitud de Préstamo (Módulo Alumno)
-const formPrestamo = document.getElementById('form-solicitar-prestamo');
-if (formPrestamo) {
-    formPrestamo.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const idLibro = document.getElementById('prestamo-id-libro').value;
-        const fechaFin = document.getElementById('prestamo-fecha-fin').value;
-
-        try {
-            if (typeof Auth !== 'undefined' && Auth.peticionSegura) {
-                await Auth.peticionSegura('/api/prestamos/solicitar', {
-                    method: 'POST',
-                    body: JSON.stringify({ id_libro: idLibro, fecha_fin_pre: fechaFin })
-                });
-            } else {
-                const token = localStorage.getItem('token');
-                const res = await fetch('/api/prestamos/solicitar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ id_libro: idLibro, fecha_fin_pre: fechaFin })
-                });
-                
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Error al procesar la solicitud');
-            }
-
-            cerrarModalPrestamo();
-
-            if (typeof UI !== 'undefined' && UI.toast) {
-                UI.toast('Solicitud de préstamo enviada con éxito', 'exito');
-            } else {
-                alert('Solicitud de préstamo enviada con éxito');
-            }
-
-            // Recargar catálogo para actualizar la disponibilidad en pantalla
-            obtenerLibros();
-        } catch (error) {
-            console.error('Error al solicitar préstamo:', error);
-            alert(error.message || 'Ocurrió un error al procesar tu solicitud');
-        }
-    });
-}
-
-// 4. Renderizar Tarjetas de Libros en el Grid
+// Renderizar Libros en la Cuadrícula       TERMINADO
 function renderizarLibros(libros) {
     const contenedor = document.querySelector('.grid');
     if (!contenedor) return;
@@ -80,20 +32,20 @@ function renderizarLibros(libros) {
     if (!libros || libros.length === 0) {
         contenedor.innerHTML = `
             <p class="col-span-full text-center text-on-surface-variant py-8 font-body-md">
-                No se encontraron libros en esta sección.
+                No se encontraron libros disponibles en el catálogo.
             </p>`;
         return;
     }
 
     contenedor.innerHTML = libros.map(libro => {
-        // Validación de disponibilidad física
+        // Un libro está disponible si tiene al menos un ejemplar no desactivado
         const tieneEjemplares = libro.ejemplares && libro.ejemplares.length > 0;
         const disponible = tieneEjemplares && libro.ejemplares.some(e => e.estado_fis !== 'Desactivado');
 
         // Nombre de la categoría
         const categoriaNombre = libro.categoria?.nombre_cat || libro.editorial_li || 'General';
 
-        // Procesar nombre de los autores desde la relación
+        // Nombres de autores
         let nombreAutor = 'Autor Desconocido';
         if (libro.autores && libro.autores.length > 0) {
             nombreAutor = libro.autores
@@ -104,6 +56,7 @@ function renderizarLibros(libros) {
             nombreAutor = libro.autor_li;
         }
 
+        // Imagen de portada
         const imagenUrl = libro.url_imagen_li || 'https://lh3.googleusercontent.com/aida-public/AB6AXuApuZ5gMbBT0mc6xeqMhEn-YBRYn1eu6KBc0Mivp-M2s7bGiB1Q5jwnWt58uwxd7CnOS_VYWG4l-EB4-y3lLz0IY3H9RdpV56ZFQ444esj80AiWnWX0TpEWKWyVT0TNpHYXVAC4JLYfYsV6FJ5uYcYpAiKmMgqYP9KaXpFtcGpWWNKoRuLZ3oJD_O6e-FK2H7EQ0DMuHT8vYoR4ukokkRFBCYMKq00ztPxDva0fWEeETS1hIEMbyFcGsw';
 
         return `
@@ -142,67 +95,55 @@ function renderizarLibros(libros) {
     }).join('');
 }
 
-// 5. Consultar Backend
-// Consultar Backend enviando el Token JWT acumulado en sesión
+
+// Función para consultar el Backend        TERMINADO
 async function obtenerLibros(query = '') {
     try {
         let libros = [];
+        const token = localStorage.getItem('token');
         
-        // OPCIÓN A: Si utilizas el helper Auth del proyecto
-        if (typeof Auth !== 'undefined' && Auth.peticionSegura) {
-            libros = await Auth.peticionSegura(`/api/libros/buscar-alumnos?query=${encodeURIComponent(query)}`);
-        } 
-        // OPCIÓN B: Fetch estándar adjuntando el Token
-        else {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`/api/libros/buscar-alumnos?query=${encodeURIComponent(query)}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!res.ok) throw new Error('Error al consultar el catálogo');
-            libros = await res.json();
+        // Cabeceras configuradas por si la ruta requiere Token JWT
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
         }
 
+        const res = await fetch(`/api/libros/buscar-alumnos?query=${encodeURIComponent(query)}`, { headers });
+
+        if (!res.ok) {
+            throw new Error(`Error ${res.status}: No se pudo obtener el catálogo`);
+        }
+
+        libros = await res.json();
         renderizarLibros(libros);
     } catch (error) {
         console.error("Error al obtener libros:", error);
     }
 }
 
-// 6. Asignar Eventos al Cargar el DOM
+// 5. Carga inicial
 document.addEventListener('DOMContentLoaded', () => {
-    // Carga inicial
     obtenerLibros();
+});
 
-    // Evento del Buscador
+
+// ==========================================
+// PASO 2: BUSCADOR EN TIEMPO REAL
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
     const inputBuscador = document.getElementById('input-buscador');
     let timerBusqueda;
 
     if (inputBuscador) {
         inputBuscador.addEventListener('input', (e) => {
             clearTimeout(timerBusqueda);
+            const termino = e.target.value.trim();
+
+            // Espera 300ms después de que el usuario deja de escribir para consultar la BD
             timerBusqueda = setTimeout(() => {
-                obtenerLibros(e.target.value.trim());
+                obtenerLibros(termino);
             }, 300);
         });
     }
-
-    // Evento para los Botones de Categorías
-    const botonesCategoria = document.querySelectorAll('.btn-categoria');
-    botonesCategoria.forEach(boton => {
-        boton.addEventListener('click', () => {
-            // Cambiar estilos visuales del botón seleccionado
-            botonesCategoria.forEach(b => {
-                b.className = "btn-categoria px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors";
-            });
-            boton.className = "btn-categoria px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors shadow-sm";
-
-            // Limpiar buscador e invocar consulta por categoría
-            if (inputBuscador) inputBuscador.value = '';
-            const categoria = boton.getAttribute('data-categoria');
-            obtenerLibros(categoria);
-        });
-    });
 });
+

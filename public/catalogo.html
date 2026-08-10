@@ -228,57 +228,13 @@
                         class="w-full pl-10 pr-4 py-2 rounded-full border border-outline/50 bg-surface text-on-surface placeholder:text-on-surface-variant/70 font-body-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
                 </div>
 
-                <!-- Filtros abajo del buscador -->
-                <!-- Filtros por Categoría -->
-                <div class="flex flex-wrap gap-2" id="contenedor-categorias">
-                    <button data-categoria=""
-                        class="btn-categoria px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors shadow-sm">
-                        Todos
-                    </button>
-                    <button data-categoria="Ficción"
-                        class="btn-categoria px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
-                        Ficción
-                    </button>
-                    <button data-categoria="Historia"
-                        class="btn-categoria px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
-                        Historia
-                    </button>
-                    <button data-categoria="Ciencias"
-                        class="btn-categoria px-4 py-2 rounded-full border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-colors">
-                        Ciencias
-                    </button>
-                </div>
+                
             </div>
 
         </div>
         <!-- Book Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
-            <!-- Card 1 -->
-            <article
-                class="flex flex-col group relative bg-surface border border-outline-variant/30 rounded-lg p-3 hover:shadow-md transition-shadow duration-300">
-                <div class="relative w-full rounded overflow-hidden mb-3">
-                    <div class="book-cover-ratio"></div>
-                    <img class="absolute inset-0 w-full h-full object-cover"
-                        data-alt="A meticulously detailed vintage book cover design for 'El Arte de la Guerra'. The cover is bound in deep crimson leather with elegant gold foil stamping forming intricate academic geometric patterns. The spine features classic raised bands. Set against a soft, clean white modern library desk background, illuminated by bright, diffused high-key light that highlights the rich textures of the leather and the shine of the gold foil, embodying an academic modernism aesthetic."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuApuZ5gMbBT0mc6xeqMhEn-YBRYn1eu6KBc0Mivp-M2s7bGiB1Q5jwnWt58uwxd7CnOS_VYWG4l-EB4-y3lLz0IY3H9RdpV56ZFQ444esj80AiWnWX0TpEWKWyVT0TNpHYXVAC4JLYfYsV6FJ5uYcYpAiKmMgqYP9KaXpFtcGpWWNKoRuLZ3oJD_O6e-FK2H7EQ0DMuHT8vYoR4ukokkRFBCYMKq00ztPxDva0fWEeETS1hIEMbyFcGsw" />
-                    <!-- Availability Indicator -->
-                    <div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-green-500 border-2 border-surface shadow-sm"
-                        title="Disponible"></div>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <span
-                        class="text-[12px] font-label-md text-primary font-medium tracking-wide uppercase mb-1">Historia</span>
-                    <h3 class="font-headline-md text-[16px] leading-[22px] text-on-background mb-1 line-clamp-2">El Arte
-                        de la Guerra</h3>
-                    <p class="font-body-md text-[14px] text-on-surface-variant mb-4">Sun Tzu</p>
-                    <!-- Cámbialo en todos tus artículos por algo como esto: -->
-                    <button onclick="abrirModalPrestamo(1, 'El Arte de la Guerra')"
-                        class="mt-auto w-full py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded hover:shadow-[0_2px_8px_rgba(159,99,50,0.3)] transition-all">
-                        Solicitar Préstamo
-                    </button>
-                </div>
-            </article>
-
+            <!-- Aquí JS renderiza los libros -->
         </div>
     </main>
 
