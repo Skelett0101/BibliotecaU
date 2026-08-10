@@ -2,23 +2,24 @@
 import { Request, Response } from 'express';
 import prisma from '../config/db';
 
+//- ----------------------------------------------------------------------------
 export const registrarLibro = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { 
-            id_categoria, nombre_li, editorial_li, ISBN_li, 
-            ano_li, serie_li, idioma_li, url_imagen_li, 
+        const {
+            id_categoria, nombre_li, editorial_li, ISBN_li,
+            ano_li, serie_li, idioma_li, url_imagen_li,
             ejemplares, estado_fis, estante_libro_fis,
-            autores 
+            autores
         } = req.body;
 
         if (ISBN_li) {
             const existeLibro = await prisma.libro.findFirst({
                 where: { ISBN_li: ISBN_li }
             });
-            
+
             if (existeLibro) {
                 res.status(400).json({ error: `No se puede registrar. Ya existe un libro con el ISBN: ${ISBN_li}` });
-                return; 
+                return;
             }
         }
 
@@ -26,7 +27,7 @@ export const registrarLibro = async (req: Request, res: Response): Promise<void>
         console.log("--- INICIANDO REGISTRO DE LIBRO ---");
         const nuevoLibro = await prisma.libro.create({
             data: {
-                id_categoria: parseInt(id_categoria), 
+                id_categoria: parseInt(id_categoria),
                 nombre_li, editorial_li, ISBN_li,
                 ano_li: ano_li ? parseInt(ano_li) : null,
                 serie_li, idioma_li, url_imagen_li,
@@ -47,12 +48,12 @@ export const registrarLibro = async (req: Request, res: Response): Promise<void>
         // 2. Lógica para Autores
         if (autores && autores.length > 0) {
             console.log(`📚 Procesando ${autores.length} autor(es)...`);
-            
+
             for (const autor of autores) {
                 let autorExistente = await prisma.autor_libro.findFirst({
-                    where: { 
-                        nombre_au: autor.nombre_au, 
-                        apellido_au: autor.apellido_au 
+                    where: {
+                        nombre_au: autor.nombre_au,
+                        apellido_au: autor.apellido_au
                     }
                 });
 
@@ -85,29 +86,41 @@ export const registrarLibro = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ error: "Error al guardar el libro en la base de datos" });
     }
 };
-
+// -------------------------------------------------------------------------------
 export const eliminarLibro = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id } = req.params; 
-        
+        const { id } = req.params;
+
         await prisma.libro.delete({
             where: { id_libro: parseInt(id as string) }
         });
-        
+
         res.status(200).json({ mensaje: "🗑️ Libro eliminado correctamente del inventario" });
     } catch (error) {
         console.error("Error al eliminar libro:", error);
         res.status(500).json({ error: "Error al intentar eliminar el libro" });
     }
 };
-
-export const buscarLibros = async (req: Request, res: Response): Promise<void> => {
+// -----------------------------------------------------------------------------
+//Buscar libros Alumnos
+export const buscarLibrosAlumnos = async (req: Request, res: Response): Promise<void> => {
     try {
         const { query } = req.query;
 
+        // Incluimos autores, categorías y ejemplares en todas las consultas
+        const relacionesInclude = {
+            categoria: true,
+            ejemplares: true,
+            autores: {
+                include: {
+                    autor: true // Trae nombre_au y apellido_au desde autor_libro
+                }
+            }
+        };
+
         if (!query || typeof query !== 'string') {
-            const todos = await prisma.libro.findMany({ 
-                include: { categoria: true, ejemplares: true } 
+            const todos = await prisma.libro.findMany({
+                include: relacionesInclude
             });
             res.status(200).json(todos);
             return;
@@ -120,7 +133,60 @@ export const buscarLibros = async (req: Request, res: Response): Promise<void> =
             { nombre_li: { contains: termino } },
             { editorial_li: { contains: termino } },
             { ISBN_li: { contains: termino } },
-            { categoria: { nombre_cat: { contains: termino } } } 
+            { categoria: { nombre_cat: { contains: termino } } },
+            // Permite buscar también por el nombre del autor
+            {
+                autores: {
+                    some: {
+                        autor: {
+                            OR: [
+                                { nombre_au: { contains: termino } },
+                                { apellido_au: { contains: termino } }
+                            ]
+                        }
+                    }
+                }
+            }
+        ];
+
+        if (!isNaN(categoriaId)) {
+            condiciones.push({ id_categoria: categoriaId });
+        }
+
+        const libros = await prisma.libro.findMany({
+            where: { OR: condiciones },
+            include: relacionesInclude
+        });
+
+        res.status(200).json(libros);
+    } catch (error) {
+        console.error('Error en buscarLibros:', error);
+        res.status(500).json({ error: 'Error al buscar libros' });
+    }
+};
+
+//--------------------------------------------------------------
+// Buscar libros administrador
+export const buscarLibros = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { query } = req.query;
+
+        if (!query || typeof query !== 'string') {
+            const todos = await prisma.libro.findMany({
+                include: { categoria: true, ejemplares: true }
+            });
+            res.status(200).json(todos);
+            return;
+        }
+
+        const termino = query.trim();
+        const categoriaId = parseInt(termino, 10);
+
+        const condiciones: any[] = [
+            { nombre_li: { contains: termino } },
+            { editorial_li: { contains: termino } },
+            { ISBN_li: { contains: termino } },
+            { categoria: { nombre_cat: { contains: termino } } }
         ];
 
         if (!isNaN(categoriaId)) {
@@ -141,6 +207,9 @@ export const buscarLibros = async (req: Request, res: Response): Promise<void> =
         res.status(500).json({ error: 'Error al buscar libros' });
     }
 };
+// ------------------------------------------------------
+
+// ----------------------------------------------------------------------------------
 
 export const cambiarEstadoEjemplar = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -152,9 +221,9 @@ export const cambiarEstadoEjemplar = async (req: Request, res: Response): Promis
             data: { estado_fis: nuevo_estado || "Desactivado" }
         });
 
-        res.status(200).json({ 
-            mensaje: `🔄 ¡Éxito! El estado del ejemplar cambió a '${ejemplarActualizado.estado_fis}'`, 
-            ejemplar: ejemplarActualizado 
+        res.status(200).json({
+            mensaje: `🔄 ¡Éxito! El estado del ejemplar cambió a '${ejemplarActualizado.estado_fis}'`,
+            ejemplar: ejemplarActualizado
         });
     } catch (error) {
         console.error("Error al cambiar estado:", error);
@@ -162,10 +231,17 @@ export const cambiarEstadoEjemplar = async (req: Request, res: Response): Promis
     }
 };
 
+
+
+////----------------------------------------------------------
 export const editarLibro = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({ mensaje: "Operación en mantenimiento" });
 };
 
+
+
+
+//-------------------------------------------------------------
 export const actualizarEstadoFisico = async (req: Request, res: Response): Promise<void> => {
     const { ISBN_li, estado_fis, estante_libro_fis } = req.body;
 
@@ -195,7 +271,7 @@ export const actualizarEstadoFisico = async (req: Request, res: Response): Promi
         if (ejemplaresExistentes.length > 0) {
             await prisma.ejemplares_fisicos.updateMany({
                 where: { id_libro: libroEncontrado.id_libro },
-                data: { 
+                data: {
                     estado_fis: estado_fis || "Excelente",
                     estante_libro_fis: estanteFinal
                 }
@@ -210,7 +286,7 @@ export const actualizarEstadoFisico = async (req: Request, res: Response): Promi
             });
         }
 
-        res.status(200).json({ 
+        res.status(200).json({
             mensaje: `✅ ¡Éxito! El estado físico y la ubicación del libro "${libroEncontrado.nombre_li}" se actualizaron.`,
             id_libro_afectado: libroEncontrado.id_libro
         });

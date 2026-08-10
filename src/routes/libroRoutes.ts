@@ -1,12 +1,14 @@
 // Archivo: src/routes/libroRoutes.ts
 import { Router } from 'express';
-import { registrarLibro, cambiarEstadoEjemplar, editarLibro, actualizarEstadoFisico, buscarLibros } from '../controllers/libroController';
+import { registrarLibro, cambiarEstadoEjemplar, editarLibro, actualizarEstadoFisico, buscarLibros, buscarLibrosAlumnos } from '../controllers/libroController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
 
 const router = Router();
 
 router.get('/', verificarToken, buscarLibros);
 router.get('/buscar', verificarToken, buscarLibros);
+
+router.get('/:id', verificarToken, buscarLibrosAlumnos); // Buscar libro por ID
 
 // Crear libro (Admin y Bibliotecario)
 router.post('/', verificarToken, verificarRol(['admin']), registrarLibro);

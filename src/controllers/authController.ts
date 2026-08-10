@@ -36,6 +36,7 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
 
         res.status(201).json({ message: "Usuario registrado con éxito", id: nuevoUsuario.id_usuario });
     } catch (error) {
+        console.error(">>> ERROR EXACTO EN REGISTRO:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
