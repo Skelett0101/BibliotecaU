@@ -82,6 +82,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             usuario: { nombre: usuario.nombre_usu, rol: usuario.rol_usu } 
         });
     } catch (error) {
+        console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
