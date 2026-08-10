@@ -1,13 +1,34 @@
 import { Router } from 'express';
-// Importamos la función que acabas de crear
-import { obtenerPrestamos } from '../controllers/prestamoController';
-// Importamos los cadeneros de seguridad (asegúrate de que la ruta sea correcta según tu proyecto)
+// Importamos todas las funciones del controlador de préstamos
+import { 
+    obtenerPrestamos, 
+    visualizarMisPrestamos, 
+    solicitarPrestamo, 
+    renovarMiPrestamo 
+} from '../controllers/prestamoController';
+// Importamos los middlewares de seguridad
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Ruta: GET /api/prestamos
-// Protegida: Solo pueden entrar usuarios con token válido que sean 'admin' o 'empleado'
+/**
+ * RUTAS ADMINISTRATIVAS / EMPLEADO
+ * Acceso restringido a roles específicos.
+ */
+// GET /api/prestamos/ - Obtiene la lista total de préstamos del sistema
 router.get('/', verificarToken, verificarRol(['admin', 'empleado']), obtenerPrestamos);
+
+/**
+ * RUTAS DE USUARIO (AUTOSERVICIO)
+ * Acceso permitido a cualquier usuario autenticado (alumno, maestro, etc.)
+ */
+// GET /api/prestamos/mis-prestamos - El usuario consulta su historial
+router.get('/mis-prestamos', verificarToken, visualizarMisPrestamos);
+
+// POST /api/prestamos/solicitar - El usuario solicita un nuevo préstamo
+router.post('/solicitar', verificarToken, solicitarPrestamo);
+
+// PUT /api/prestamos/renovar/:id_prestamo - El usuario extiende la fecha de su préstamo
+router.put('/renovar/:id_prestamo', verificarToken, renovarMiPrestamo);
 
 export default router;
