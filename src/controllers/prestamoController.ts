@@ -39,34 +39,6 @@ export const visualizarMisPrestamos = async (req: CustomRequest, res: Response):
     }
 };
 
-export const solicitarPrestamo = async (req: CustomRequest, res: Response): Promise<void> => {
-    try {
-        const id_usuario = req.usuario?.id || req.usuario?.id_usuario;
-        const { id_ejemplar } = req.body;
-
-        const fecha_inicio = new Date();
-        const fecha_fin = new Date();
-        fecha_fin.setDate(fecha_inicio.getDate() + 5);
-
-        const folio = `PRE-${Date.now()}`;
-
-        const nuevaSolicitud = await prisma.prestamo.create({
-            data: {
-                id_usuario: Number(id_usuario),
-                fecha_inicio_pre: fecha_inicio,
-                fecha_fin_pre: fecha_fin,
-                no_folio_pre: folio,
-                estado_pre: 'PENDIENTE',
-                detalles: { create: { id_ejemplar: Number(id_ejemplar) } }
-            }
-        });
-
-        res.status(201).json({ mensaje: 'Préstamo solicitado', prestamo: nuevaSolicitud });
-    } catch (error) {
-        res.status(500).json({ error: 'Error al solicitar el préstamo' });
-    }
-};
-
 export const renovarMiPrestamo = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
         const id_usuario = req.usuario?.id || req.usuario?.id_usuario;
@@ -92,5 +64,101 @@ export const renovarMiPrestamo = async (req: CustomRequest, res: Response): Prom
         res.status(200).json({ mensaje: 'Préstamo renovado exitosamente', prestamo: prestamoRenovado });
     } catch (error) {
         res.status(500).json({ error: 'Error al renovar el préstamo' });
+    }
+};
+
+export const autorizarPrestamo = async (req: CustomRequest, res: Response): Promise<void> => {
+    try {
+        const { id_usuario, id_ejemplar, fecha_inicio, fecha_fin, id_prestamo } = req.body;
+
+        if (id_prestamo) {
+            // Si viene de un apartado pendiente aprobado por el bibliotecario
+            const prestamoActualizado = await prisma.prestamo.update({
+                where: { id_prestamo: Number(id_prestamo) },
+                data: {
+                    estado_pre: 'ACTIVO',
+                    fecha_inicio_pre: fecha_inicio ? new Date(fecha_inicio) : new Date(),
+                    fecha_fin_pre: fecha_fin ? new Date(fecha_fin) : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+                },
+                include: { usuario: true, detalles: { include: { ejemplar: { include: { libro: true } } } } }
+            });
+            res.status(200).json({ mensaje: 'Préstamo activado con éxito', prestamo: prestamoActualizado });
+            return;
+        }
+
+        if (!id_usuario || !id_ejemplar || !fecha_inicio || !fecha_fin) {
+            res.status(400).json({ error: 'Faltan datos obligatorios para autorizar el préstamo.' });
+            return;
+        }
+
+        // 1. Buscar al usuario por su Matrícula (matricula_usu) o por su ID numérico
+        const usuarioEncontrado = await prisma.usuario.findFirst({
+            where: {
+                OR: [
+                    { matricula_usu: String(id_usuario) },
+                    { id_usuario: !isNaN(Number(id_usuario)) ? Number(id_usuario) : undefined }
+                ]
+            }
+        });
+
+        if (!usuarioEncontrado) {
+            res.status(404).json({ error: `No se encontró un usuario con la matrícula o ID: ${id_usuario}` });
+            return;
+        }
+
+        // 2. Determinar el ejemplar físico usando el ID del ejemplar o el ISBN del libro
+        let idEjemplarFinal: number | undefined = undefined;
+        const inputEjemplarStr = String(id_ejemplar).trim();
+
+        // Intentar buscar directamente como ID de ejemplar físico
+        if (!isNaN(Number(inputEjemplarStr))) {
+            const ejemplarPorId = await prisma.ejemplares_fisicos.findUnique({
+                where: { id_ejemplar: Number(inputEjemplarStr) }
+            });
+            if (ejemplarPorId) {
+                idEjemplarFinal = ejemplarPorId.id_ejemplar;
+            }
+        }
+
+        // Si no se encontró por ID de ejemplar, buscar por el ISBN del libro (ISBN_li)
+        if (!idEjemplarFinal) {
+            const libroPorIsbn = await prisma.libro.findFirst({
+                where: { ISBN_li: inputEjemplarStr },
+                include: { ejemplares: true }
+            });
+
+            // Tomar el primer ejemplar físico disponible asociado a ese libro
+            if (libroPorIsbn && libroPorIsbn.ejemplares.length > 0) {
+                idEjemplarFinal = libroPorIsbn.ejemplares[0].id_ejemplar;
+            }
+        }
+
+        if (!idEjemplarFinal) {
+            res.status(404).json({ error: `No se encontró un ejemplar válido o disponible para: ${id_ejemplar}` });
+            return;
+        }
+
+        const folio = `PRE-${Date.now()}`;
+
+        // 3. Crear el registro del préstamo con sus detalles
+        const nuevoPrestamo = await prisma.prestamo.create({
+            data: {
+                id_usuario: usuarioEncontrado.id_usuario,
+                fecha_inicio_pre: new Date(fecha_inicio),
+                fecha_fin_pre: new Date(fecha_fin),
+                no_folio_pre: folio,
+                estado_pre: 'ACTIVO',
+                detalles: { create: { id_ejemplar: idEjemplarFinal } }
+            },
+            include: { 
+                usuario: true, 
+                detalles: { include: { ejemplar: { include: { libro: true } } } } 
+            }
+        });
+
+        res.status(201).json({ mensaje: 'Préstamo autorizado exitosamente', prestamo: nuevoPrestamo });
+    } catch (error: any) {
+        console.error("Error al autorizar préstamo:", error);
+        res.status(500).json({ error: error.message || 'Error al procesar la autorización del préstamo.' });
     }
 };
