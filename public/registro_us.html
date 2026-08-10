@@ -212,7 +212,8 @@
     </nav>
     <!-- Main Content Area -->
     <!-- Main Content Area -->
-    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto  bg-[#F9F8F6] min-h-screen">
+    <main
+        class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto  bg-[#F9F8F6] min-h-screen">
         <!-- Top Mobile Header (visible only on mobile) -->
         <header class="md:hidden flex items-center justify-between mb-8 bg-surface p-4 rounded-xl shadow-sm">
             <div class="flex items-center gap-2">
@@ -288,7 +289,7 @@
                         <!-- Submit -->
                         <div class="pt-4">
                             <button
-                                 class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2"
+                                class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2"
                                 type="submit">
                                 <span class="material-symbols-outlined text-sm">how_to_reg</span>
                                 Registrar Usuario
@@ -365,6 +366,94 @@
             </section>
         </div>
     </main>
+
+    <!-- Edit User Modal -->
+    <div class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" id="edit-user-modal">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm"></div>
+        <!-- Modal Content -->
+        <div
+            class="relative w-full max-w-lg glass-card rounded-xl overflow-hidden shadow-xl animate-in fade-in zoom-in duration-200">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-outline-variant/30 flex items-center justify-between bg-surface">
+                <h3 class="font-headline-md text-headline-md text-lg m-0 text-on-surface">Editar Detalles de Usuario
+                </h3>
+                <button class="text-on-surface-variant hover:text-primary transition-colors"
+                    onclick="document.getElementById('edit-user-modal').classList.add('hidden')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Form Body -->
+            <form class="p-6 space-y-4 bg-surface" onsubmit="event.preventDefault();">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- ID/Matrícula -->
+                    <div class="md:col-span-2">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                            for="edit-matricula">Matrícula / ID</label>
+                        <input
+                            class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm"
+                            id="edit-matricula" type="text" value="A01736294" />
+                    </div>
+                    <!-- Name -->
+                    <div class="md:col-span-2">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                            for="edit-nombre">Nombre Completo</label>
+                        <input
+                            class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm"
+                            id="edit-nombre" type="text" value="Elena Castillo" />
+                    </div>
+                    <!-- Role -->
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                            for="edit-rol">Rol</label>
+                        <div class="relative">
+                            <select
+                                class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm appearance-none pr-10"
+                                id="edit-rol">
+                                    <option disabled selected value="">Seleccione un rol...</option>
+                                    <option value="alumno">Estudiante</option>
+                                    <option value="maestro">Profesor / Académico</option>
+                                    <option value="bibliotecario">Bibliotecario</option>
+                                    <option value="becario">Becario</option>
+                                    <option value="admin">Administrador</option>
+                            </select>
+                            <span
+                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">expand_more</span>
+                        </div>
+                    </div>
+                    <!-- Status -->
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-1"
+                            for="edit-estado">Estado</label>
+                        <div class="relative">
+                            <select
+                                class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm appearance-none pr-10"
+                                id="edit-estado">
+                                <option selected="" value="Activo">Activo</option>
+                                <option value="Suspendido">Suspendido</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Desactivado">Desactivado</option>
+                            </select>
+                            <span
+                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer Actions -->
+                <div class="pt-6 flex items-center justify-end gap-3 border-t border-outline-variant/30 mt-6">
+                    <button
+                        class="px-4 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors font-label-md text-label-md"
+                        onclick="document.getElementById('edit-user-modal').classList.add('hidden')" type="button">
+                        Cancelar
+                    </button>
+                    <button class="px-6 py-2 rounded-lg btn-primary font-label-md text-label-md shadow-sm"
+                        type="submit">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="/js/auth.js"></script>
     <script>

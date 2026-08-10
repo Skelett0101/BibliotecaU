@@ -113,17 +113,29 @@ const Auth = {
 
 
 
-//  PROTECCIÓN CONTINUA CONTRA NAVEGACIÓN POR FLECHAS
-window.addEventListener('pageshow', function () {
-    const esPaginaLogin = window.location.pathname.endsWith('login.html') || window.location.pathname === '/';
 
+//  proteccion de cache memoria 
+window.addEventListener('pageshow', function (event) {
+    const ruta = window.location.pathname;
+
+    const esPaginaLogin = 
+        ruta.endsWith('/login.html') || 
+        ruta === '/' || 
+        ruta === '';
+
+    // si es html login 
     if (esPaginaLogin) {
-        
+        // destruccion de sesion si es de memoria
+        if (event.persisted) {
+            console.warn('Login recuperado desde BFCache. Eliminando sesión...');
+            sessionStorage.clear();
+        }
+
+        // verificar pagina publica
         Auth.verificarPaginaPublica();
-       
-    } else {
-        
-        Auth.verificarPaginaPrivada();
-     
+        return;
     }
+
+    // html privado
+    Auth.verificarPaginaPrivada();
 });

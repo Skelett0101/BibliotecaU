@@ -19,6 +19,16 @@ app.use(express.json());
 // por eso subimos un nivel con "../public"
 app.use(express.static(path.join(__dirname, '../public')));
 
+
+// proteccion de cache 
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+});
+
+
 // 2. Rutas de la API REST (Backend)
 // Todas las rutas del backend deben empezar con /api para no chocar con el frontend
 app.use('/api', testRoutes);

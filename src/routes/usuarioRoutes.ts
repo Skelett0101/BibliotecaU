@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { obtenerUsuarios, registrarUsuario } from '../controllers/usuarioController';
+import { obtenerUsuarios, registrarUsuario, actualizarUsuario } from '../controllers/usuarioController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
 
 const router = Router();
@@ -9,5 +9,8 @@ router.get('/', verificarToken, verificarRol(['admin', 'bibliotecario']), obtene
 
 // POST /api/usuarios -> Crear nuevo usuario
 router.post('/', verificarToken, verificarRol(['admin', 'bibliotecario']), registrarUsuario);
+
+// PUT /api/usuarios/:id -> Actualizar usuario (pendiente de implementación)
+router.put('/:id', verificarToken, verificarRol(['admin', 'bibliotecario']), actualizarUsuario);
 
 export default router;
