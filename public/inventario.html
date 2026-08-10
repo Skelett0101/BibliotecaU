@@ -15,9 +15,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Montserrat:wght@600;700&amp;display=swap"
         rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -108,26 +105,20 @@
         }
     </script>
     <style>
-        /* Custom styles that aren't pure utility classes */
         .glass-panel {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-
-        /* Form inputs focus effect */
         .input-glow:focus {
             border-color: #824b1c;
             box-shadow: 0 0 0 3px rgba(130, 75, 28, 0.2);
             outline: none;
         }
-
-        /* Tonal elevation hover effect */
         .hover-lift {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
         .hover-lift:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(130, 75, 28, 0.1), 0 4px 6px -4px rgba(130, 75, 28, 0.05);
@@ -137,54 +128,45 @@
 
 <body class="bg-background text-on-background font-body-md antialiased min-h-screen flex overflow-hidden">
     <!-- SideNavBar -->
-    <nav
-        class="bg-surface dark:bg-inverse-surface shadow-sm h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-gutter px-4 z-50">
+    <nav class="bg-surface dark:bg-inverse-surface shadow-sm h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-gutter px-4 z-50">
         <!-- Header -->
         <div class="flex items-center gap-3 mb-8 px-2">
-            <div
-                class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+            <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_library</span>
             </div>
             <div>
-                <h1
-                    class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">
-                    Bibliotech</h1>
+                <h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Bibliotech</h1>
                 <p class="font-label-md text-label-md text-secondary">Modernismo Académico</p>
             </div>
         </div>
         <!-- Navigation Links -->
         <ul class="flex-1 space-y-1">
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="panel.html">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors" href="panel.html">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-md text-body-md">Panel Control</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 ease-in-out"
-                    href="inventario.html">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low transition-colors" href="inventario.html">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="font-body-md text-body-md">Libros</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="registro_us.html">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors" href="registro_us.html">
                     <span class="material-symbols-outlined">group</span>
                     <span class="font-body-md text-body-md">Usuarios</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="prestamo.html">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors" href="prestamo.html">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
                     <span class="font-body-md text-body-md">Préstamos</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                    href="recargos.html">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors" href="recargos.html">
                     <span class="material-symbols-outlined">payments</span>
                     <span class="font-body-md text-body-md">Recargos</span>
                 </a>
@@ -194,15 +176,13 @@
         <div class="mt-auto border-t border-outline-variant pt-4">
             <ul class="space-y-1">
                 <li>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out"
-                        href="#">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors" href="#">
                         <span class="material-symbols-outlined">settings</span>
                         <span class="font-body-md text-body-md">Ajustes</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 ease-in-out cursor-pointer"
-                        onclick="Auth.logout()">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors cursor-pointer" onclick="Auth.logout()">
                         <span class="material-symbols-outlined">logout</span>
                         <span class="font-body-md text-body-md">Cerrar Sesión</span>
                     </a>
@@ -210,56 +190,42 @@
             </ul>
         </div>
     </nav>
+
     <!-- Main Content Area -->
-    <main
-        class="flex-1 ml-0 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto bg-[#F9F8F6] min-h-screen">
-        <!-- Top App Bar Mobile (Fallback) -->
-        <header
-            class="md:hidden flex justify-between items-center bg-surface/80 backdrop-blur-md px-4 py-4 sticky top-0 z-40 shadow-sm mb-6">
+    <main class="flex-1 ml-0 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto bg-[#F9F8F6] min-h-screen">
+        <!-- Header Mobile -->
+        <header class="md:hidden flex justify-between items-center bg-surface/80 backdrop-blur-md px-4 py-4 sticky top-0 z-40 shadow-sm mb-6">
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary">local_library</span>
                 <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Bibliotech</h1>
             </div>
-            <button class="text-on-surface-variant p-2">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
+            <button class="text-on-surface-variant p-2"><span class="material-symbols-outlined">menu</span></button>
         </header>
+
         <!-- Page Header -->
         <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mb-1">Añadir Nuevo Libro</h2>
-                <p class="font-body-md text-body-md text-on-surface-variant">Gestión de inventario y catalogación
-                    física.</p>
+                <h2 id="titulo-pagina" class="font-headline-lg text-headline-lg font-bold text-on-surface mb-1">Añadir Nuevo Libro</h2>
             </div>
-            <div class="flex gap-3">
-                <button
-                    class="btn-secondary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors">Cancelar</button>
+            <div class="flex gap-3 shrink-0">
                 <button id="btn-guardar" class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">save</span>
-                    Guardar Registro
+                    <span id="texto-btn-guardar">Guardar Registro</span>
                 </button>
             </div>
         </div>
+
         <!-- Bento Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <!-- Left Column: Form (8 cols) -->
             <div class="lg:col-span-8 flex flex-col gap-6">
                 <!-- Card: Información Principal -->
                 <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5">
-                    <h3
-                        class="font-headline-md text-headline-md font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3 flex items-center gap-2">
+                    <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3 flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">info</span>
                         Información Principal
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                        <!-- ID Libro (Auto-generated/Readonly visual) -->
-                        <div class="md:col-span-1">
-                            <label class="form-label">ID Libro</label>
-                            <input
-                                class="w-full form-input bg-surface-container-high text-on-surface-variant cursor-not-allowed"
-                                readonly="" type="text" value="LIB-2024-0892" />
-                        </div>
-                        <!-- ID Categoria -->
                         <div class="md:col-span-1">
                             <label class="form-label">Categoría (ID)</label>
                             <select id="id_categoria" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
@@ -268,27 +234,40 @@
                                 <option value="3">CAT-03 (Ciencias Exactas)</option>
                             </select>
                         </div>
-                        <!-- Nombre -->
-                        <div class="md:col-span-2">
-                            <label class="form-label">Título del Libro (nombre_li)</label>
-                            <input id="nombre_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. El ingenioso hidalgo Don Quijote..." type="text" />
-                        </div>
-                        <!-- Editorial -->
-                        <div class="md:col-span-1">
-                            <label class="form-label">Editorial (editorial_li)</label>
-                            <input id="editorial_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. Editorial Alfaguara" type="text" />
-                        </div>
-                        <!-- ISBN -->
                         <div class="md:col-span-1">
                             <label class="form-label">ISBN (ISBN_li)</label>
                             <input id="ISBN_li" class="w-full form-input placeholder:text-outline font-mono text-sm" placeholder="978-3-16-148410-0" type="text" />
                         </div>
+                        <div class="md:col-span-2">
+                            <label class="form-label">Título del Libro (nombre_li)</label>
+                            <input id="nombre_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. El ingenioso hidalgo Don Quijote..." type="text" />
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="form-label">Editorial (editorial_li)</label>
+                            <input id="editorial_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. Editorial Alfaguara" type="text" />
+                        </div>
+                        <!-- NUEVO: SECCIÓN DE AUTORES -->
+                        <div class="md:col-span-2 border-t border-outline-variant pt-4 mt-2">
+                            <label class="form-label font-semibold text-primary mb-2 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">person_add</span>
+                                Autor(es) del Libro
+                            </label>
+                            <div class="flex flex-col sm:flex-row gap-2 mb-3">
+                                <input id="nombre_autor_input" class="form-input flex-1 placeholder:text-outline" placeholder="Nombre(s) del autor" type="text" />
+                                <input id="apellido_autor_input" class="form-input flex-1 placeholder:text-outline" placeholder="Apellido(s) del autor" type="text" />
+                                <button type="button" id="btn-add-autor" class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md hover:bg-[#bac7e3] transition-colors shrink-0">
+                                    + Agregar Autor
+                                </button>
+                            </div>
+                            <!-- Aquí aparecerán los autores agregados antes de guardar -->
+                            <div id="lista-autores-badges" class="flex flex-wrap gap-2"></div>
+                        </div>
                     </div>
                 </div>
+
                 <!-- Card: Detalles Editoriales -->
                 <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5">
-                    <h3
-                        class="font-headline-md text-headline-md font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3 flex items-center gap-2">
+                    <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3 flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">menu_book</span>
                         Detalles Editoriales
                     </h3>
@@ -312,133 +291,130 @@
                         </div>
                     </div>
                 </div>
-                <!-- Card: Ejemplares Físicos (Inventario) -->
-                <div
-                    class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 bg-gradient-to-br from-surface to-surface-container-lowest">
-                    <div class="flex justify-between items-center mb-6 border-b border-outline-variant pb-3">
-                        <h3
-                            class="font-headline-md text-headline-md font-semibold text-on-surface flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">inventory_2</span>
-                            Ejemplares Físicos
-                        </h3>
-                        <button
-                            class="text-primary hover:text-primary-fixed-dim transition-colors flex items-center gap-1 font-label-md text-label-md">
-                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                            Añadir Múltiples
-                        </button>
-                    </div>
-                    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 mb-4">
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                            <div class="md:col-span-2">
-                                <label class="form-label">Copia #</label>
-                                <input class="w-full form-input bg-surface-container-low text-center font-mono"
-                                    readonly="" type="text" value="01" />
-                            </div>
-                            <div class="md:col-span-4">
-                                <label class="form-label">Estado Físico (estado_fis)</label>
-                                <select id="estado_fis" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
-                                    <option>Excelente</option>
-                                    <option>Bueno</option>
-                                    <option>Regular (Desgaste visible)</option>
-                                    <option>Malo (Requiere restauración)</option>
-                                </select>
-                            </div>
-                            <div class="md:col-span-4">
-                                <label class="form-label">Estante (estante_libro_fis)</label>
-                                <input id="estante_libro_fis" class="w-full form-input" placeholder="Ej. Pasillo A, Estante 3" type="text" />
-                            </div>
-                            <div class="md:col-span-2 flex justify-end">
-                                <button
-                                    class="w-full h-[42px] border border-error text-error rounded-lg hover:bg-error-container transition-colors flex items-center justify-center"
-                                    title="Eliminar copia">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                <!-- Card: EDICIÓN DE Ejemplares Físicos -->
+<div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 bg-gradient-to-br from-surface to-surface-container-lowest">
+    <div class="flex justify-between items-center mb-6 border-b border-outline-variant pb-3">
+        <h3 class="font-headline-md text-headline-md font-semibold text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">inventory_2</span>
+            Edición de Ejemplares Físicos
+        </h3>
+    </div>
+    
+    <div class="seccion-ejemplares bg-surface-container-lowest border border-outline-variant rounded-lg p-4">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+            <!-- ISBN -->
+            <div class="campo-grupo md:col-span-3">
+                <label class="form-label" for="isbn_ejemplar_editar">ISBN</label>
+                <input class="w-full form-input font-mono" type="text" id="isbn_ejemplar_editar" placeholder="Ej: 234">
             </div>
-            <!-- Right Column: Image Upload & Recent (4 cols) -->
+
+            <!-- Estado Físico (Menú Desplegable) -->
+            <div class="campo-grupo md:col-span-4">
+                <label class="form-label" for="estado_fis_editar">Estado Físico (estado_fis)</label>
+                <select id="estado_fis_editar" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                    <option value="Excelente">Excelente</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular (Desgaste visible)</option>
+                    <option value="Malo">Malo (Requiere mantenimiento)</option>
+                    <option value="Inactivo">Inactivo (Fuera de circulación)</option>
+                </select>
+            </div>
+
+            <!-- Ubicación / Estante -->
+            <div class="campo-grupo md:col-span-3">
+                <label class="form-label" for="estante_ejemplar_editar">Ubicación (Pasillo / Estante)</label>
+                <input class="w-full form-input" type="text" id="estante_ejemplar_editar" placeholder="Ej: A">
+            </div>
+
+            <!-- Botón de actualización -->
+            <div class="md:col-span-2 flex justify-end">
+                <button type="button" id="btn-actualizar-estado" class="w-full bg-surface-tint text-white font-label-md py-2.5 px-4 rounded-lg shadow-sm hover:bg-[#824b1c] transition-all">Actualizar Estado</button>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+
+            <!-- Right Column: Portada & Agregados Recientemente -->
             <div class="lg:col-span-4 flex flex-col gap-6">
-                <!-- Portada Upload -->
+                
+                <!-- PORTADA (DISEÑO ORIGINAL RESTAURADO EXACTO) -->
                 <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5">
-                    <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mb-4">Portada
-                        (url_imagen_li)</h3>
-                    <div
-                        class="border-2 border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-primary transition-colors cursor-pointer group bg-surface-container-lowest">
-                        <div
-                            class="w-32 h-48 bg-surface-container-high rounded flex items-center justify-center mb-4 group-hover:bg-surface-container transition-colors relative overflow-hidden shadow-sm">
-                            <span
-                                class="material-symbols-outlined text-4xl text-outline-variant">add_photo_alternate</span>
+                    <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mb-4">Portada (url_imagen_li)</h3>
+                    <div class="border-2 border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-primary transition-colors cursor-pointer group bg-surface-container-lowest">
+                        <div class="w-32 h-48 bg-surface-container-high rounded flex items-center justify-center mb-4 group-hover:bg-surface-container transition-colors relative overflow-hidden shadow-sm">
+                            <span class="material-symbols-outlined text-4xl text-outline-variant">add_photo_alternate</span>
                         </div>
                         <p class="font-label-md text-label-md text-primary mb-1">Haz clic para subir imagen</p>
-                        <p class="font-body-md text-body-md text-[12px] text-on-surface-variant">Ratio recomendado 2:3.
-                            Máx 5MB (JPG, PNG)</p>
+                        <p class="font-body-md text-body-md text-[12px] text-on-surface-variant">Ratio recomendado 2:3. Máx 5MB (JPG, PNG)</p>
                         <input id="url_imagen_li" class="mt-4 w-full form-input text-sm" placeholder="O introduce URL directa..." type="text" />
                     </div>
                 </div>
-                <!-- Agregados Recientemente (List) -->
+
+                <!-- AGREGADOS RECIENTEMENTE (FUNCIONAL Y REAL) -->
                 <div class="bg-surface rounded-xl shadow-sm border border-black/5 overflow-hidden flex flex-col h-full">
                     <div class="p-4 border-b border-outline-variant bg-surface-container-lowest">
-                        <h3
-                            class="font-label-md text-label-md font-semibold text-on-surface uppercase tracking-wider text-xs">
-                            Agregados Recientemente</h3>
+                        <h3 class="font-label-md text-label-md font-semibold text-on-surface uppercase tracking-wider text-xs">Agregados Recientemente</h3>
                     </div>
-                    <div class="flex-1 overflow-y-auto max-h-[400px]">
-                        <!-- List Item 1 -->
-                        <div
-                            class="p-4 border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors flex gap-3 items-start">
-                            <div class="w-12 h-18 bg-cover bg-center rounded bg-surface-container shadow-[0_2px_4px_rgba(0,0,0,0.1)] shrink-0"
-                                data-alt="A small thumbnail showing the vintage leather cover of a classic literature book, resting on a polished mahogany wooden desk in a softly lit, modern library setting. Warm, inviting lighting."
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDuiIKfo0dqcYXxMV8vaC978_qOiuvBkVHjp_x5A0eBjYIndzZf4OvPiVjn1HjtKQNSH0HW9Rq6NlxBMET64H6yDQYmSr9HvvWI9gKdrmlYm6ZgzSxfyVob5Gzr9JIZ91TN8Iu6tAZ0jb5XG_sPFLELlc74WB1neZl2MgSflUEcfJSTTgKLd2h8DviPAxV1uPTjdM5tfgCrLU8pVfNCsV37LgTL5Cwt5luZA2sZ3lKL0TQt1rZ6RueLVQ')">
-                            </div>
-                            <div>
-                                <h4 class="font-label-md text-label-md text-on-surface font-semibold line-clamp-2">
-                                    Crítica de la razón pura</h4>
-                                <p class="font-body-md text-[12px] text-on-surface-variant mt-1">Immanuel Kant • 2021
-                                </p>
-                                <span
-                                    class="inline-block mt-2 px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] rounded font-medium">CAT-04</span>
-                            </div>
-                        </div>
-                        <!-- List Item 2 -->
-                        <div
-                            class="p-4 border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors flex gap-3 items-start">
-                            <div class="w-12 h-18 bg-cover bg-center rounded bg-surface-container shadow-[0_2px_4px_rgba(0,0,0,0.1)] shrink-0"
-                                data-alt="A small thumbnail of a modern hardcover science fiction novel with a minimalist geometric cover design, sitting on a glass shelf in a contemporary library. Cool, clean lighting."
-                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQOnulHysKzidJnW1uzpJWRrqdU0zNu0zLoocGCTDFvj6UkN_uI4YSYfcLc9EWsfLkmodk8G02dkRAEmDBuPqU_S1WoxDZoLODLnn-XlLr0ZSqf83TvRHD87aDh3MVJoJGvWBadw5pYMeaEciayVDVS5XrTUMCl2PhyXQzLQcDw66uOwmLbG2Ky0SFK-Q39CAfNGask2DoOrWiRmJHk8VTwEEtMBrpX3US-blAAlIExMcRd8diMwbRcg')">
-                            </div>
-                            <div>
-                                <h4 class="font-label-md text-label-md text-on-surface font-semibold line-clamp-2">
-                                    Fundación e Imperio</h4>
-                                <p class="font-body-md text-[12px] text-on-surface-variant mt-1">Isaac Asimov • 2019</p>
-                                <span
-                                    class="inline-block mt-2 px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] rounded font-medium">CAT-01</span>
-                            </div>
-                        </div>
-                        <!-- List Item 3 -->
-                        <div class="p-4 hover:bg-surface-container-lowest transition-colors flex gap-3 items-start">
-                            <div
-                                class="w-12 h-18 bg-surface-container flex items-center justify-center rounded shadow-[0_2px_4px_rgba(0,0,0,0.1)] shrink-0 text-outline-variant">
-                                <span class="material-symbols-outlined">menu_book</span>
-                            </div>
-                            <div>
-                                <h4 class="font-label-md text-label-md text-on-surface font-semibold line-clamp-2">
-                                    Historia de la Arquitectura</h4>
-                                <p class="font-body-md text-[12px] text-on-surface-variant mt-1">Spiro Kostof • 2015</p>
-                                <span
-                                    class="inline-block mt-2 px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] rounded font-medium">CAT-02</span>
-                            </div>
-                        </div>
+                    
+                    <!-- Contenedor dinámico de datos reales -->
+                    <div id="contenedor-recientes" class="flex-1 overflow-y-auto max-h-[400px]">
+                        <p class="p-4 text-sm text-on-surface-variant">Cargando libros recientes...</p>
                     </div>
+
                     <div class="p-3 bg-surface-container-lowest border-t border-outline-variant text-center">
-                        <a class="text-primary font-label-md text-label-md text-sm hover:underline" href="#">Ver
-                            catálogo completo</a>
+                        <button type="button" id="btn-ver-catalogo" class="text-primary font-label-md text-label-md text-sm hover:underline cursor-pointer">Ver catálogo completo</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
+
+    <!-- MODAL "CATÁLOGO COMPLETO" CON SUBMENÚ DE SELECCIÓN -->
+    <div id="modal-catalogo" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-4xl max-h-[85vh] flex flex-col p-6 shadow-2xl border border-black/10">
+            <div class="flex justify-between items-center pb-4 border-b border-outline-variant">
+                <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">menu_book</span> Catálogo Completo de Libros
+                </h3>
+                <button type="button" id="btn-cerrar-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            
+            <!-- Barra de Búsqueda con Submenú de Criterio -->
+            <div class="my-4 flex flex-col sm:flex-row gap-3">
+                <select id="select-criterio-modal" class="form-input text-sm rounded-lg sm:w-1/3 bg-surface-container border-outline-variant">
+                    <option value="todos">🔍 Buscar en Todo</option>
+                    <option value="isbn">📌 Buscar solo por ISBN (ISBN_li)</option>
+                    <option value="titulo">📖 Buscar solo por Título</option>
+                    <option value="editorial">🏢 Buscar solo por Editorial</option>
+                    <option value="categoria">🏷️ Buscar solo por Categoría</option>
+                </select>
+
+                <input type="text" id="input-filtro-modal" class="w-full form-input text-sm rounded-lg flex-1" placeholder="Escribe aquí el término de búsqueda...">
+            </div>
+
+            <div class="flex-1 overflow-y-auto border border-outline-variant rounded-lg">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-surface-container-high text-on-surface font-semibold sticky top-0">
+                        <tr>
+                            <th class="p-3">ISBN</th>
+                            <th class="p-3">Título</th>
+                            <th class="p-3">Editorial</th>
+                            <th class="p-3">Categoría</th>
+                            <th class="p-3">Año</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-catalogo-body" class="divide-y divide-outline-variant/50">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <script src="/js/auth.js"></script>
     <script>
