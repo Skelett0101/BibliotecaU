@@ -55,6 +55,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
+        if (usuario.estado_usu === 'Desactivado' || usuario.estado_usu === 'Suspendido') {
+            res.status(403).json({ error: "Tu cuenta está desactivada. Contacta al administrador." });
+            return;
+        }
+
+
         // 2. Comparar la contraseña ingresada con la encriptada en la BD
         const contraseñaValida = await bcrypt.compare(contra_usu, usuario.contra_usu);
 
@@ -67,7 +73,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const token = jwt.sign(
             { id: usuario.id_usuario, rol: usuario.rol_usu }, 
             JWT_SECRET, 
-            { expiresIn: '8h' } // El token caduca en 8 horas
+            { expiresIn: '1h' } // El token caduca en 1 hora
         );
 
         res.status(200).json({ 

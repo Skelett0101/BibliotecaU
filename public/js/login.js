@@ -1,5 +1,5 @@
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    
+
     e.preventDefault();
 
     // Obtenemos los valores 
@@ -7,12 +7,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const contra_usu = document.getElementById('password').value;
     const errorMsg = document.getElementById('error-msg');
 
-  
+
     errorMsg.classList.add('hidden');
     errorMsg.textContent = '';
 
     try {
-       
+
         const respuesta = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -23,15 +23,24 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
         const datos = await respuesta.json();
 
-        
+
         if (respuesta.ok) {
-            //  Guardamos token y rol de un solo golpe
+     
+            // estado
+            const estado_usu = datos.usuario.estado_usu;
+
+            // bloquear
+            if (estado_usu === 'desactivado' || estado_usu === 'suspendido') {
+                UI.toast('Usuario desactivado. Contacta al administrador.', 'error');
+                return; 
+            }
+
+            
             Auth.setSession(datos.token, datos.usuario.rol);
 
-            // Enrutamiento según el rol
+            
             const rol = datos.usuario.rol;
 
-         
             if (rol === 'admin' || rol === 'bibliotecario' || rol === 'becario') {
                 window.location.replace('/panel.html');
             } else if (rol === 'alumno' || rol === 'maestro') {
@@ -41,7 +50,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             }
 
         } else {
-            
+
             errorMsg.textContent = datos.error;
             errorMsg.classList.remove('hidden');
         }
