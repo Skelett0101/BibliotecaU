@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Extendemos Express temporalmente para poder guardar los datos del usuario en la petición
+// guardar los datos del usuario en la petición
 export interface CustomRequest extends Request {
     usuario?: any;
 }
 
-// 1. Primer candado: Verificar que el usuario sí haya iniciado sesión (que tenga un token válido)
+// verificar token inicado
 export const verificarToken = (req: CustomRequest, res: Response, next: NextFunction): void => {
-    // El token suele enviarse en los headers como "Bearer eyJhbGci..."
+    // El token se envia en el header de la peti
     const token = req.header('Authorization')?.split(' ')[1]; 
     
     if (!token) {
@@ -18,20 +18,20 @@ export const verificarToken = (req: CustomRequest, res: Response, next: NextFunc
 
     try {
         const decodificado = jwt.verify(token, process.env.JWT_SECRET as string);
-        req.usuario = decodificado; // Aquí Prisma guardó el "id" y el "rol" cuando hicimos el login
-        next(); // Todo chido, déjalo pasar a la siguiente validación
+        req.usuario = decodificado; // id del usuario y rol del usuario
+        next(); 
     } catch (error) {
         res.status(400).json({ error: 'Token inválido o caducado.' });
     }
 };
 
-// 2. Segundo candado: Verificar si su rol está en la lista VIP
+// Segundo candado: Verificar si su rol está en la lista VIP
 export const verificarRol = (rolesPermitidos: string[]) => {
     return (req: CustomRequest, res: Response, next: NextFunction): void => {
         if (!req.usuario || !rolesPermitidos.includes(req.usuario.rol)) {
             res.status(403).json({ error: 'No tienes permisos de administrador para hacer esto.' });
             return;
         }
-        next(); // Tiene el rol correcto, déjalo pasar al controlador
+        next();
     };
 };
