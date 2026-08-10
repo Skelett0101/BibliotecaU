@@ -212,36 +212,7 @@
     </nav>
     <!-- Main Content Area -->
     <main class="flex-1 md:ml-64 min-h-screen  h-screen overflow-y-auto flex flex-col">
-        <!-- TopAppBar -->
-        <header
-            class="bg-surface/90 backdrop-blur-md shadow-sm w-full sticky top-0 z-40 border-b border-surface-variant">
-            <div
-                class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-                <!-- Left: Title & Nav (Mobile hidden, shown on side on desktop usually, but keeping TopAppBar links as requested) -->
-                <div class="flex items-center gap-8">
-                    <h2 class="font-headline-md text-headline-md font-bold text-primary md:hidden">Bibliotech</h2>
-                    <nav class="hidden md:flex gap-6">
-                        <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150"
-                            href="#">Catálogo</a>
-                        <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150"
-                            href="#">Mis Libros</a>
-                        <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150"
-                            href="#">Ayuda</a>
-                    </nav>
-                </div>
-                <!-- Right: Actions -->
-                <div class="flex items-center gap-4 text-on-surface-variant">
-                    <button aria-label="Notificaciones"
-                        class="hover:text-primary hover:bg-surface-container-high p-2 rounded-full transition-all active:scale-95 duration-150">
-                        <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                    </button>
-                    <button aria-label="Perfil"
-                        class="hover:text-primary hover:bg-surface-container-high p-2 rounded-full transition-all active:scale-95 duration-150">
-                        <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-                    </button>
-                </div>
-            </div>
-        </header>
+       
         <!-- Page Content -->
         <div
             class="flex-1 px-margin-mobile md:px-margin-desktop py-gutter max-w-container-max mx-auto w-full space-y-8">
@@ -254,6 +225,7 @@
                     retraso en devoluciones.</p>
             </div>
             <!-- Summary Bento Grid -->
+            <!-- Summary Bento Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <!-- Card 1: Total por Cobrar -->
                 <div
@@ -262,19 +234,17 @@
                         <div>
                             <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
                                 Total por Cobrar</p>
-                            <h3 class="font-display-lg text-display-lg text-primary mt-1">$1,245.50</h3>
+                            <!-- 👇 ID Agregado -->
+                            <h3 id="stat-monto-total" class="font-display-lg text-display-lg text-primary mt-1">$0.00
+                            </h3>
                         </div>
                         <div class="p-3 bg-primary-container rounded-lg text-on-primary-container">
                             <span class="material-symbols-outlined">account_balance_wallet</span>
                         </div>
                     </div>
                     <p class="font-label-md text-label-md text-secondary relative z-10 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm">trending_up</span> +12% vs mes anterior
+                        Deuda acumulada activa
                     </p>
-                    <!-- Subtle background decoration -->
-                    <div class="absolute -bottom-8 -right-8 opacity-5 text-primary">
-                        <span class="material-symbols-outlined" style="font-size: 120px;">account_balance_wallet</span>
-                    </div>
                 </div>
                 <!-- Card 2: Usuarios en Mora -->
                 <div
@@ -283,17 +253,20 @@
                         <div>
                             <p class="font-label-md text-label-md text-error uppercase tracking-wider">Usuarios en Mora
                             </p>
-                            <h3 class="font-display-lg text-display-lg text-on-background mt-1">42</h3>
+                            <!-- 👇 ID Agregado -->
+                            <h3 id="stat-usuarios-mora" class="font-display-lg text-display-lg text-on-background mt-1">
+                                0</h3>
                         </div>
                         <div class="p-3 bg-error-container rounded-lg text-on-error-container">
                             <span class="material-symbols-outlined">warning</span>
                         </div>
                     </div>
                     <p class="font-label-md text-label-md text-on-surface-variant relative z-10">
-                        8 casos críticos (&gt; 15 días)
+                        Casos pendientes de pago
                     </p>
                 </div>
             </div>
+
             <!-- Filters & Search -->
             <div
                 class="flex flex-col md:flex-row justify-between items-center gap-4 bg-surface p-4 rounded-xl shadow-sm border border-outline-variant">
@@ -335,90 +308,11 @@
                                 <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="font-body-md text-body-md text-on-surface divide-y divide-surface-variant">
-                            <!-- Row 1: Pendiente -->
-                            <tr class="hover:bg-surface-container-low transition-colors">
-                                <td class="py-3 px-4 text-on-surface-variant">#REC-0142</td>
-                                <td class="py-3 px-4 text-primary underline cursor-pointer">PR-892</td>
-                                <td class="py-3 px-4">Ana Silva</td>
-                                <td class="py-3 px-4 font-medium">$5.50</td>
-                                <td class="py-3 px-4">3</td>
-                                <td class="py-3 px-4">
-                                    <span
-                                        class="inline-flex items-center px-2 py-1 rounded-full bg-[#FFF3E0] text-[#E65100] text-xs font-medium border border-[#FFE0B2]">
-                                        Pendiente
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-on-surface-variant">-</td>
-                                <td class="py-3 px-4 text-right">
-                                    <button class="text-secondary hover:text-primary transition-colors p-1"
-                                        title="Registrar Pago">
-                                        <span class="material-symbols-outlined">point_of_sale</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 2: Mora Grave (Alert colors) -->
-                            <tr class="hover:bg-surface-container-low transition-colors bg-error-container/10">
-                                <td class="py-3 px-4 text-on-surface-variant">#REC-0138</td>
-                                <td class="py-3 px-4 text-primary underline cursor-pointer">PR-754</td>
-                                <td class="py-3 px-4 font-medium text-error">Carlos Ruiz</td>
-                                <td class="py-3 px-4 font-bold text-error">$45.00</td>
-                                <td class="py-3 px-4 text-error font-medium">18</td>
-                                <td class="py-3 px-4">
-                                    <span
-                                        class="inline-flex items-center px-2 py-1 rounded-full bg-error-container text-on-error-container text-xs font-medium border border-error">
-                                        Mora Grave
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-on-surface-variant">-</td>
-                                <td class="py-3 px-4 text-right">
-                                    <button class="text-secondary hover:text-primary transition-colors p-1"
-                                        title="Registrar Pago">
-                                        <span class="material-symbols-outlined">point_of_sale</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 3: Pagado -->
-                            <tr class="hover:bg-surface-container-low transition-colors">
-                                <td class="py-3 px-4 text-on-surface-variant">#REC-0120</td>
-                                <td class="py-3 px-4 text-primary underline cursor-pointer">PR-612</td>
-                                <td class="py-3 px-4">Elena Vargas</td>
-                                <td class="py-3 px-4 font-medium">$12.00</td>
-                                <td class="py-3 px-4">4</td>
-                                <td class="py-3 px-4">
-                                    <span
-                                        class="inline-flex items-center px-2 py-1 rounded-full bg-[#E8F5E9] text-[#2E7D32] text-xs font-medium border border-[#C8E6C9]">
-                                        Pagado
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-on-surface-variant">24 Oct, 2023</td>
-                                <td class="py-3 px-4 text-right">
-                                    <button class="text-secondary hover:text-primary transition-colors p-1"
-                                        title="Ver Recibo">
-                                        <span class="material-symbols-outlined">receipt_long</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 4: Pendiente -->
-                            <tr class="hover:bg-surface-container-low transition-colors">
-                                <td class="py-3 px-4 text-on-surface-variant">#REC-0145</td>
-                                <td class="py-3 px-4 text-primary underline cursor-pointer">PR-910</td>
-                                <td class="py-3 px-4">Miguel Torres</td>
-                                <td class="py-3 px-4 font-medium">$2.50</td>
-                                <td class="py-3 px-4">1</td>
-                                <td class="py-3 px-4">
-                                    <span
-                                        class="inline-flex items-center px-2 py-1 rounded-full bg-[#FFF3E0] text-[#E65100] text-xs font-medium border border-[#FFE0B2]">
-                                        Pendiente
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-on-surface-variant">-</td>
-                                <td class="py-3 px-4 text-right">
-                                    <button class="text-secondary hover:text-primary transition-colors p-1"
-                                        title="Registrar Pago">
-                                        <span class="material-symbols-outlined">point_of_sale</span>
-                                    </button>
-                                </td>
+                        <!-- 👇 Dejamos el tbody vacío y le ponemos ID -->
+                        <tbody id="tabla-recargos"
+                            class="font-body-md text-body-md text-on-surface divide-y divide-surface-variant">
+                            <tr>
+                                <td colspan="8" class="py-6 text-center text-secondary">Cargando recargos...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -449,12 +343,84 @@
             </div>
         </div>
     </main>
-    <script src="/js/auth.js"></script>
-    <script>
 
-        Auth.verificarPaginaPrivada(['alumno', 'Maestro', 'admin']);
-    </script>
+
+    <!-- 🆕 Modal Gestionar Recargo -->
+    <div class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" id="modal-recargo">
+        <!-- Backdrop oscuro -->
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="document.getElementById('modal-recargo').classList.add('hidden')"></div>
+        
+        <!-- Contenido del Modal -->
+        <div class="relative w-full max-w-lg glass-card bg-surface rounded-xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div class="px-6 py-4 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest">
+                <h3 class="font-headline-md text-lg text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                    Gestionar Recargo
+                </h3>
+                <button class="text-on-surface-variant hover:text-error transition-colors" onclick="document.getElementById('modal-recargo').classList.add('hidden')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <form id="form-recargo" class="p-6 space-y-4" onsubmit="event.preventDefault();">
+                <!-- ID Oculto -->
+                <input type="hidden" id="edit-recargo-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Vista de ID (Solo lectura) -->
+                    <div>
+                        <label class="block font-label-md text-sm text-on-surface-variant mb-1">ID Recargo</label>
+                        <input class="w-full rounded-lg border-outline-variant bg-surface-container-low px-4 py-2 text-on-surface font-mono text-sm cursor-not-allowed opacity-70" id="edit-recargo-display" type="text" readonly />
+                    </div>
+                    <!-- Vista de Monto (Solo lectura) -->
+                    <div>
+                        <label class="block font-label-md text-sm text-on-surface-variant mb-1">Monto a Cobrar</label>
+                        <input class="w-full rounded-lg border-outline-variant bg-surface-container-low px-4 py-2 text-error font-bold text-sm cursor-not-allowed" id="edit-recargo-monto" type="text" readonly />
+                    </div>
+                    <!-- Vista de Usuario (Solo lectura) -->
+                    <div class="md:col-span-2">
+                        <label class="block font-label-md text-sm text-on-surface-variant mb-1">Usuario</label>
+                        <input class="w-full rounded-lg border-outline-variant bg-surface-container-low px-4 py-2 text-on-surface font-body-md text-sm cursor-not-allowed opacity-70" id="edit-recargo-usuario" type="text" readonly />
+                    </div>
+                    
+                    <!-- Select de Estado (Editable) -->
+                    <div class="md:col-span-2 mt-2">
+                        <label class="block font-label-md text-sm text-on-surface-variant mb-1" for="edit-recargo-estado">Nuevo Estado del Recargo</label>
+                        <div class="relative">
+                            <select class="w-full rounded-lg border border-outline-variant bg-surface px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-sm appearance-none pr-10" id="edit-recargo-estado" required>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Mora">Mora Grave</option>
+                                <option value="Pagado">Pagado (Liquidar Deuda)</option>
+                                <option value="Condonado">Condonado (Perdonar Deuda)</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-6 flex justify-end gap-3 border-t border-outline-variant/30 mt-6">
+                    <button class="px-4 py-2 rounded-lg text-secondary hover:bg-surface-container-high transition-colors font-label-md text-sm" onclick="document.getElementById('modal-recargo').classList.add('hidden')" type="button">
+                        Cancelar
+                    </button>
+                    <button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary-container hover:shadow-md transition-all font-label-md text-sm flex items-center gap-2" type="submit">
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                        Actualizar Estado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="/js/auth.js"></script>
     <script src="/js/ui.js"></script>
+    <script>
+        Auth.verificarPaginaPrivada(['admin', 'bibliotecario']);
+    </script>
+    <!-- 👇 Llamamos al nuevo script -->
+    <script src="/js/recargos.js"></script>
+</body>
+</html>
 </body>
 
 </html>

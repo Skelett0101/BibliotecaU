@@ -136,14 +136,14 @@
             <nav class="hidden md:flex gap-8">
                 <a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-95 duration-150"
                     href="#">
-                    Mis préstamos
+                    Mis Recargos
                 </a>
-
+            
             </nav>
 
             <!-- Trailing Actions -->
             <div class="flex items-center gap-4">
-
+                
 
                 <!-- Menú Desplegable de Perfil -->
                 <div class="relative group">
@@ -171,9 +171,7 @@
                         </a>
                         <a href="catalogo.html"
                             class="px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors flex items-center gap-3">
-                            <span
-                                class="material-symbols-outlined text-[20px] text-primary">books_movies_and_music</span>
-                            Catalogo
+                            <span class="material-symbols-outlined text-[20px] text-primary">books_movies_and_music</span> Catalogo
                         </a>
                         <div class="border-t border-outline-variant/30 my-1"></div>
                         <a href="#" onclick="Auth.logout()"
@@ -191,104 +189,83 @@
 
         </div>
     </header>
-
-    <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
-        <div class="max-w-container-max mx-auto space-y-8">
-            <!-- Page Header -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
-                        Historial de Préstamos</h1>
-                    <p class="font-body-md text-body-md text-secondary">Revisa el estado y las fechas de tus libros
-                        prestados.</p>
+    <!-- Main Content Canvas -->
+    <main
+        class="flex-grow pt-[104px] pb-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-2">
+                    Consulta de Recargos</h1>
+                <p class="font-body-md text-body-md text-secondary max-w-2xl">Revisa el historial y estado actual de las
+                    multas asociadas a tus préstamos. Los recargos pendientes requieren atención inmediata.</p>
+            </div>
+            <!-- Summary Stats -->
+            <!-- Summary Stats -->
+            <div class="flex gap-4">
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-4 min-w-[140px]">
+                    <span class="font-label-md text-label-md text-secondary block mb-1">Pendiente Total</span>
+                    <!-- 👇 ID Agregado -->
+                    <span id="stat-monto-total" class="font-headline-md text-headline-md text-error">$0.00</span>
                 </div>
-                <div class="flex gap-3">
-
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-4 min-w-[140px]">
+                    <span class="font-label-md text-label-md text-secondary block mb-1">Recargos Activos</span>
+                    <!-- 👇 ID Agregado -->
+                    <span id="stat-recargos-activos" class="font-headline-md text-headline-md text-on-surface">0</span>
                 </div>
             </div>
-            <!-- Bento Grid / Cards Layout for Data -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Stats Overview (Bento Item) -->
-                <div class="col-span-1 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div
-                        class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm flex items-center gap-4">
-                        <div
-                            class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
-                            <span class="material-symbols-outlined">menu_book</span>
-                        </div>
-                        <div>
-                            <p class="font-label-md text-label-md text-secondary">Total Préstamos</p>
-                            <!-- 👇 Agregamos ID -->
-                            <p id="stat-total" class="font-headline-md text-headline-md text-on-surface">0</p>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm flex items-center gap-4">
-                        <div
-                            class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
-                            <span class="material-symbols-outlined">schedule</span>
-                        </div>
-                        <div>
-                            <p class="font-label-md text-label-md text-secondary">Préstamos Activos</p>
-                            <!-- 👇 Agregamos ID -->
-                            <p id="stat-activos" class="font-headline-md text-headline-md text-on-surface">0</p>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm flex items-center gap-4">
-                        <div
-                            class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center">
-                            <span class="material-symbols-outlined">warning</span>
-                        </div>
-                        <div>
-                            <p class="font-label-md text-label-md text-secondary">En Mora</p>
-                            <!-- 👇 Agregamos ID -->
-                            <p id="stat-mora" class="font-headline-md text-headline-md text-on-surface">0</p>
-                        </div>
-                    </div>
+        </div>
+        <!-- Data Table Container (Glassmorphism/Minimalist Surface) -->
+        <div class="bg-surface border border-outline-variant/10 rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <!-- Toolbar -->
+            <div
+                class="p-4 border-b border-outline-variant/10 bg-surface-container-lowest flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary">filter_list</span>
+                    <span class="font-label-md text-label-md text-secondary">Filtros Activos: Ninguno</span>
                 </div>
-                <!-- Main Data Table (Bento Item) -->
-                <div
-                    class="col-span-1 lg:col-span-3 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm overflow-hidden flex flex-col">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-[#2A374D] text-white">
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold">ID Préstamo</th>
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold">Libro</th>
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold">Fecha Inicio</th>
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold">Fecha Fin</th>
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold">Estado</th>
-                                    <th class="py-4 px-6 font-label-md text-label-md font-semibold text-right">Acciones
-                                    </th>
-                                </tr>
-                            </thead>
-                            <!-- Solo dejas la etiqueta tbody vacía con el ID -->
-                            <tbody id="contenedor-mis-prestamos"
-                                class="divide-y divide-outline-variant/10 font-body-md text-body-md">
-                                <!-- Aquí se inyectarán los datos desde JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Pagination (Opcional: puedes ocultarla si no la usas aún) -->
-                    <div
-                        class="p-4 border-t border-outline-variant/10 flex items-center justify-between bg-surface-container-lowest">
-                        <span class="font-body-md text-body-md text-secondary text-sm" id="texto-paginacion">Cargando
-                            registros...</span>
-                    </div>
-                </div>
+                <button
+                    class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">download</span> Descargar Estado
+                </button>
+            </div>
+            <!-- Table Scroll Area -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-[#2A374D] border-b border-outline-variant/20">
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary whitespace-nowrap">ID
+                                Recargo</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary">Préstamo Asociado (Libro)
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Monto</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Días Retraso
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-center">Estado</th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-right">Fecha de Pago
+                            </th>
+                            <th class="py-3 px-4 font-label-md text-label-md text-on-primary text-center">Acción</th>
+                        </tr>
+                    </thead>
+              <!-- 👇 Dejamos el tbody vacío y le ponemos ID -->
+                    <tbody id="tabla-mis-recargos" class="divide-y divide-outline-variant/10 font-body-md text-body-md text-on-surface">
+                        <tr><td colspan="7" class="py-6 text-center text-secondary">Cargando tus recargos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination Footer -->
+            <div class="p-4 border-t border-outline-variant/10 bg-surface-container-lowest flex items-center justify-between">
+                <span id="texto-paginacion" class="font-label-md text-label-md text-secondary">Cargando registros...</span>
             </div>
         </div>
     </main>
 
-    <!-- Cargar Scripts -->
-    <script src="/js/ui.js"></script> <!-- Importante para las notificaciones Toast -->
+    <!-- 👇 SCIPTS OBLIGATORIOS -->
     <script src="/js/auth.js"></script>
+    <script src="/js/ui.js"></script>
     <script>
-        // Verificamos que sea un usuario logueado con los roles correctos
-        Auth.verificarPaginaPrivada(['alumno', 'maestro', 'admin', 'becario']);
+        Auth.verificarPaginaPrivada(); // Protege la ruta para todos los logueados
     </script>
-    <script src="/js/mis_prestamos.js"></script>
+    <script src="/js/recargosUS.js"></script>
 </body>
-
 </html>
