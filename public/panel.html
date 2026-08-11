@@ -228,10 +228,10 @@
                     <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-primary-container"></span> Total Libros
                     </p>
-                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">12,450</h3>
+                    <h3 id="kpi-libros" class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">0</h3>
                     <p class="font-body-md text-sm text-secondary mt-2 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm text-green-600">trending_up</span>
-                        <span class="text-green-600 font-medium">+124</span> este mes
+                        <span id="tendencia-libros" class="text-green-600 font-medium">+0</span> este mes
                     </p>
                 </div>
                 <!-- KPI 2 -->
@@ -243,7 +243,7 @@
                     <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-tertiary-container"></span> Préstamos Activos
                     </p>
-                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">842</h3>
+                    <h3 id="kpi-prestamos" class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">0</h3>
                     <div class="w-full bg-surface-variant h-1.5 rounded-full mt-3 overflow-hidden">
                         <div class="bg-tertiary-container h-full rounded-full w-[65%]"></div>
                     </div>
@@ -258,10 +258,10 @@
                     <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-secondary"></span> Usuarios Registrados
                     </p>
-                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">3,120</h3>
+                    <h3 id="kpi-usuarios" class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">0</h3>
                     <p class="font-body-md text-sm text-secondary mt-2 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm text-green-600">trending_up</span>
-                        <span class="text-green-600 font-medium">+45</span> nuevos esta semana
+                        <span id="tendencia-usuarios" class="text-green-600 font-medium">0</span> activos
                     </p>
                 </div>
                 <!-- KPI 4 -->
@@ -273,11 +273,10 @@
                     <p class="font-label-md text-label-md text-secondary mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-error"></span> Recargos Pendientes
                     </p>
-                    <h3 class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">$450<span
-                            class="text-lg text-secondary font-normal">.00</span></h3>
-                    <p class="font-body-md text-sm text-error mt-2 flex items-center gap-1">
+                    <h3 id="kpi-ingresos" class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">$0</h3>
+                    <p id="texto-mora" class="font-body-md text-sm text-error mt-2 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">priority_high</span>
-                        24 usuarios en mora
+                        0 préstamos en mora
                     </p>
                 </div>
             </div>
@@ -365,70 +364,10 @@
                         <h3 class="font-headline-md text-[20px] text-on-surface">Actividad Reciente</h3>
                         <button class="text-primary font-label-md text-sm hover:underline">Ver todo</button>
                     </div>
-                    <div class="flex-1 overflow-y-auto pr-2 space-y-4">
-                        <!-- Feed Item 1 -->
-                        <div class="flex gap-4 items-start group">
-                            <div
-                                class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0 mt-1">
-                                <span class="material-symbols-outlined text-sm text-on-secondary-container">book</span>
-                            </div>
-                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
-                                <p class="font-body-md text-sm text-on-surface">
-                                    <span class="font-medium">Ana Martínez</span> retiró <span
-                                        class="italic font-medium">Cien años de soledad</span>
-                                </p>
-                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 10 min
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Feed Item 2 -->
-                        <div class="flex gap-4 items-start group">
-                            <div
-                                class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
-                                <span class="material-symbols-outlined text-sm text-green-700">keyboard_return</span>
-                            </div>
-                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
-                                <p class="font-body-md text-sm text-on-surface">
-                                    <span class="font-medium">Carlos Ruiz</span> devolvió <span
-                                        class="italic font-medium">Breve historia del tiempo</span>
-                                </p>
-                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 45 min
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Feed Item 3 -->
-                        <div class="flex gap-4 items-start group">
-                            <div
-                                class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center shrink-0 mt-1">
-                                <span class="material-symbols-outlined text-sm text-on-error-container">warning</span>
-                            </div>
-                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
-                                <p class="font-body-md text-sm text-on-surface">
-                                    Aviso de mora generado para <span class="font-medium">Elena Gómez</span>
-                                </p>
-                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 2 horas
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Feed Item 4 -->
-                        <div class="flex gap-4 items-start group">
-                            <div
-                                class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0 mt-1">
-                                <span
-                                    class="material-symbols-outlined text-sm text-on-surface-variant">person_add</span>
-                            </div>
-                            <div class="flex-1 border-b border-surface-variant pb-4 group-last:border-0">
-                                <p class="font-body-md text-sm text-on-surface">
-                                    Nuevo usuario registrado: <span class="font-medium">Luis Fernández</span>
-                                </p>
-                                <p class="font-body-md text-xs text-secondary mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">schedule</span> Hace 3 horas
-                                </p>
-                            </div>
-                        </div>
+                    
+                    <!-- AQUÍ ESTÁ EL CAMBIO: Agregamos el id y dejamos el div vacío -->
+                    <div id="contenedor-actividad" class="flex-1 overflow-y-auto pr-2 space-y-4">
+                        <!-- El JavaScript llenará esto automáticamente con datos reales -->
                     </div>
                 </div>
             </div>

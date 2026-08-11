@@ -96,3 +96,51 @@ export const obtenerReporteIngresos = async (req: Request, res: Response): Promi
         res.status(500).json({ error: 'Error al calcular los ingresos por recargos.' });
     }
 };
+
+/**
+ * Nueva función: Resumen para el Panel (Dashboard)
+ */
+export const obtenerResumenDashboard = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const ahora = new Date();
+        const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+
+        // Consultamos todo en paralelo para mantener la velocidad
+        const [
+            totalLibros, 
+            prestamosActivos, 
+            totalUsuarios, 
+            totalRecargos,
+            prestamosEsteMes,
+            usuariosActivos,
+            prestamosEnMora,
+            actividad
+        ] = await Promise.all([
+            prisma.libro.count(),
+            prisma.prestamo.count({ where: { estado_pre: 'Prestado' } }),
+            prisma.usuario.count(),
+            prisma.recargo.aggregate({ _sum: { monto_rec: true } }),
+            prisma.prestamo.count({ where: { fecha_inicio_pre: { gte: inicioMes } } }),
+            prisma.usuario.count({ where: { estado_usu: 'activo' } }),
+            prisma.prestamo.count({ where: { OR: [{ estado_pre: 'MORA' }, { estado_pre: 'ATRASADO' }] } }),
+            prisma.prestamo.findMany({
+                take: 5,
+                orderBy: { fecha_inicio_pre: 'desc' },
+                include: { usuario: { select: { nombre_usu: true } } }
+            })
+        ]);
+
+        res.status(200).json({
+            totalLibros,
+            prestamosActivos,
+            totalUsuarios,
+            totalIngresos: totalRecargos._sum.monto_rec || 0,
+            prestamosEsteMes,
+            usuariosActivos,
+            prestamosEnMora,
+            actividad
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al cargar los datos.' });
+    }
+};
