@@ -260,11 +260,11 @@
         </div>
     </main>
 
-    <!-- 👇 SCIPTS OBLIGATORIOS -->
+    <!--  SCIPTS OBLIGATORIOS -->
     <script src="/js/auth.js"></script>
     <script src="/js/ui.js"></script>
     <script>
-        Auth.verificarPaginaPrivada(); // Protege la ruta para todos los logueados
+        Auth.verificarPaginaPrivada(['alumno', 'admin',]);
     </script>
     <script src="/js/recargosUS.js"></script>
 </body>

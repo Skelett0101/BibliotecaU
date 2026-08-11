@@ -16,9 +16,7 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 
-// 1. Servir archivos estáticos del Frontend
-// "__dirname" apunta a la carpeta "src" (o "dist" al compilar), 
-// por eso subimos un nivel con "../public"
+//  archivos estáticos del Frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
 
@@ -31,8 +29,7 @@ app.use((req, res, next) => {
 });
 
 
-// 2. Rutas de la API REST (Backend)
-// Todas las rutas del backend deben empezar con /api para no chocar con el frontend
+// Rutas de la API REST 
 app.use('/api', testRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
@@ -41,16 +38,14 @@ app.use('/api/reportes', reporteRoutes);
 app.use('/api/libros', libroRoutes);
 app.use('/api/recargos', recargoRoutes);
 
-// 3. Fallback para el Frontend (Opcional, útil si usas un router en el cliente)
-// Si alguien entra a una ruta que no es de la API, le devolvemos el index.html
-// 3. Fallback para el Frontend (Middleware global)
-// Esto atrapará cualquier petición que no haya coincidido con las rutas anteriores
+
+// Esto atrapa cualquier petición que no haya coincidido con las rutas anteriores
 app.use((req, res) => {
-    // Si la ruta no es de la API, devolvemos el frontend
+    // Si la ruta no es de la API devolvemos el frontend
     if (!req.path.startsWith('/api')) {
         res.sendFile(path.join(__dirname, '../public/login.html'));
     } else {
-        // Si alguien busca una ruta de la API que no existe, mandamos un error 404
+        // Si alguien busca una ruta de la API que no existe error 404
         res.status(404).json({ error: "Endpoint no encontrado" });
     }
 });
