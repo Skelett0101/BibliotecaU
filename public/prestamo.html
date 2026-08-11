@@ -395,6 +395,46 @@
         </div>
     </main>
 
+    <!-- MODAL DE EDICIÓN DE PRÉSTAMO -->
+    <div id="modalEditarPrestamo" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="glass-card bg-surface rounded-xl p-6 shadow-xl w-full max-w-md relative border border-outline-variant/50">
+            <div class="flex justify-between items-center mb-4 border-b border-outline-variant pb-3">
+                <h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">edit_calendar</span> Gestionar Préstamo
+                </h3>
+                <button onclick="cerrarModalPrestamo()" class="text-secondary hover:text-on-background transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <form id="formEditarPrestamo" class="flex flex-col gap-4">
+                <input type="hidden" id="edit_id_prestamo" />
+                
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-md text-label-md text-on-surface">Fecha de Devolución (Plazo)</label>
+                    <input class="form-input w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-body-md border border-outline-variant focus:border-primary" id="edit_fecha_fin" type="date" required />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-md text-label-md text-on-surface">Estado del Préstamo</label>
+                    <select class="form-input w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-body-md border border-outline-variant focus:border-primary" id="edit_estado_pre" required>
+                        <option value="Pendiente">Pendiente (Requiere credencial)</option>
+                        <option value="Prestado">Prestado (En curso)</option>
+                        <option value="Devuelto">Devuelto (Terminado con éxito)</option>
+                        <option value="Incidencia">Incidencia (Problema/Mora)</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-3 mt-4">
+                    <button type="button" onclick="cerrarModalPrestamo()" class="px-4 py-2 rounded-lg border border-outline text-secondary hover:bg-surface-container-high transition-colors font-label-md">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-primary-container text-on-primary hover:bg-surface-tint transition-colors font-label-md flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px]">save</span> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <script src="/js/auth.js"></script>
     <script>

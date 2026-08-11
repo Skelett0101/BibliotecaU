@@ -3,7 +3,7 @@ import {
     obtenerReporteInventario, 
     obtenerReporteAtrasos, 
     obtenerReporteLibrosTotales, 
-    obtenerReporteIngresos 
+    obtenerReporteIngresos,
 } from '../controllers/reporteController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
 

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import prisma from '../config/db';
-// Asegúrate de importar esta interfaz desde tus middlewares
 import { CustomRequest } from '../middlewares/authMiddleware';
 
 /**
@@ -147,7 +146,7 @@ export const autorizarPrestamo = async (req: CustomRequest, res: Response): Prom
                 fecha_inicio_pre: new Date(fecha_inicio),
                 fecha_fin_pre: new Date(fecha_fin),
                 no_folio_pre: folio,
-                estado_pre: 'ACTIVO',
+                estado_pre: 'Prestado',
                 detalles: { create: { id_ejemplar: idEjemplarFinal } }
             },
             include: { 
@@ -160,5 +159,31 @@ export const autorizarPrestamo = async (req: CustomRequest, res: Response): Prom
     } catch (error: any) {
         console.error("Error al autorizar préstamo:", error);
         res.status(500).json({ error: error.message || 'Error al procesar la autorización del préstamo.' });
+    }
+};
+
+/**
+ * Función exclusiva para Admin/Bibliotecario: Modificar fechas o cambiar el estado desde el Modal
+ */
+export const actualizarPrestamoAdmin = async (req: CustomRequest, res: Response): Promise<void> => {
+    try {
+        const { id_prestamo } = req.params;
+        const { fecha_fin, estado_pre } = req.body;
+
+        const prestamoActualizado = await prisma.prestamo.update({
+            where: { id_prestamo: Number(id_prestamo) },
+            data: {
+                fecha_fin_pre: fecha_fin ? new Date(fecha_fin) : undefined,
+                estado_pre: estado_pre,
+                // Si el estado cambia a Devuelto, registra la fecha actual automáticamente
+                fecha_devolucion_real_pre: (estado_pre === 'Devuelto') ? new Date() : null
+            },
+            include: { usuario: true, detalles: { include: { ejemplar: true } } }
+        });
+
+        res.status(200).json({ mensaje: 'Préstamo actualizado correctamente', prestamo: prestamoActualizado });
+    } catch (error: any) {
+        console.error("Error al actualizar préstamo:", error);
+        res.status(500).json({ error: error.message || 'Error al actualizar el préstamo.' });
     }
 };

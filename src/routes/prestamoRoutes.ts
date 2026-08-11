@@ -4,7 +4,8 @@ import {
     obtenerPrestamos, 
     visualizarMisPrestamos,  
     renovarMiPrestamo,
-    autorizarPrestamo 
+    autorizarPrestamo, 
+    actualizarPrestamoAdmin
 } from '../controllers/prestamoController';
 // Importamos los middlewares de seguridad
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
@@ -16,7 +17,7 @@ const router = Router();
  * Acceso exclusivo para Admin y Bibliotecario.
  */
 router.get('/', verificarToken, verificarRol(['admin', 'bibliotecario']), obtenerPrestamos);
-
+router.put('/actualizar/:id_prestamo', verificarToken, verificarRol(['admin', 'bibliotecario']), actualizarPrestamoAdmin);
 /**
  * RUTAS DE USUARIO (AUTOSERVICIO)
  */

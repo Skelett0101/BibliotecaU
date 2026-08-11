@@ -4,9 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Escuchar el evento del botón "Autorizar Préstamo"
     const botonAutorizar = document.querySelector('button[type="button"]'); 
-    // O puedes asignarle un id="btnAutorizar" en tu HTML al botón y buscarlo por ID.
     if (botonAutorizar) {
         botonAutorizar.addEventListener('click', enviarAutorizacionPrestamo);
+    }
+
+    // 3. Escuchar el evento de guardar cambios en el Modal de Edición
+    const formEditar = document.getElementById('formEditarPrestamo');
+    if (formEditar) {
+        formEditar.addEventListener('submit', guardarCambiosPrestamo);
     }
 });
 
@@ -19,7 +24,7 @@ async function cargarPrestamosActivos() {
         const tbody = document.querySelector('tbody');
         if (!tbody) return;
 
-        tbody.innerHTML = ''; // Limpiar filas estáticas de ejemplo
+        tbody.innerHTML = ''; // Limpiar filas de la tabla
 
         if (prestamos.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-secondary">No hay préstamos registrados.</td></tr>`;
@@ -34,14 +39,51 @@ async function cargarPrestamosActivos() {
             
             const fechaVencimiento = new Date(p.fecha_fin_pre).toLocaleDateString();
 
-            let badgeClase = 'bg-green-100 text-green-800';
-            let puntoClase = 'bg-green-500';
-            if (p.estado_pre === 'PENDIENTE') {
-                badgeClase = 'bg-amber-100 text-amber-800';
-                puntoClase = 'bg-amber-500';
-            } else if (p.estado_pre === 'MORA' || p.estado_pre === 'ATRASADO') {
-                badgeClase = 'bg-error-container text-on-error-container';
-                puntoClase = 'bg-error';
+            // Configuración de colores para los 4 estados
+            let badgeClase = 'bg-gray-100 text-gray-800';
+            let puntoClase = 'bg-gray-500';
+
+            switch(p.estado_pre) {
+                case 'Pendiente':
+                    badgeClase = 'bg-amber-100 text-amber-800';
+                    puntoClase = 'bg-amber-500';
+                    break;
+                case 'Prestado':
+                    badgeClase = 'bg-green-100 text-green-800';
+                    puntoClase = 'bg-green-500';
+                    break;
+                case 'Devuelto':
+                    badgeClase = 'bg-blue-100 text-blue-800';
+                    puntoClase = 'bg-blue-500';
+                    break;
+                case 'Incidencia':
+                    badgeClase = 'bg-red-100 text-red-800';
+                    puntoClase = 'bg-red-500';
+                    break;
+            }
+
+            // Preparar el objeto JSON escapando comillas simples para evitar romper el HTML
+            const prestamoJsonStr = JSON.stringify(p).replace(/'/g, "\\'");
+
+            // Botón de acción con ícono de lápiz minimalista
+            let accionHtml = `
+                <button onclick='abrirModalPrestamo(${prestamoJsonStr})' class="text-secondary hover:text-primary transition-colors ml-auto flex items-center justify-center p-1 rounded-full" title="Gestionar">
+                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                </button>
+            `;
+
+            // Si está pendiente, agregar también el botón de Activar
+            if (p.estado_pre === 'Pendiente') {
+                accionHtml = `
+                    <div class="flex gap-3 justify-end items-center">
+                        <button onclick="autorizarApartado(${p.id_prestamo})" class="bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-xs font-label-md transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">verified</span> Activar
+                        </button>
+                        <button onclick='abrirModalPrestamo(${prestamoJsonStr})' class="text-secondary hover:text-primary transition-colors p-1 rounded-full flex items-center justify-center" title="Gestionar">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </button>
+                    </div>
+                `;
             }
 
             const tr = document.createElement('tr');
@@ -57,7 +99,7 @@ async function cargarPrestamosActivos() {
                     </span>
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <span class="text-xs text-secondary">${p.no_folio_pre || ''}</span>
+                    ${accionHtml}
                 </td>
             `;
             tbody.appendChild(tr);
@@ -92,7 +134,6 @@ async function enviarAutorizacionPrestamo() {
 
         if (respuesta && respuesta.ok) {
             alert('¡Préstamo autorizado con éxito!');
-            // Limpiar formulario y recargar tabla
             document.getElementById('id_usuario').value = '';
             document.getElementById('id_ejemplar').value = '';
             cargarPrestamosActivos();
@@ -105,3 +146,79 @@ async function enviarAutorizacionPrestamo() {
         alert('Ocurrió un error de conexión al autorizar el préstamo.');
     }
 }
+
+// =========================================
+// NUEVAS FUNCIONES PARA EL MODAL DE EDICIÓN
+// =========================================
+
+window.abrirModalPrestamo = function(prestamo) {
+    document.getElementById('edit_id_prestamo').value = prestamo.id_prestamo;
+    
+    // Formatear fecha para el input tipo Date
+    if (prestamo.fecha_fin_pre) {
+        const fechaFormateada = new Date(prestamo.fecha_fin_pre).toISOString().split('T')[0];
+        document.getElementById('edit_fecha_fin').value = fechaFormateada;
+    }
+    
+    document.getElementById('edit_estado_pre').value = prestamo.estado_pre;
+    
+    // Mostrar modal (remover clase hidden y forzar flex)
+    const modal = document.getElementById('modalEditarPrestamo');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+};
+
+window.cerrarModalPrestamo = function() {
+    const modal = document.getElementById('modalEditarPrestamo');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+};
+
+async function guardarCambiosPrestamo(e) {
+    e.preventDefault(); // Evita recargar la página
+    
+    const id_prestamo = document.getElementById('edit_id_prestamo').value;
+    const fecha_fin = document.getElementById('edit_fecha_fin').value;
+    const estado_pre = document.getElementById('edit_estado_pre').value;
+
+    try {
+        const respuesta = await Auth.peticionSegura(`/api/prestamos/actualizar/${id_prestamo}`, {
+            method: 'PUT',
+            body: JSON.stringify({ fecha_fin, estado_pre })
+        });
+
+        if (respuesta && respuesta.ok) {
+            alert('¡Préstamo actualizado exitosamente!');
+            cerrarModalPrestamo();
+            cargarPrestamosActivos(); // Refrescar la tabla
+        } else {
+            const err = await respuesta.json();
+            alert(`Error: ${err.error || 'No se pudo actualizar el préstamo'}`);
+        }
+    } catch (error) {
+        console.error('Error al actualizar préstamo:', error);
+        alert('Error de conexión al actualizar el préstamo.');
+    }
+}
+
+window.autorizarApartado = async function(id_prestamo) {
+    if (!confirm('¿El alumno ha entregado su credencial física? Se procederá a activar el préstamo.')) return;
+
+    try {
+        const respuesta = await Auth.peticionSegura('/api/prestamos/autorizar', {
+            method: 'POST',
+            body: JSON.stringify({ id_prestamo })
+        });
+
+        if (respuesta && respuesta.ok) {
+            alert('¡Préstamo activado correctamente!');
+            cargarPrestamosActivos(); // Refrescar la tabla
+        } else {
+            const err = await respuesta.json();
+            alert(`Error: ${err.error || 'No se pudo activar el préstamo'}`);
+        }
+    } catch (error) {
+        console.error('Error al autorizar apartado:', error);
+        alert('Error de conexión al procesar la autorización.');
+    }
+};
