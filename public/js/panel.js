@@ -24,14 +24,13 @@ async function cargarResumenDashboard() {
         `;
 
         // =========================================================
-        // NUEVO: Actualizar barra y texto de capacidad óptima
+        // Actualizar barra y texto de capacidad óptima
         // =========================================================
         const porcentajeCapacidad = data.capacidadPorcentaje || 0;
         const barraCapacidad = document.getElementById('barra-capacidad');
         const textoCapacidad = document.getElementById('texto-capacidad');
         if (barraCapacidad) barraCapacidad.style.width = `${porcentajeCapacidad}%`;
         if (textoCapacidad) textoCapacidad.innerText = `${porcentajeCapacidad}% de capacidad óptima`;
-        // =========================================================
 
         // 2. Llenar Actividad Reciente
         const contenedor = document.getElementById('contenedor-actividad');
@@ -56,7 +55,7 @@ async function cargarResumenDashboard() {
             contenedor.appendChild(div);
         });
 
-        // 3. Generar Gráfica de Préstamos por Categoría
+        // 3. Generar Gráfica de Préstamos por Categoría (CORREGIDO PARA EVITAR ENCINAMIENTO)
         const contenedorGrafica = document.getElementById('contenedor-grafica');
         if (contenedorGrafica && data.prestamosPorCategoria) {
             contenedorGrafica.innerHTML = '';
@@ -67,9 +66,9 @@ async function cargarResumenDashboard() {
                 const alturaPorcentaje = cat.total === 0 ? 5 : Math.round((cat.total / maxTotal) * 100);
 
                 const barraHtml = `
-                    <div class="flex-1 flex flex-col items-center justify-end group h-full">
+                    <div class="min-w-[70px] flex-1 flex flex-col items-center justify-end group h-full">
                         <div class="w-full max-w-[40px] bg-primary/60 group-hover:bg-primary rounded-t-sm transition-all relative cursor-pointer" style="height: ${alturaPorcentaje}%">
-                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">
                                 ${cat.total} préstamos
                             </div>
                         </div>

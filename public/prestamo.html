@@ -274,7 +274,7 @@
                     <div class="glass-card rounded-xl p-6 shadow-sm flex items-center justify-between">
                         <div>
                             <p class="font-label-md text-label-md text-secondary">Préstamos Hoy</p>
-                            <p class="font-headline-lg text-headline-lg text-primary">24</p>
+                            <p id="kpi-prestamos-hoy" class="font-headline-lg text-headline-lg text-primary">0</p>
                         </div>
                         <div class="bg-primary-container/10 p-3 rounded-full">
                             <span class="material-symbols-outlined text-primary text-3xl">trending_up</span>
@@ -290,9 +290,9 @@
                                 Préstamos Activos
                             </h3>
                             <div class="relative w-64">
-                                <span
-                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
                                 <input
+                                    id="input-buscador"
                                     class="form-input w-full rounded-full bg-surface-container-lowest pl-10 pr-4 py-1.5 text-label-md"
                                     placeholder="Buscar préstamo..." type="text" />
                             </div>
@@ -381,7 +381,7 @@
                         </div>
                         <div
                             class="p-4 border-t border-outline-variant flex justify-between items-center text-sm text-secondary">
-                            <span>Mostrando 3 de 42 préstamos activos</span>
+                            <span id="texto-paginacion">Mostrando 0 de 0 préstamos activos</span>
                             <div class="flex gap-2">
                                 <button class="p-1 rounded hover:bg-surface-container-high"><span
                                         class="material-symbols-outlined">chevron_left</span></button>
