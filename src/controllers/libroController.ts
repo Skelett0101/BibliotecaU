@@ -405,3 +405,27 @@ export const crearAutor = async (req: Request, res: Response): Promise<void> => 
         res.status(500).json({ error: "Error al registrar el autor" });
     }
 };
+
+// ===============================================
+// NUEVA FUNCIÓN PARA EDITAR AUTOR
+// ===============================================
+export const editarAutor = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { nombre_au, apellido_au } = req.body;
+        
+        if (!nombre_au || !apellido_au) {
+            res.status(400).json({ error: "El nombre y apellido son obligatorios." });
+            return;
+        }
+
+        const autorActualizado = await prisma.autor_libro.update({
+            where: { id_autor: parseInt(id as string) },
+            data: { nombre_au, apellido_au }
+        });
+
+        res.status(200).json({ mensaje: "✅ Autor actualizado exitosamente", autor: autorActualizado });
+    } catch (error) {
+        res.status(500).json({ error: "Error interno al actualizar el autor" });
+    }
+};

@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { registrarLibro, cambiarEstadoEjemplar, editarLibro, actualizarEstadoFisico, buscarLibros, buscarLibrosAlumnos } from '../controllers/libroController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
-import { obtenerCategorias, crearCategoria, editarCategoria, obtenerAutores, crearAutor } from '../controllers/libroController';
+import { obtenerCategorias, crearCategoria, editarCategoria, obtenerAutores, crearAutor, editarAutor } from '../controllers/libroController';
 
 const router = Router();
 
@@ -24,6 +24,7 @@ router.put('/categorias/:id', verificarToken, verificarRol(['admin', 'biblioteca
 
 // Autores
 router.post('/autores', verificarToken, verificarRol(['admin', 'bibliotecario']), crearAutor);
+router.put('/autores/:id', verificarToken, verificarRol(['admin', 'bibliotecario']), editarAutor);
 
 // Gestión Principal de Libros
 router.post('/', verificarToken, verificarRol(['admin', 'bibliotecario']), registrarLibro);

@@ -1,14 +1,10 @@
-// Archivo: public/js/inventario.js
-
 let listaTodosLosLibros = []; 
 let autoresArray = []; 
 
 document.addEventListener('DOMContentLoaded', () => {
     const rolActual = Auth.getRol();
-    // Validación de roles: Permite acceso total a admin y bibliotecario
     const tienePermisosEdicion = (rolActual === 'admin' || rolActual === 'bibliotecario');
     
-    // SOLUCIÓN: Solo el admin pide el reporte, así evitamos que el servidor expulse al bibliotecario.
     if (rolActual === 'admin') {
         cargarReporteInventario();
     }
@@ -17,13 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarCategoriasBD();
     cargarAutoresBD();
 
-    // Ocultar botones de edición a usuarios sin permisos (alumnos)
     if (!tienePermisosEdicion) {
-// ... (Todo el resto de tu código se queda exactamente igual hacia abajo) ...
         const botonesOcultar = [
             'btn-guardar', 'btn-actualizar-estado', 'btn-abrir-editar', 
             'btn-nueva-categoria', 'btn-abrir-editar-cat', 
-            'btn-nuevo-autor-bd', 'btn-add-autor'
+            'btn-nuevo-autor-bd', 'btn-abrir-editar-autor', 'btn-add-autor'
         ];
         botonesOcultar.forEach(id => {
             const btn = document.getElementById(id);
@@ -45,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const idSeleccionado = selectPrincipalCat.value;
             
             if(!idSeleccionado) {
-                alert("⚠️ Selecciona una categoría de la lista primero para poder editarla.");
+                UI.toast("⚠️ Selecciona una categoría de la lista primero.", "error");
                 return;
             }
 
@@ -61,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = document.getElementById('input-edit-cat-id').value;
             const nuevoNombre = document.getElementById('input-edit-cat-nom').value.trim();
 
-            if (!nuevoNombre) { alert("El nombre no puede estar vacío."); return; }
+            if (!nuevoNombre) { UI.toast("El nombre no puede estar vacío.", "error"); return; }
 
             try {
                 const res = await Auth.peticionSegura(`/api/libros/categorias/${id}`, {
@@ -70,11 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 
                 if (res.ok) {
-                    alert(data.mensaje);
+                    await UI.alert("¡Éxito!", data.mensaje, "exito");
                     modalEditarCat.classList.add('hidden');
                     cargarCategoriasBD(); 
-                } else { alert("Error: " + data.error); }
-            } catch (error) { alert("Error al conectar con el servidor."); }
+                } else { await UI.alert("Error", data.error, "error"); }
+            } catch (error) { UI.toast("Error al conectar con el servidor.", "error"); }
         });
     }
 
@@ -96,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btnGuardarCat.addEventListener('click', async () => {
             const nuevaCat = document.getElementById('input-nueva-cat').value.trim();
-            if (!nuevaCat) { alert("El nombre no puede estar vacío."); return; }
+            if (!nuevaCat) { UI.toast("El nombre no puede estar vacío.", "error"); return; }
 
             try {
                 const res = await Auth.peticionSegura('/api/libros/categorias', {
@@ -104,11 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    alert(data.mensaje);
+                    await UI.alert("¡Éxito!", data.mensaje, "exito");
                     modalCat.classList.add('hidden');
                     cargarCategoriasBD(); 
-                } else { alert("Error: " + data.error); }
-            } catch (error) { alert("Error de conexión al guardar categoría."); }
+                } else { await UI.alert("Error", data.error, "error"); }
+            } catch (error) { UI.toast("Error de conexión al guardar categoría.", "error"); }
         });
     }
 
@@ -133,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const nombre = document.getElementById('input-nuevo-autor-nom').value.trim();
             const apellido = document.getElementById('input-nuevo-autor-ape').value.trim();
             
-            if (!nombre || !apellido) { alert("Nombre y apellido son obligatorios."); return; }
+            if (!nombre || !apellido) { UI.toast("Nombre y apellido son obligatorios.", "error"); return; }
 
             try {
                 const res = await Auth.peticionSegura('/api/libros/autores', {
@@ -141,11 +135,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    alert(data.mensaje);
+                    await UI.alert("¡Éxito!", data.mensaje, "exito");
                     modalAutor.classList.add('hidden');
                     cargarAutoresBD(); 
-                } else { alert("Error: " + (data.error || "No se pudo guardar")); }
-            } catch (error) { alert("Error de conexión al guardar autor."); }
+                } else { await UI.alert("Error", (data.error || "No se pudo guardar"), "error"); }
+            } catch (error) { UI.toast("Error de conexión al guardar autor.", "error"); }
+        });
+    }
+
+    // ==========================================
+    // MODAL: EDITAR AUTOR DESDE EL MENÚ
+    // ==========================================
+    const modalEditarAutor = document.getElementById('modal-editar-autor');
+    const btnAbrirEditarAutor = document.getElementById('btn-abrir-editar-autor');
+    const btnCerrarEditAutor = document.getElementById('btn-cerrar-edit-autor');
+    const btnGuardarEditAutor = document.getElementById('btn-guardar-edit-autor');
+
+    if (btnAbrirEditarAutor && tienePermisosEdicion) {
+        btnAbrirEditarAutor.addEventListener('click', () => {
+            const selectAutorBD = document.getElementById('select-autor-bd');
+            const valorSeleccionado = selectAutorBD.value;
+            
+            if(!valorSeleccionado) {
+                UI.toast("⚠️ Selecciona un autor del menú desplegable primero.", "error");
+                return;
+            }
+
+            const autorObj = JSON.parse(valorSeleccionado);
+            document.getElementById('input-edit-autor-nom').value = autorObj.nombre;
+            document.getElementById('input-edit-autor-ape').value = autorObj.apellido;
+            document.getElementById('input-edit-autor-id').value = autorObj.id; 
+            modalEditarAutor.classList.remove('hidden');
+        });
+
+        btnCerrarEditAutor.addEventListener('click', () => modalEditarAutor.classList.add('hidden'));
+
+        btnGuardarEditAutor.addEventListener('click', async () => {
+            const id = document.getElementById('input-edit-autor-id').value;
+            const nombre = document.getElementById('input-edit-autor-nom').value.trim();
+            const apellido = document.getElementById('input-edit-autor-ape').value.trim();
+
+            if (!nombre || !apellido) { UI.toast("Nombre y apellido no pueden estar vacíos.", "error"); return; }
+
+            try {
+                const res = await Auth.peticionSegura(`/api/libros/autores/${id}`, {
+                    method: 'PUT', body: JSON.stringify({ nombre_au: nombre, apellido_au: apellido })
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    await UI.alert("¡Éxito!", data.mensaje, "exito");
+                    modalEditarAutor.classList.add('hidden');
+                    cargarAutoresBD(); 
+                } else { await UI.alert("Error", data.error, "error"); }
+            } catch (error) { UI.toast("Error al conectar con el servidor.", "error"); }
         });
     }
 
@@ -189,10 +232,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('edit-url').value = libroEdit.url_imagen_li || '';
                     formEditar.classList.remove('hidden');
                 } else {
-                    alert("No se encontró ningún libro con ese ISBN exacto.");
+                    UI.toast("No se encontró ningún libro con ese ISBN exacto.", "error");
                     formEditar.classList.add('hidden');
                 }
-            } catch (error) { alert("Error al buscar el libro."); }
+            } catch (error) { UI.toast("Error al buscar el libro.", "error"); }
         });
 
         btnGuardarEdicion.addEventListener('click', async () => {
@@ -214,11 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 if(res.ok) {
-                    alert(data.mensaje);
+                    await UI.alert("¡Éxito!", data.mensaje, "exito");
                     modalEditar.classList.add('hidden');
                     location.reload();
-                } else { alert("Error: " + data.error); }
-            } catch (error) { alert("Error al actualizar."); }
+                } else { await UI.alert("Error", data.error, "error"); }
+            } catch (error) { UI.toast("Error al actualizar.", "error"); }
         });
     }
 
@@ -231,10 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddAutor && selectAutorBD && tienePermisosEdicion) {
         btnAddAutor.addEventListener('click', () => {
-            if (!selectAutorBD.value) { alert("Por favor, selecciona un autor de la lista primero."); return; }
+            if (!selectAutorBD.value) { UI.toast("Por favor, selecciona un autor de la lista primero.", "error"); return; }
             const autorSeleccionado = JSON.parse(selectAutorBD.value);
             const yaExiste = autoresArray.some(a => a.nombre_au === autorSeleccionado.nombre && a.apellido_au === autorSeleccionado.apellido);
-            if (yaExiste) { alert("Este autor ya fue añadido a la lista del libro."); return; }
+            if (yaExiste) { UI.toast("Este autor ya fue añadido a la lista del libro.", "error"); return; }
 
             autoresArray.push({ nombre_au: autorSeleccionado.nombre, apellido_au: autorSeleccionado.apellido });
             renderizarAutores();
@@ -280,16 +323,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 autores: autoresArray 
             };
 
-            if (!datosLibro.id_categoria) { alert("⚠️ ¡ERROR! Debes seleccionar una Categoría obligatoriamente."); return; }
-            if (!datosLibro.url_imagen_li) { alert("⚠️ ¡ERROR! La Portada (URL de la imagen) es obligatoria."); return; }
-            if (!datosLibro.nombre_li || !datosLibro.ISBN_li) { alert("El título y el ISBN son obligatorios."); return; }
-            if (autoresArray.length === 0) { alert("Debes añadir al menos un autor al libro antes de guardar."); return; }
+            if (!datosLibro.id_categoria) { UI.toast("⚠️ Debes seleccionar una Categoría obligatoriamente.", "error"); return; }
+            if (!datosLibro.url_imagen_li) { UI.toast("⚠️ La Portada (URL de la imagen) es obligatoria.", "error"); return; }
+            if (!datosLibro.nombre_li || !datosLibro.ISBN_li) { UI.toast("El título y el ISBN son obligatorios.", "error"); return; }
+            if (autoresArray.length === 0) { UI.toast("Debes añadir al menos un autor al libro.", "error"); return; }
 
             try {
                 const res = await Auth.peticionSegura('/api/libros', { method: 'POST', body: JSON.stringify(datosLibro) });
                 const json = await res.json();
-                if (res.ok) { alert(json.mensaje); location.reload(); } else { alert("❌ Error: " + json.error); }
-            } catch (error) { alert("❌ Error al conectar con el servidor."); }
+                if (res.ok) { 
+                    await UI.alert("¡Éxito!", json.mensaje, "exito"); 
+                    location.reload(); 
+                } else { 
+                    await UI.alert("Error", json.error, "error"); 
+                }
+            } catch (error) { UI.toast("❌ Error al conectar con el servidor.", "error"); }
         });
     }
 
@@ -307,18 +355,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const estadoFis = selectEstado ? selectEstado.value : ''; 
             const estanteFis = inputEstante ? inputEstante.value.trim() : ''; 
 
-            if (!isbn || !estadoFis) { alert("Ingresa el ISBN y selecciona el nuevo Estado."); return; }
-
-            const mensajeEstante = estanteFis ? ` y ubicación a "${estanteFis}"` : '';
-            if (!confirm(`¿Estás seguro de actualizar a "${estadoFis}"${mensajeEstante} el libro con ISBN ${isbn}?`)) return;
+            if (!isbn || !estadoFis) { UI.toast("Ingresa el ISBN y selecciona el nuevo Estado.", "error"); return; }
 
             try {
                 const res = await Auth.peticionSegura('/api/libros/ejemplares/actualizar-estado', {
                     method: 'PUT', body: JSON.stringify({ ISBN_li: isbn, estado_fis: estadoFis, estante_libro_fis: estanteFis })
                 });
                 const data = await res.json();
-                if (res.ok) { alert(data.mensaje || `¡Éxito! Estado actualizado.`); location.reload(); } else { alert("Error: " + (data.error || data.message)); }
-            } catch (error) { alert("Ocurrió un error al intentar comunicarse con el servidor."); }
+                if (res.ok) { 
+                    await UI.alert("¡Éxito!", data.mensaje || "Estado actualizado correctamente.", "exito"); 
+                    location.reload(); 
+                } else { 
+                    await UI.alert("Error", (data.error || data.message), "error"); 
+                }
+            } catch (error) { UI.toast("Ocurrió un error al intentar comunicarse con el servidor.", "error"); }
         });
     }
 
@@ -371,7 +421,7 @@ async function cargarAutoresBD() {
             
             selectAutorBD.innerHTML = '<option value="">Selecciona un autor de la BD...</option>';
             autores.forEach(au => {
-                const valorJson = JSON.stringify({ nombre: au.nombre_au, apellido: au.apellido_au });
+                const valorJson = JSON.stringify({ id: au.id_autor, nombre: au.nombre_au, apellido: au.apellido_au });
                 selectAutorBD.innerHTML += `<option value='${valorJson}'>${au.nombre_au} ${au.apellido_au}</option>`;
             });
         }
@@ -384,8 +434,6 @@ async function cargarLibrosRecientes() {
         if (!res || !res.ok) return;
 
         listaTodosLosLibros = await res.json();
-        
-        // 👇 AÑADE ESTA LÍNEA PARA ORDENAR DEL MÁS NUEVO AL MÁS ANTIGUO
         listaTodosLosLibros.sort((a, b) => b.id_libro - a.id_libro);
 
         const contenedor = document.getElementById('contenedor-recientes');
@@ -399,7 +447,7 @@ async function cargarLibrosRecientes() {
         recientes.forEach(libro => {
             const div = document.createElement('div');
             div.className = 'p-4 border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors flex gap-3 items-start';
-            const imagenHTML = libro.url_imagen_li ? `<div class="w-12 h-18 bg-cover bg-center rounded shadow-sm shrink-0" style="background-image: url('${libro.url_imagen_li}')"></div>` : `<div class="w-12 h-18 bg-surface-container flex items-center justify-center rounded shadow-sm shrink-0 text-outline-variant"><span class="material-symbols-outlined">menu_book</span></div>`;
+            const imagenHTML = libro.url_imagen_li ? `<div class="w-14 h-20 bg-cover bg-center rounded shadow-sm shrink-0" style="background-image: url('${libro.url_imagen_li}')"></div>` : `<div class="w-14 h-20 bg-surface-container flex items-center justify-center rounded shadow-sm shrink-0 text-outline-variant"><span class="material-symbols-outlined">menu_book</span></div>`;
             const categoriaNombre = libro.categoria ? libro.categoria.nombre_cat : `CAT-${libro.id_categoria}`;
 
             div.innerHTML = `

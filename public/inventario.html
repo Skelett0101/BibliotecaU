@@ -278,8 +278,14 @@
                                     <option value="">Cargando autores...</option>
                                 </select>
 
+                                <!-- Botón Añadir Autor a BD -->
                                 <button type="button" id="btn-nuevo-autor-bd" class="shrink-0 bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center border border-outline-variant/50" title="Crear nuevo autor en BD">
                                     <span class="material-symbols-outlined text-[20px]">person_add</span>
+                                </button>
+
+                                <!-- NUEVO: Botón Editar Autor Seleccionado -->
+                                <button type="button" id="btn-abrir-editar-autor" class="shrink-0 bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center border border-outline-variant/50" title="Editar autor seleccionado">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
 
                                 <button type="button" id="btn-add-autor" class="shrink-0 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md hover:bg-[#bac7e3] transition-colors">
@@ -560,6 +566,30 @@
             <div class="flex justify-end gap-3">
                 <button type="button" id="btn-cerrar-edit-cat" class="px-4 py-2 font-label-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">Cancelar</button>
                 <button type="button" id="btn-guardar-edit-cat" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Actualizar</button>
+            </div>
+        </div>
+    </div>
+
+<!-- MODAL EDITAR AUTOR -->
+    <div id="modal-editar-autor" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-sm p-6 shadow-2xl border border-black/10">
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">edit</span> Editar Autor
+            </h3>
+            <input type="hidden" id="input-edit-autor-id">
+            <div class="flex flex-col gap-4 mb-6">
+                <div>
+                    <label class="form-label mb-1">Nombre(s)</label>
+                    <input type="text" id="input-edit-autor-nom" class="form-input w-full placeholder:text-outline">
+                </div>
+                <div>
+                    <label class="form-label mb-1">Apellido(s)</label>
+                    <input type="text" id="input-edit-autor-ape" class="form-input w-full placeholder:text-outline">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btn-cerrar-edit-autor" class="px-4 py-2 font-label-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">Cancelar</button>
+                <button type="button" id="btn-guardar-edit-autor" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Actualizar</button>
             </div>
         </div>
     </div>
