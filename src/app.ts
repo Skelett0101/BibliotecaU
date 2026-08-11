@@ -48,7 +48,7 @@ app.use('/api/recargos', recargoRoutes);
 app.use((req, res) => {
     // Si la ruta no es de la API, devolvemos el frontend
     if (!req.path.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, '../public/index.html'));
+        res.sendFile(path.join(__dirname, '../public/login.html'));
     } else {
         // Si alguien busca una ruta de la API que no existe, mandamos un error 404
         res.status(404).json({ error: "Endpoint no encontrado" });

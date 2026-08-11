@@ -204,7 +204,7 @@
             </ul>
         </div>
     </nav>
-    <!-- Main Content Area -->
+  
     <!-- Main Content Area -->
     <main
         class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop h-screen overflow-y-auto  bg-[#F9F8F6] min-h-screen">
@@ -261,9 +261,7 @@
                                     id="rol" required>
                                     <option disabled selected value="">Seleccione un rol...</option>
                                     <option value="alumno">Estudiante</option>
-                                    <option value="maestro">Profesor / Académico</option>
                                     <option value="bibliotecario">Bibliotecario</option>
-                                    <option value="becario">Becario</option>
                                     <option value="admin">Administrador</option>
                                 </select>
                                 <span
@@ -305,19 +303,24 @@
                                 plataforma</p>
                         </div>
                         <!-- Search and Filter -->
-                        <div class="flex gap-2 w-full sm:w-auto">
+                        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-4 sm:mt-0">
                             <div class="relative flex-1 sm:w-64">
-                                <span
-                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-                                <input
-                                    class="w-full pl-9 pr-4 py-2 rounded-lg border-outline-variant bg-surface form-input-focus font-body-md text-sm"
-                                    placeholder="Buscar por nombre o matrícula..." type="text" />
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                                <!-- 👇 Agregamos ID y oninput -->
+                                <input id="input-busqueda-us" oninput="aplicarFiltrosUsuarios()"
+                                    class="w-full pl-9 pr-4 py-2 rounded-lg border border-outline-variant bg-surface form-input-focus font-body-md text-sm transition-shadow focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                                    placeholder="Buscar nombre o matrícula..." type="text" />
                             </div>
-                            <button aria-label="Filtrar"
-                                class="p-2 border border-[#2A374D] rounded-lg text-[#2A374D] hover:bg-surface-container transition-colors flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">filter_list</span>
-                            </button>
+                            <!-- Cambiamos el botón por un Select real -->
+                            <select id="select-filtro-rol" onchange="aplicarFiltrosUsuarios()" 
+                                class="p-2 border border-[#2A374D] rounded-lg text-[#2A374D] hover:bg-surface-container transition-colors bg-surface outline-none cursor-pointer text-sm font-label-md">
+                                <option value="todos">Todos los Roles</option>
+                                <option value="alumno">Estudiantes</option>
+                                <option value="bibliotecario">Bibliotecarios</option>
+                                <option value="admin">Administradores</option>
+                            </select>
                         </div>
+
                     </div>
                     <!-- Table Data -->
                     <div class="overflow-x-auto flex-1">
@@ -405,10 +408,8 @@
                                 class="w-full rounded-lg border-outline-variant bg-surface px-4 py-2 text-on-surface form-input-focus font-body-md text-sm appearance-none pr-10"
                                 id="edit-rol">
                                     <option disabled selected value="">Seleccione un rol...</option>
-                                    <option value="alumno">Estudiante</option>
-                                    <option value="maestro">Maestro</option>
-                                    <option value="bibliotecario">Bibliotecario</option>
-                                    <option value="becario">Becario</option>
+                                    <option value="alumno">Estudiante</option>                                 
+                                    <option value="bibliotecario">Bibliotecario</option>   
                                     <option value="admin">Administrador</option>
                             </select>
                             <span

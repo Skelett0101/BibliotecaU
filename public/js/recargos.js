@@ -3,8 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarRecargos();
 });
 
+// ==========================================
+// VARIABLES GLOBALES (PAGINACIÓN Y FILTROS)
+// ==========================================
+let todosLosRecargos = [];
+let recargosFiltrados = [];
+let paginaActual = 1;
+const registrosPorPagina = 5; // Puedes cambiar a 10 o 20
+
+// ==========================================
+// CARGAR DATOS DESDE EL SERVIDOR
+// ==========================================
 async function cargarRecargos() {
     const tbody = document.getElementById('tabla-recargos');
+    tbody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-secondary">Cargando recargos...</td></tr>';
     
     const respuesta = await Auth.peticionSegura('/api/recargos', { method: 'GET' });
 
@@ -13,19 +25,97 @@ async function cargarRecargos() {
         return;
     }
 
-    const recargos = await respuesta.json();
+    // Guardamos los datos puros que vienen de la BD
+    todosLosRecargos = await respuesta.json();
 
-    if (recargos.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-secondary">No hay recargos registrados en el sistema.</td></tr>';
+    // Actualizamos los números de arriba (Tarjetas de Total Deuda)
+    actualizarEstadisticas();
+
+    // Arrancamos el motor de filtros y paginación
+    aplicarFiltros();
+}
+
+// ==========================================
+// ACTUALIZAR TARJETAS SUPERIORES
+// ==========================================
+function actualizarEstadisticas() {
+    let totalDeuda = 0;
+    const usuariosUnicosEnMora = new Set();
+
+    todosLosRecargos.forEach(rec => {
+        const estadoUpper = rec.estado_pago_rec.toUpperCase();
+        if (estadoUpper !== 'PAGADO' && estadoUpper !== 'CONDONADO') {
+            totalDeuda += parseFloat(rec.monto_rec);
+            if (rec.prestamo?.usuario?.matricula_usu) {
+                usuariosUnicosEnMora.add(rec.prestamo.usuario.matricula_usu);
+            }
+        }
+    });
+
+    document.getElementById('stat-monto-total').textContent = `$${totalDeuda.toFixed(2)}`;
+    document.getElementById('stat-usuarios-mora').textContent = usuariosUnicosEnMora.size;
+}
+
+// ==========================================
+// MOTOR DE BÚSQUEDA Y FILTROS
+// ==========================================
+window.aplicarFiltros = () => {
+    const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
+    const estadoFiltro = document.getElementById('select-estado').value.toLowerCase();
+
+    recargosFiltrados = todosLosRecargos.filter(rec => {
+        // Datos a buscar
+        const idTexto = `rec-${rec.id_recargo}`;
+        const usuarioNombre = (rec.prestamo?.usuario?.nombre_usu || '').toLowerCase();
+        const matricula = (rec.prestamo?.usuario?.matricula_usu || '').toLowerCase();
+        const estadoReal = rec.estado_pago_rec.toLowerCase();
+
+        // 1. Validar Búsqueda (Texto)
+        const pasaBusqueda = idTexto.includes(busqueda) || usuarioNombre.includes(busqueda) || matricula.includes(busqueda);
+        
+        // 2. Validar Estado (Dropdown)
+        let pasaEstado = false;
+        if (estadoFiltro === 'todos') {
+            pasaEstado = true;
+        } else if (estadoFiltro === 'mora') {
+            pasaEstado = estadoReal.includes('mora');
+        } else {
+            pasaEstado = estadoReal === estadoFiltro;
+        }
+
+        return pasaBusqueda && pasaEstado;
+    });
+
+    // Cada que filtramos, regresamos a la página 1
+    paginaActual = 1; 
+    renderizarTabla();
+};
+
+// ==========================================
+// DIBUJAR LA TABLA Y LA PAGINACIÓN
+// ==========================================
+function renderizarTabla() {
+    const tbody = document.getElementById('tabla-recargos');
+    const textoPaginacion = document.getElementById('texto-paginacion');
+    const contenedorPaginacion = document.getElementById('contenedor-paginacion');
+
+    if (recargosFiltrados.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-secondary">No se encontraron resultados con estos filtros.</td></tr>';
+        textoPaginacion.textContent = "Mostrando 0 registros";
+        contenedorPaginacion.innerHTML = '';
         return;
     }
 
-    let totalDeuda = 0;
-    const usuariosUnicosEnMora = new Set();
-    let html = '';
+    // Lógica Matemática de Paginación
+    const totalPaginas = Math.ceil(recargosFiltrados.length / registrosPorPagina);
+    const indiceInicio = (paginaActual - 1) * registrosPorPagina;
+    const indiceFin = indiceInicio + registrosPorPagina;
+    
+    // Extraemos solo el "pedazo" de datos de la página actual
+    const datosPagina = recargosFiltrados.slice(indiceInicio, indiceFin);
 
-    recargos.forEach(rec => {
-        // Variables de datos
+    let html = '';
+    datosPagina.forEach(rec => {
         const prestamoId = rec.prestamo ? `PR-${rec.prestamo.id_prestamo}` : 'N/A';
         const usuarioNombre = rec.prestamo?.usuario?.nombre_usu || 'Desconocido';
         const monto = parseFloat(rec.monto_rec).toFixed(2);
@@ -36,15 +126,6 @@ async function cargarRecargos() {
             fechaPago = new Date(rec.fecha_pago_rec).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
         }
 
-        // Cálculos estadísticos (solo sumamos lo que NO está terminado)
-        if (estadoUpper !== 'PAGADO' && estadoUpper !== 'CONDONADO') {
-            totalDeuda += parseFloat(rec.monto_rec);
-            if (rec.prestamo?.usuario?.matricula_usu) {
-                usuariosUnicosEnMora.add(rec.prestamo.usuario.matricula_usu);
-            }
-        }
-
-        // Estilos dinámicos
         let badgeStyle = '';
         let rowStyle = 'hover:bg-surface-container-low transition-colors';
 
@@ -54,13 +135,11 @@ async function cargarRecargos() {
             badgeStyle = 'bg-gray-100 text-gray-800 border-gray-200';
         } else if (estadoUpper === 'MORA GRAVE' || estadoUpper === 'MORA') {
             badgeStyle = 'bg-error-container text-on-error-container border-error';
-            rowStyle += ' bg-error-container/10'; // Fila con fondo rojizo
+            rowStyle += ' bg-error-container/10';
         } else {
-            // Pendiente
             badgeStyle = 'bg-[#FFF3E0] text-[#E65100] border-[#FFE0B2]';
         }
 
-        // 👇 El botón ahora SIEMPRE abre el modal y pasa los datos correctamente
         let actionBtn = `
             <button class="text-secondary hover:text-primary transition-colors p-1" title="Gestionar Recargo" 
                     onclick="abrirModalRecargo(${rec.id_recargo}, '${usuarioNombre}', '${monto}', '${rec.estado_pago_rec}')">
@@ -86,28 +165,60 @@ async function cargarRecargos() {
         `;
     });
 
-    // Inyectar a la tabla
     tbody.innerHTML = html;
 
-    // Actualizar Estadísticas Top
-    document.getElementById('stat-monto-total').textContent = `$${totalDeuda.toFixed(2)}`;
-    document.getElementById('stat-usuarios-mora').textContent = usuariosUnicosEnMora.size;
+    // Actualizar Textos y Botones de Paginación
+    const mostrandoFin = Math.min(indiceFin, recargosFiltrados.length);
+    textoPaginacion.textContent = `Mostrando ${indiceInicio + 1} a ${mostrandoFin} de ${recargosFiltrados.length} registros`;
+    
+    renderizarBotonesPaginacion(totalPaginas);
 }
 
+function renderizarBotonesPaginacion(totalPaginas) {
+    const contenedor = document.getElementById('contenedor-paginacion');
+    let html = '';
+
+    // Botón Anterior
+    html += `<button onclick="cambiarPagina(${paginaActual - 1})" class="p-1 rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" ${paginaActual === 1 ? 'disabled' : ''}>
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+             </button>`;
+
+    // Números de Página
+    for (let i = 1; i <= totalPaginas; i++) {
+        if (i === paginaActual) {
+            html += `<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center">${i}</button>`;
+        } else {
+            html += `<button onclick="cambiarPagina(${i})" class="w-8 h-8 rounded hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center transition-colors">${i}</button>`;
+        }
+    }
+
+    // Botón Siguiente
+    html += `<button onclick="cambiarPagina(${paginaActual + 1})" class="p-1 rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" ${paginaActual === totalPaginas ? 'disabled' : ''}>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+             </button>`;
+
+    contenedor.innerHTML = html;
+}
+
+window.cambiarPagina = (nuevaPagina) => {
+    const totalPaginas = Math.ceil(recargosFiltrados.length / registrosPorPagina);
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+        paginaActual = nuevaPagina;
+        renderizarTabla(); // Redibujamos la tabla con los datos nuevos
+    }
+};
+
 // ==========================================
-// ABRIR MODAL CON DATOS PRECARGADOS
+// FUNCIONES DEL MODAL (Actualizar y Sincronizar)
 // ==========================================
 window.abrirModalRecargo = (id, usuario, monto, estado) => {
-    // 1. Llenamos los campos visuales
     document.getElementById('edit-recargo-id').value = id;
     document.getElementById('edit-recargo-display').value = `#REC-${id}`;
     document.getElementById('edit-recargo-usuario').value = usuario;
     document.getElementById('edit-recargo-monto').value = `$${monto}`;
     
-    // 2. Seleccionamos el estado correcto en el dropdown
     const select = document.getElementById('edit-recargo-estado');
     let estadoEncontrado = false;
-    
     for (let i = 0; i < select.options.length; i++) {
         if (select.options[i].value.toLowerCase() === estado.toLowerCase()) {
             select.selectedIndex = i;
@@ -115,23 +226,16 @@ window.abrirModalRecargo = (id, usuario, monto, estado) => {
             break;
         }
     }
-    
-    if (!estadoEncontrado) select.value = 'Pendiente'; // Valor por defecto
+    if (!estadoEncontrado) select.value = 'Pendiente';
 
-    // 3. Mostramos el modal
     document.getElementById('modal-recargo').classList.remove('hidden');
 };
 
-// ==========================================
-// PROCESAR FORMULARIO DEL MODAL (PUT)
-// ==========================================
 document.getElementById('form-recargo').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
     const idRecargo = document.getElementById('edit-recargo-id').value;
     const nuevoEstado = document.getElementById('edit-recargo-estado').value;
 
-    // Hacemos la petición PUT al controlador genérico
     const respuesta = await Auth.peticionSegura(`/api/recargos/${idRecargo}`, {
         method: 'PUT',
         body: JSON.stringify({ estado_pago_rec: nuevoEstado })
@@ -143,8 +247,35 @@ document.getElementById('form-recargo').addEventListener('submit', async (e) => 
     if (respuesta.ok) {
         UI.toast(resultado.mensaje, 'exito');
         document.getElementById('modal-recargo').classList.add('hidden');
-        cargarRecargos(); // Recargamos la tabla para ver los cambios actualizados
+        cargarRecargos(); 
     } else {
         UI.toast(resultado.error || 'Error al actualizar el recargo', 'error');
     }
 });
+
+window.sincronizarRecargosManual = async () => {
+    const btn = document.getElementById('btn-sincronizar');
+    const contenidoOriginal = btn.innerHTML;
+    btn.innerHTML = `<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Calculando...`;
+    btn.disabled = true;
+
+    try {
+        const respuesta = await Auth.peticionSegura('/api/recargos/sincronizar', { method: 'POST' });
+        if (!respuesta) return;
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            if (typeof UI !== 'undefined' && UI.toast) UI.toast(resultado.mensaje, 'exito');
+            else alert(resultado.mensaje);
+            cargarRecargos(); 
+        } else {
+            if (typeof UI !== 'undefined' && UI.toast) UI.toast(resultado.error, 'error');
+            else alert(resultado.error);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    } finally {
+        btn.innerHTML = contenidoOriginal;
+        btn.disabled = false;
+    }
+};

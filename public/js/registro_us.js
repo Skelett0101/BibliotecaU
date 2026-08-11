@@ -1,14 +1,25 @@
+// Variables Globales
+let todosLosUsuarios = [];
+// Extraemos el rol de la sesión. Ajusta 'rol' si en tu Auth.js lo guardas con otro nombre.
+const miRolSesion = sessionStorage.getItem('rol') || 'alumno'; 
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Si no hay token el método bota al usuario al login.
     if (!Auth.verificarPaginaPrivada(['admin', 'bibliotecario'])) return;
 
-
-
+    // 🛡️ RESTRICCIÓN VISUAL: Si es bibliotecario, ocultar la opción "Administrador" en el nuevo registro
+    if (miRolSesion === 'bibliotecario') {
+        const selectRol = document.getElementById('rol');
+        for (let i = 0; i < selectRol.options.length; i++) {
+            if (selectRol.options[i].value === 'admin') {
+                selectRol.options[i].disabled = true;
+                selectRol.options[i].text = 'Administrador (Sin permisos)';
+            }
+        }
+    }
 
     cargarUsuarios();
-    obtenerEstiloEstado();
 
-    // registro de usuario
+    // Evento de Registro
     document.getElementById('formRegistroUsuario').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -18,106 +29,132 @@ document.addEventListener('DOMContentLoaded', () => {
         const contra_usu = document.getElementById('password').value;
 
         try {
-            //  Auth.peticionSegura
             const respuesta = await Auth.peticionSegura('/api/usuarios', {
                 method: 'POST',
                 body: JSON.stringify({ matricula_usu, nombre_usu, rol_usu, contra_usu })
             });
 
-            // Si la sesión expiró, la función segura ya manejó el logout y retorna null
             if (!respuesta) return;
-
             const resultado = await respuesta.json();
 
             if (respuesta.ok) {
-                await UI.alert(resultado.mensaje);
+                UI.toast(resultado.mensaje, 'exito');
                 document.getElementById('formRegistroUsuario').reset();
-                cargarUsuarios();
+                cargarUsuarios(); // Recargar tabla
             } else {
-                await UI.alert(" Error: " + resultado.error);
+                UI.toast(resultado.error, 'error');
             }
         } catch (error) {
             console.error("Error en la petición:", error);
-            await UI.alert("Error de conexión con el servidor.");
+            UI.toast("Error de conexión con el servidor.", 'error');
         }
     });
 });
 
 // ==========================================
-// FUNCIÓN PARA CONSULTAR LA API Y PINTAR LA TABLA
+// CARGAR DATOS Y APLICAR FILTROS
 // ==========================================
 async function cargarUsuarios() {
     const tbody = document.getElementById('tablaUsuariosBody');
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Cargando usuarios...</td></tr>';
 
     try {
+        const respuesta = await Auth.peticionSegura('/api/usuarios', { method: 'GET' });
+        if (!respuesta || !respuesta.ok) return;
 
-        const respuesta = await Auth.peticionSegura('/api/usuarios', {
-            method: 'GET'
-        });
-
-        if (!respuesta || !respuesta.ok) {
-            console.error("No se pudieron cargar los usuarios");
-            return;
-        }
-
-        const usuarios = await respuesta.json();
-        tbody.innerHTML = '';
-
-        usuarios.forEach(user => {
-
-            const iniciales = user.nombre_usu ? user.nombre_usu.substring(0, 2).toUpperCase() : "US";
-
-            const fila = `
-                <tr class="table-row-hover transition-colors">
-                    <td class="px-6 py-4 whitespace-nowrap font-medium text-on-surface-variant">
-                        ${user.matricula_usu}
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs uppercase">
-                                ${iniciales}
-                            </div>
-                            <div>
-                                <div class="font-semibold text-on-surface">${user.nombre_usu}</div>
-                                <div class="text-xs text-on-surface-variant">Rol del sistema</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="inline-flex items-center gap-1 text-on-surface-variant capitalize">
-                            <span class="material-symbols-outlined text-[16px]">badge</span>
-                            ${user.rol_usu}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-    <span class="px-2.5 py-1 rounded-full text-xs font-medium border ${obtenerEstiloEstado(user.estado_usu)}">
-        ${user.estado_usu}
-    </span>
-</td>
-                    
-                     <td class="px-6 py-4 whitespace-nowrap text-right">
-                        <button class="text-secondary hover:text-primary transition-colors p-1 ml-1" 
-                            onclick="abrirModalEditar(${user.id_usuario}, '${user.matricula_usu}', '${user.nombre_usu}', '${user.rol_usu}', '${user.estado_usu || 'activo'}')">
-                                 <span class="material-symbols-outlined text-sm">edit</span>
-                         </button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += fila;
-        });
+        todosLosUsuarios = await respuesta.json();
+        aplicarFiltrosUsuarios(); // Llamamos al filtro para dibujar la tabla inicial
 
     } catch (error) {
         console.error("Error al obtener la tabla:", error);
     }
 }
 
+window.aplicarFiltrosUsuarios = () => {
+    const busqueda = document.getElementById('input-busqueda-us').value.toLowerCase();
+    const filtroRol = document.getElementById('select-filtro-rol').value.toLowerCase();
 
+    const filtrados = todosLosUsuarios.filter(user => {
+        const textoBusqueda = `${user.matricula_usu} ${user.nombre_usu}`.toLowerCase();
+        const pasaBusqueda = textoBusqueda.includes(busqueda);
+        const pasaRol = filtroRol === 'todos' || user.rol_usu.toLowerCase() === filtroRol;
+        
+        return pasaBusqueda && pasaRol;
+    });
 
-// a quien editamos
+    renderizarTabla(filtrados);
+};
+
+// ==========================================
+// DIBUJAR TABLA CON RESTRICCIONES DE ROL
+// ==========================================
+function renderizarTabla(usuarios) {
+    const tbody = document.getElementById('tablaUsuariosBody');
+    tbody.innerHTML = '';
+
+    if (usuarios.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">No se encontraron usuarios.</td></tr>';
+        return;
+    }
+
+    usuarios.forEach(user => {
+        const iniciales = user.nombre_usu ? user.nombre_usu.substring(0, 2).toUpperCase() : "US";
+        
+        // 🛡️ RESTRICCIÓN VISUAL: Candado en la tabla
+        let botonAccion = '';
+        if (miRolSesion === 'admin') {
+            botonAccion = `
+                <button class="text-secondary hover:text-primary transition-colors p-1 ml-1" 
+                    onclick="abrirModalEditar(${user.id_usuario}, '${user.matricula_usu}', '${user.nombre_usu}', '${user.rol_usu}', '${user.estado_usu || 'activo'}')">
+                         <span class="material-symbols-outlined text-sm">edit</span>
+                 </button>`;
+        } else {
+            // El bibliotecario solo ve un candado
+            botonAccion = `<span class="material-symbols-outlined text-sm text-surface-variant cursor-not-allowed" title="Sin permisos para editar">lock</span>`;
+        }
+
+        const fila = `
+            <tr class="table-row-hover transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap font-medium text-on-surface-variant">${user.matricula_usu}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs uppercase">
+                            ${iniciales}
+                        </div>
+                        <div>
+                            <div class="font-semibold text-on-surface">${user.nombre_usu}</div>
+                            <div class="text-xs text-on-surface-variant">Registrado</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 text-on-surface-variant capitalize">
+                        <span class="material-symbols-outlined text-[16px]">badge</span> ${user.rol_usu}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-medium border ${obtenerEstiloEstado(user.estado_usu)}">
+                        ${(user.estado_usu || 'ACTIVO').toUpperCase()}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">${botonAccion}</td>
+            </tr>
+        `;
+        tbody.innerHTML += fila;
+    });
+}
+
+// ==========================================
+// MODAL DE EDICIÓN Y ESTILOS
+// ==========================================
 let idUsuarioEditando = null;
 
-// abrir modal 
 window.abrirModalEditar = (id, matricula, nombre, rol, estado) => {
+    // Doble validación por si logran forzar el click
+    if (miRolSesion === 'bibliotecario') {
+        UI.toast('No tienes permisos de administrador.', 'error');
+        return;
+    }
 
     idUsuarioEditando = id;
     document.getElementById('edit-matricula').value = matricula;
@@ -128,7 +165,6 @@ window.abrirModalEditar = (id, matricula, nombre, rol, estado) => {
     document.getElementById('edit-user-modal').classList.remove('hidden');
 };
 
-// En el evento submit del formulario:
 document.querySelector('#edit-user-modal form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -143,14 +179,10 @@ document.querySelector('#edit-user-modal form').addEventListener('submit', async
     });
     
     if (!respuesta) return;
-
     const resultado = await respuesta.json();
 
     if (respuesta.ok) {
-
         UI.toast(resultado.mensaje, 'exito');
-
-
         document.getElementById('edit-user-modal').classList.add('hidden');
         cargarUsuarios();
     } else {
@@ -158,21 +190,13 @@ document.querySelector('#edit-user-modal form').addEventListener('submit', async
     }
 });
 
-
-    // Determina los colores del badge según el estado
 function obtenerEstiloEstado(estado) {
-    // Convertimos a minúsculas por si acaso viene diferente de la BD
-    const estadoNormalizado = estado ? estado.toLowerCase() : '';
-
+    const estadoNormalizado = estado ? estado.toLowerCase() : 'activo';
     switch (estadoNormalizado) {
-        case 'activo':
-            return 'bg-green-100 text-green-800 border-green-200';
+        case 'activo': return 'bg-green-100 text-green-800 border-green-200';
         case 'desactivado':
-        case 'suspendido':
-            return 'bg-red-100 text-red-800 border-red-200';
-        case 'pendiente':
-            return 'bg-amber-100 text-amber-800 border-amber-200';
-        default:
-            return 'bg-gray-100 text-gray-800 border-gray-200';
+        case 'suspendido': return 'bg-red-100 text-red-800 border-red-200';
+        case 'pendiente': return 'bg-amber-100 text-amber-800 border-amber-200';
+        default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
 }
