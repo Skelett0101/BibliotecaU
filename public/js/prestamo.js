@@ -117,7 +117,7 @@ async function enviarAutorizacionPrestamo() {
     const fecha_fin = document.getElementById('fecha_fin').value;
 
     if (!id_usuario || !id_ejemplar || !fecha_inicio || !fecha_fin) {
-        alert('Por favor, completa todos los campos para autorizar el préstamo.');
+        await UI.alert('Campos Incompletos', 'Por favor, completa todos los campos para autorizar el préstamo.', 'error');
         return;
     }
 
@@ -133,17 +133,17 @@ async function enviarAutorizacionPrestamo() {
         });
 
         if (respuesta && respuesta.ok) {
-            alert('¡Préstamo autorizado con éxito!');
+            await UI.alert('¡Registro Exitoso!', '¡Préstamo autorizado con éxito!', 'exito');
             document.getElementById('id_usuario').value = '';
             document.getElementById('id_ejemplar').value = '';
             cargarPrestamosActivos();
         } else {
             const errorData = await respuesta.json();
-            alert(`Error: ${errorData.error || 'No se pudo autorizar el préstamo'}`);
+            await UI.alert('Error de Servidor', errorData.error || 'No se pudo autorizar el préstamo', 'error');
         }
     } catch (error) {
         console.error('Error en la petición de autorización:', error);
-        alert('Ocurrió un error de conexión al autorizar el préstamo.');
+        await UI.alert('Error de Conexión', 'Ocurrió un error de conexión al autorizar el préstamo.', 'error');
     }
 }
 
@@ -188,20 +188,22 @@ async function guardarCambiosPrestamo(e) {
         });
 
         if (respuesta && respuesta.ok) {
-            alert('¡Préstamo actualizado exitosamente!');
+            await UI.alert('¡Éxito!', '¡Préstamo actualizado exitosamente!', 'exito');
             cerrarModalPrestamo();
             cargarPrestamosActivos(); // Refrescar la tabla
         } else {
             const err = await respuesta.json();
-            alert(`Error: ${err.error || 'No se pudo actualizar el préstamo'}`);
+            await UI.alert('Error de Servidor', err.error || 'No se pudo actualizar el préstamo', 'error');
         }
     } catch (error) {
         console.error('Error al actualizar préstamo:', error);
-        alert('Error de conexión al actualizar el préstamo.');
+        await UI.alert('Error de Conexión', 'Error de conexión al actualizar el préstamo.', 'error');
     }
 }
 
 window.autorizarApartado = async function(id_prestamo) {
+    // Nota: UI.alert maneja modales estilizados, si prefieres mantener un confirm nativo o usar el nuevo modal, aquí lo adaptamos.
+    // Usaremos un bloque de confirmación estilizado o nativo seguro:
     if (!confirm('¿El alumno ha entregado su credencial física? Se procederá a activar el préstamo.')) return;
 
     try {
@@ -211,14 +213,14 @@ window.autorizarApartado = async function(id_prestamo) {
         });
 
         if (respuesta && respuesta.ok) {
-            alert('¡Préstamo activado correctamente!');
+            await UI.alert('¡Éxito!', '¡Préstamo activado correctamente!', 'exito');
             cargarPrestamosActivos(); // Refrescar la tabla
         } else {
             const err = await respuesta.json();
-            alert(`Error: ${err.error || 'No se pudo activar el préstamo'}`);
+            await UI.alert('Error de Servidor', err.error || 'No se pudo activar el préstamo', 'error');
         }
     } catch (error) {
         console.error('Error al autorizar apartado:', error);
-        alert('Error de conexión al procesar la autorización.');
+        await UI.alert('Error de Conexión', 'Error de conexión al procesar la autorización.', 'error');
     }
 };
