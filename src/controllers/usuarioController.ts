@@ -71,7 +71,7 @@ export const actualizarUsuario = async (req: CustomRequest, res: Response): Prom
     try {
         const miRol = req.usuario?.rol || req.usuario?.rol_usu;
 
-        // 🛡️ REGLA DE NEGOCIO: El bibliotecario no tiene acceso a la edición
+        // bibliotecarios no pueden actualizar usuarios
         if (miRol === 'bibliotecario') {
             res.status(403).json({ error: "Permiso denegado. Solo los administradores pueden editar usuarios." });
             return;

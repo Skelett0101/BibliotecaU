@@ -11,6 +11,6 @@ router.get('/', verificarToken, verificarRol(['admin', 'bibliotecario']), obtene
 router.post('/', verificarToken, verificarRol(['admin', 'bibliotecario']), registrarUsuario);
 
 // PUT /api/usuarios/:id -> Actualizar usuario (pendiente de implementación)
-router.put('/:id', verificarToken, verificarRol(['admin', 'bibliotecario']), actualizarUsuario);
+router.put('/:id', verificarToken, verificarRol(['admin']), actualizarUsuario);
 
 export default router;

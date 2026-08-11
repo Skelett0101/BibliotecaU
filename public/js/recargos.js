@@ -3,17 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarRecargos();
 });
 
-// ==========================================
+
 // VARIABLES GLOBALES (PAGINACIÓN Y FILTROS)
-// ==========================================
+
 let todosLosRecargos = [];
 let recargosFiltrados = [];
 let paginaActual = 1;
 const registrosPorPagina = 5; // Puedes cambiar a 10 o 20
 
-// ==========================================
+
 // CARGAR DATOS DESDE EL SERVIDOR
-// ==========================================
 async function cargarRecargos() {
     const tbody = document.getElementById('tabla-recargos');
     tbody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-secondary">Cargando recargos...</td></tr>';
@@ -28,16 +27,16 @@ async function cargarRecargos() {
     // Guardamos los datos puros que vienen de la BD
     todosLosRecargos = await respuesta.json();
 
-    // Actualizamos los números de arriba (Tarjetas de Total Deuda)
+    // Actualizamos los números de arriba 
     actualizarEstadisticas();
 
     // Arrancamos el motor de filtros y paginación
     aplicarFiltros();
 }
 
-// ==========================================
+
 // ACTUALIZAR TARJETAS SUPERIORES
-// ==========================================
+
 function actualizarEstadisticas() {
     let totalDeuda = 0;
     const usuariosUnicosEnMora = new Set();
@@ -56,9 +55,9 @@ function actualizarEstadisticas() {
     document.getElementById('stat-usuarios-mora').textContent = usuariosUnicosEnMora.size;
 }
 
-// ==========================================
+
 // MOTOR DE BÚSQUEDA Y FILTROS
-// ==========================================
+
 window.aplicarFiltros = () => {
     const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
     const estadoFiltro = document.getElementById('select-estado').value.toLowerCase();
@@ -70,10 +69,10 @@ window.aplicarFiltros = () => {
         const matricula = (rec.prestamo?.usuario?.matricula_usu || '').toLowerCase();
         const estadoReal = rec.estado_pago_rec.toLowerCase();
 
-        // 1. Validar Búsqueda (Texto)
+        // Validar Búsqueda (Texto)
         const pasaBusqueda = idTexto.includes(busqueda) || usuarioNombre.includes(busqueda) || matricula.includes(busqueda);
         
-        // 2. Validar Estado (Dropdown)
+        // Validar Estado (Dropdown)
         let pasaEstado = false;
         if (estadoFiltro === 'todos') {
             pasaEstado = true;
@@ -86,14 +85,14 @@ window.aplicarFiltros = () => {
         return pasaBusqueda && pasaEstado;
     });
 
-    // Cada que filtramos, regresamos a la página 1
+    // filtro y regresamos a la primera pagina
     paginaActual = 1; 
     renderizarTabla();
 };
 
-// ==========================================
+
 // DIBUJAR LA TABLA Y LA PAGINACIÓN
-// ==========================================
+
 function renderizarTabla() {
     const tbody = document.getElementById('tabla-recargos');
     const textoPaginacion = document.getElementById('texto-paginacion');
@@ -106,12 +105,12 @@ function renderizarTabla() {
         return;
     }
 
-    // Lógica Matemática de Paginación
+    // logica Matemática de Paginación
     const totalPaginas = Math.ceil(recargosFiltrados.length / registrosPorPagina);
     const indiceInicio = (paginaActual - 1) * registrosPorPagina;
     const indiceFin = indiceInicio + registrosPorPagina;
     
-    // Extraemos solo el "pedazo" de datos de la página actual
+  
     const datosPagina = recargosFiltrados.slice(indiceInicio, indiceFin);
 
     let html = '';
@@ -167,7 +166,7 @@ function renderizarTabla() {
 
     tbody.innerHTML = html;
 
-    // Actualizar Textos y Botones de Paginación
+    // Actualizar Textos y Botones
     const mostrandoFin = Math.min(indiceFin, recargosFiltrados.length);
     textoPaginacion.textContent = `Mostrando ${indiceInicio + 1} a ${mostrandoFin} de ${recargosFiltrados.length} registros`;
     
@@ -178,12 +177,12 @@ function renderizarBotonesPaginacion(totalPaginas) {
     const contenedor = document.getElementById('contenedor-paginacion');
     let html = '';
 
-    // Botón Anterior
+    // btn Anterior
     html += `<button onclick="cambiarPagina(${paginaActual - 1})" class="p-1 rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" ${paginaActual === 1 ? 'disabled' : ''}>
                 <span class="material-symbols-outlined text-sm">chevron_left</span>
              </button>`;
 
-    // Números de Página
+    // numeros de Página
     for (let i = 1; i <= totalPaginas; i++) {
         if (i === paginaActual) {
             html += `<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center">${i}</button>`;
@@ -192,7 +191,7 @@ function renderizarBotonesPaginacion(totalPaginas) {
         }
     }
 
-    // Botón Siguiente
+    // btn Siguiente
     html += `<button onclick="cambiarPagina(${paginaActual + 1})" class="p-1 rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" ${paginaActual === totalPaginas ? 'disabled' : ''}>
                 <span class="material-symbols-outlined text-sm">chevron_right</span>
              </button>`;
@@ -208,9 +207,9 @@ window.cambiarPagina = (nuevaPagina) => {
     }
 };
 
-// ==========================================
+
 // FUNCIONES DEL MODAL (Actualizar y Sincronizar)
-// ==========================================
+
 window.abrirModalRecargo = (id, usuario, monto, estado) => {
     document.getElementById('edit-recargo-id').value = id;
     document.getElementById('edit-recargo-display').value = `#REC-${id}`;

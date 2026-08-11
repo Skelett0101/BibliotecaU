@@ -6,7 +6,7 @@ const miRolSesion = sessionStorage.getItem('rol') || 'alumno';
 document.addEventListener('DOMContentLoaded', () => {
     if (!Auth.verificarPaginaPrivada(['admin', 'bibliotecario'])) return;
 
-    // 🛡️ RESTRICCIÓN VISUAL: Si es bibliotecario, ocultar la opción "Administrador" en el nuevo registro
+    //  RESTRICCIÓN VISUAL: Si es bibliotecario, ocultar la opción "Administrador" en el nuevo registro
     if (miRolSesion === 'bibliotecario') {
         const selectRol = document.getElementById('rol');
         for (let i = 0; i < selectRol.options.length; i++) {
@@ -51,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ==========================================
 // CARGAR DATOS Y APLICAR FILTROS
-// ==========================================
+
 async function cargarUsuarios() {
     const tbody = document.getElementById('tablaUsuariosBody');
     tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Cargando usuarios...</td></tr>';
@@ -85,9 +84,9 @@ window.aplicarFiltrosUsuarios = () => {
     renderizarTabla(filtrados);
 };
 
-// ==========================================
+
 // DIBUJAR TABLA CON RESTRICCIONES DE ROL
-// ==========================================
+
 function renderizarTabla(usuarios) {
     const tbody = document.getElementById('tablaUsuariosBody');
     tbody.innerHTML = '';
@@ -100,7 +99,7 @@ function renderizarTabla(usuarios) {
     usuarios.forEach(user => {
         const iniciales = user.nombre_usu ? user.nombre_usu.substring(0, 2).toUpperCase() : "US";
         
-        // 🛡️ RESTRICCIÓN VISUAL: Candado en la tabla
+        // RESTRICCIÓN VISUAL: Candado en la tabla
         let botonAccion = '';
         if (miRolSesion === 'admin') {
             botonAccion = `
@@ -144,9 +143,9 @@ function renderizarTabla(usuarios) {
     });
 }
 
-// ==========================================
+
 // MODAL DE EDICIÓN Y ESTILOS
-// ==========================================
+
 let idUsuarioEditando = null;
 
 window.abrirModalEditar = (id, matricula, nombre, rol, estado) => {

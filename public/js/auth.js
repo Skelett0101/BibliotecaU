@@ -1,6 +1,5 @@
-// ==========================================
-// MÓDULO CENTRAL DE AUTENTICACIÓN Y FETCH
-// ==========================================
+
+// MÓDULO CENTRAL DE AUTENTICACIÓN 
 
 const Auth = {
 
@@ -35,22 +34,22 @@ const Auth = {
         }
     },
 
-    //  VERIFICAR PÁGINA PRIVADA (Con validación de Rol y Expiración)
+    //  pagina privada con roles permitidos
     verificarPaginaPrivada(rolesPermitidos = []) {
         const token = this.getToken();
         const rol = this.getRol();
 
-        // 1. Validar existencia y caducidad
+        // Validar existencia y caducidad
         if (!token || this.isTokenExpired(token)) {
             this.logout();
             return false;
         }
 
-        // 2. Validar permisos de rol (si se especifican)
+        // Validar permisos de rol 
         if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(rol)) {
             console.warn('Acceso no autorizado para este rol.');
-            // Redirigir según el rol del usuario
-            if (rol === 'alumno' || rol === 'maestro') {
+            // Redirigir segun el rol del usuario
+            if (rol === 'alumno') {
                 window.location.replace('/catalogo.html');
             } else {
                 window.location.replace('/login.html');
@@ -61,11 +60,11 @@ const Auth = {
         return true;
     },
 
-   //  LIMPIAR SESIÓN AL ENTRAR A LOGIN (Si regresa con las flechas)
+   //  LIMPIAR SESIÓN AL ENTRAR A LOGIN por fin queda 
     verificarPaginaPublica() {
         const token = this.getToken();
 
-        // Si existe un token al estar en login.html, lo destruimos de inmediato
+        // Si existe un token al estar en login se elimnia 
         if (token) {
            
             sessionStorage.clear();

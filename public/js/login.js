@@ -41,9 +41,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             
             const rol = datos.usuario.rol;
 
-            if (rol === 'admin' || rol === 'bibliotecario' || rol === 'becario') {
+            if (rol === 'admin' || rol === 'bibliotecario') {
                 window.location.replace('/panel.html');
-            } else if (rol === 'alumno' || rol === 'maestro') {
+            } else if (rol === 'alumno') {
                 window.location.replace('/catalogo.html');
             } else {
                 window.location.replace('/index.html');
