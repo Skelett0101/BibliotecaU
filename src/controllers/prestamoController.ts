@@ -187,3 +187,64 @@ export const actualizarPrestamoAdmin = async (req: CustomRequest, res: Response)
         res.status(500).json({ error: error.message || 'Error al actualizar el préstamo.' });
     }
 };
+
+
+/**
+ * Función para Alumnos: Solicitar apartado/préstamo desde el catálogo
+ */
+export const solicitarPrestamoAlumno = async (req: CustomRequest, res: Response): Promise<void> => {
+    try {
+        const id_usuario = req.usuario?.id || req.usuario?.id_usuario;
+        const { id_libro, fecha_fin } = req.body;
+
+        if (!id_usuario) {
+            res.status(401).json({ error: 'Usuario no autenticado.' });
+            return;
+        }
+
+        if (!id_libro || !fecha_fin) {
+            res.status(400).json({ error: 'Faltan datos obligatorios para realizar la solicitud.' });
+            return;
+        }
+
+        // 1. Buscar el primer ejemplar físico disponible asociado al libro
+        const ejemplarDisponible = await prisma.ejemplares_fisicos.findFirst({
+            where: {
+                id_libro: Number(id_libro),
+                estado_fis: { not: 'Desactivado' }
+            }
+        });
+
+        if (!ejemplarDisponible) {
+            res.status(404).json({ error: 'No hay ejemplares disponibles para este libro en este momento.' });
+            return;
+        }
+
+        const folio = `SOL-${Date.now()}`;
+
+        // 2. Crear el registro del préstamo con estado PENDIENTE / APARTADO
+        const nuevoPrestamo = await prisma.prestamo.create({
+            data: {
+                id_usuario: Number(id_usuario),
+                fecha_inicio_pre: new Date(),
+                fecha_fin_pre: new Date(fecha_fin),
+                no_folio_pre: folio,
+                estado_pre: 'Pendiente',
+                detalles: {
+                    create: { id_ejemplar: ejemplarDisponible.id_ejemplar }
+                }
+            },
+            include: {
+                detalles: { include: { ejemplar: { include: { libro: true } } } }
+            }
+        });
+
+        res.status(201).json({
+            mensaje: 'Solicitud de préstamo registrada con éxito.',
+            prestamo: nuevoPrestamo
+        });
+    } catch (error: any) {
+        console.error("Error al solicitar préstamo:", error);
+        res.status(500).json({ error: error.message || 'Error al procesar la solicitud de préstamo.' });
+    }
+};

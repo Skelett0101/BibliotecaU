@@ -5,7 +5,8 @@ import {
     visualizarMisPrestamos,  
     renovarMiPrestamo,
     autorizarPrestamo, 
-    actualizarPrestamoAdmin
+    actualizarPrestamoAdmin,
+    solicitarPrestamoAlumno
 } from '../controllers/prestamoController';
 // Importamos los middlewares de seguridad
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
@@ -24,5 +25,6 @@ router.put('/actualizar/:id_prestamo', verificarToken, verificarRol(['admin', 'b
 router.get('/mis-prestamos', verificarToken, visualizarMisPrestamos);
 router.put('/renovar/:id_prestamo', verificarToken, renovarMiPrestamo);
 router.post('/autorizar', verificarToken, verificarRol(['admin', 'bibliotecario']), autorizarPrestamo);
+router.post('/solicitar', verificarToken, solicitarPrestamoAlumno);
 
 export default router;

@@ -147,3 +147,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+//---------------------------solicitud de prestamo---------------------------
+// Procesar el formulario del modal de préstamo
+const formPrestamo = document.getElementById('form-solicitar-prestamo');
+
+if (formPrestamo) {
+    formPrestamo.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const idLibro = document.getElementById('prestamo-id-libro').value;
+        const fechaFin = document.getElementById('prestamo-fecha-fin').value;
+
+        try {
+            const token = localStorage.getItem('token');
+
+            const res = await fetch('/api/prestamos/solicitar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    id_libro: idLibro,
+                    fecha_fin: fechaFin
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'No se pudo procesar la solicitud');
+            }
+
+            cerrarModalPrestamo();
+
+            if (typeof UI !== 'undefined' && UI.toast) {
+                UI.toast('Solicitud enviada correctamente', 'exito');
+            } else {
+                alert('Solicitud enviada correctamente');
+            }
+
+            // Recargar catálogo para actualizar estado si aplica
+            obtenerLibros();
+
+        } catch (error) {
+            console.error('Error al solicitar el préstamo:', error);
+            alert(error.message || 'Ocurrió un error al enviar la solicitud.');
+        }
+    });
+}
