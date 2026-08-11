@@ -207,13 +207,19 @@
     <!-- Main Content Area -->
     <main class="ml-64 flex-1 flex flex-col h-screen overflow-y-auto">
         <!-- Header Section -->
+        <!-- Header Section -->
         <header
             class="px-margin-desktop py-8 flex justify-between items-end shrink-0 sticky top-0 bg-background/95 backdrop-blur-sm z-30">
             <div>
                 <h2 class="font-display-lg text-display-lg text-on-surface">Resumen General</h2>
                 <p class="font-body-lg text-body-lg text-secondary mt-2">Visión general del estado de la biblioteca.</p>
             </div>
-          
+
+            <!-- Botón de Reporte PDF Estilizado y Armonioso -->
+            <button onclick="generarReportePDF()" class="bg-[#824b1c] hover:bg-[#6c3a0b] text-white px-4 py-2.5 rounded-lg font-label-md text-sm transition-colors flex items-center gap-2 shadow-sm cursor-pointer">
+                <span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+                Generar Reporte PDF
+            </button>
         </header>
         <!-- Dashboard Content Grid -->
         <div class="p-margin-desktop pt-0 flex-1 flex flex-col gap-gutter">
@@ -245,9 +251,9 @@
                     </p>
                     <h3 id="kpi-prestamos" class="font-display-lg text-[40px] leading-tight font-bold text-on-surface">0</h3>
                     <div class="w-full bg-surface-variant h-1.5 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-tertiary-container h-full rounded-full w-[65%]"></div>
+                        <div id="barra-capacidad" class="bg-tertiary-container h-full rounded-full w-[0%] transition-all duration-500"></div>
                     </div>
-                    <p class="font-body-md text-sm text-secondary mt-2">65% de capacidad óptima</p>
+                    <p id="texto-capacidad" class="font-body-md text-sm text-secondary mt-2">0% de capacidad óptima</p>
                 </div>
                 <!-- KPI 3 -->
                 <div
@@ -298,63 +304,16 @@
                     <!-- Faux Chart Visualization using flex -->
                     <div class="flex-1 flex items-end gap-4 p-4 border-l border-b border-outline-variant relative">
                         <!-- Y-axis labels -->
-                        <div
-                            class="absolute left-[-30px] h-full flex flex-col justify-between text-xs text-secondary font-label-md py-4">
+                        <div class="absolute left-[-30px] h-full flex flex-col justify-between text-xs text-secondary font-label-md py-4">
                             <span>150</span>
                             <span>100</span>
                             <span>50</span>
                             <span>0</span>
                         </div>
-                        <!-- Bars -->
-                        <div class="flex-1 flex flex-col items-center justify-end group">
-                            <div
-                                class="w-full max-w-[40px] bg-primary/20 group-hover:bg-primary/40 rounded-t-sm h-[80%] transition-colors relative cursor-pointer">
-                                <div
-                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                    120</div>
-                            </div>
-                            <span
-                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Ficción</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center justify-end group">
-                            <div
-                                class="w-full max-w-[40px] bg-primary/40 group-hover:bg-primary/60 rounded-t-sm h-[60%] transition-colors relative cursor-pointer">
-                                <div
-                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                    95</div>
-                            </div>
-                            <span
-                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Historia</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center justify-end group">
-                            <div
-                                class="w-full max-w-[40px] bg-primary/60 group-hover:bg-primary/80 rounded-t-sm h-[95%] transition-colors relative cursor-pointer">
-                                <div
-                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                    145</div>
-                            </div>
-                            <span
-                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Ciencia</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center justify-end group">
-                            <div
-                                class="w-full max-w-[40px] bg-primary/80 group-hover:bg-primary rounded-t-sm h-[40%] transition-colors relative cursor-pointer">
-                                <div
-                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                    60</div>
-                            </div>
-                            <span
-                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Arte</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center justify-end group">
-                            <div
-                                class="w-full max-w-[40px] bg-primary/50 group-hover:bg-primary/70 rounded-t-sm h-[55%] transition-colors relative cursor-pointer">
-                                <div
-                                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                    85</div>
-                            </div>
-                            <span
-                                class="text-xs text-secondary font-label-md mt-2 truncate w-full text-center">Filosofía</span>
+                        
+                        <!-- Contenedor dinámico para las barras -->
+                        <div id="contenedor-grafica" class="flex-1 h-full flex items-end gap-4">
+                            <!-- El JavaScript llenará esto automáticamente con las categorías reales -->
                         </div>
                     </div>
                 </div>
@@ -362,7 +321,7 @@
                 <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="font-headline-md text-[20px] text-on-surface">Actividad Reciente</h3>
-                        <button class="text-primary font-label-md text-sm hover:underline">Ver todo</button>
+                        
                     </div>
                     
                     <!-- AQUÍ ESTÁ EL CAMBIO: Agregamos el id y dejamos el div vacío -->

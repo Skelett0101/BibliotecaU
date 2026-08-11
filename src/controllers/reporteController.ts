@@ -105,7 +105,6 @@ export const obtenerResumenDashboard = async (req: Request, res: Response): Prom
         const ahora = new Date();
         const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
 
-        // Consultamos todo en paralelo para mantener la velocidad
         const [
             totalLibros, 
             prestamosActivos, 
@@ -114,7 +113,9 @@ export const obtenerResumenDashboard = async (req: Request, res: Response): Prom
             prestamosEsteMes,
             usuariosActivos,
             prestamosEnMora,
-            actividad
+            actividad,
+            categorias,
+            totalEjemplaresFisicos // <-- NUEVO: Contamos total de ejemplares físicos
         ] = await Promise.all([
             prisma.libro.count(),
             prisma.prestamo.count({ where: { estado_pre: 'Prestado' } }),
@@ -127,8 +128,36 @@ export const obtenerResumenDashboard = async (req: Request, res: Response): Prom
                 take: 5,
                 orderBy: { fecha_inicio_pre: 'desc' },
                 include: { usuario: { select: { nombre_usu: true } } }
-            })
+            }),
+            prisma.categoria.findMany({
+                include: {
+                    libros: {
+                        include: {
+                            ejemplares: {
+                                include: { detallesPrestamo: true }
+                            }
+                        }
+                    }
+                }
+            }),
+            prisma.ejemplares_fisicos.count() // <-- NUEVO
         ]);
+
+        // Calcular porcentaje de capacidad ocupada (Evitando división por cero)
+        const capacidadPorcentaje = totalEjemplaresFisicos > 0 
+            ? Math.round((prestamosActivos / totalEjemplaresFisicos) * 100) 
+            : 0;
+
+        // Procesar categorías para la gráfica (lo que ya tenías)
+        const prestamosPorCategoria = categorias.map(cat => {
+            let totalPrestamos = 0;
+            cat.libros.forEach(libro => {
+                libro.ejemplares.forEach(ejemplar => {
+                    totalPrestamos += ejemplar.detallesPrestamo.length;
+                });
+            });
+            return { nombre: cat.nombre_cat, total: totalPrestamos };
+        });
 
         res.status(200).json({
             totalLibros,
@@ -138,9 +167,74 @@ export const obtenerResumenDashboard = async (req: Request, res: Response): Prom
             prestamosEsteMes,
             usuariosActivos,
             prestamosEnMora,
-            actividad
+            actividad,
+            prestamosPorCategoria,
+            capacidadPorcentaje // <-- NUEVO: Lo mandamos al frontend
         });
     } catch (error) {
-        res.status(500).json({ error: 'Error al cargar los datos.' });
+        res.status(500).json({ error: 'Error al cargar los datos del dashboard.' });
+    }
+};
+
+export const obtenerDatosReportePDF = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // 1. Libros prestados activos con detalles
+        const librosPrestados = await prisma.prestamo.findMany({
+            where: { estado_pre: 'Prestado' },
+            include: {
+                usuario: { select: { nombre_usu: true, matricula_usu: true } },
+                detalles: {
+                    include: {
+                        ejemplar: {
+                            include: { libro: { select: { nombre_li: true } } }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Usuarios con más atrasos / moras
+        const usuariosAtrasos = await prisma.usuario.findMany({
+            where: {
+                prestamos: {
+                    some: {
+                        OR: [
+                            { estado_pre: 'MORA' },
+                            { estado_pre: 'ATRASADO' }
+                        ]
+                    }
+                }
+            },
+            include: {
+                prestamos: {
+                    where: {
+                        OR: [
+                            { estado_pre: 'MORA' },
+                            { estado_pre: 'ATRASADO' }
+                        ]
+                    },
+                    include: { recargos: true }
+                }
+            }
+        });
+
+        // 3. Libros totales en el sistema
+        const totalLibros = await prisma.libro.count();
+        const totalEjemplares = await prisma.ejemplares_fisicos.count();
+
+        // 4. Ingresos totales por recargos
+        const recargos = await prisma.recargo.aggregate({
+            _sum: { monto_rec: true }
+        });
+
+        res.status(200).json({
+            librosPrestados,
+            usuariosAtrasos,
+            totalLibros,
+            totalEjemplares,
+            totalIngresos: recargos._sum.monto_rec || 0
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al recopilar la información para el reporte PDF.' });
     }
 };
