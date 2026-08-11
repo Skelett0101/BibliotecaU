@@ -12,19 +12,23 @@ export const registrarLibro = async (req: Request, res: Response): Promise<void>
             autores
         } = req.body;
 
+        // NUEVO: Validación obligatoria de la portada
+        if (!url_imagen_li) {
+            res.status(400).json({ error: "La URL de la portada (url_imagen_li) es obligatoria." });
+            return;
+        }
+
         if (ISBN_li) {
             const existeLibro = await prisma.libro.findFirst({
                 where: { ISBN_li: ISBN_li }
             });
-
             if (existeLibro) {
-                res.status(400).json({ error: `No se puede registrar. Ya existe un libro con el ISBN: ${ISBN_li}` });
+                res.status(400).json({ error: `Ya existe un libro con el ISBN: ${ISBN_li}` });
                 return;
             }
         }
 
-        // 1. Guardamos el libro
-        console.log("--- INICIANDO REGISTRO DE LIBRO ---");
+        // Registro sin console.logs
         const nuevoLibro = await prisma.libro.create({
             data: {
                 id_categoria: parseInt(id_categoria),
@@ -43,47 +47,52 @@ export const registrarLibro = async (req: Request, res: Response): Promise<void>
             },
             include: { ejemplares: true }
         });
-        console.log(`✅ Libro guardado exitosamente con ID: ${nuevoLibro.id_libro}`);
 
-        // 2. Lógica para Autores
         if (autores && autores.length > 0) {
-            console.log(`📚 Procesando ${autores.length} autor(es)...`);
-
             for (const autor of autores) {
                 let autorExistente = await prisma.autor_libro.findFirst({
-                    where: {
-                        nombre_au: autor.nombre_au,
-                        apellido_au: autor.apellido_au
-                    }
+                    where: { nombre_au: autor.nombre_au, apellido_au: autor.apellido_au }
                 });
 
                 if (!autorExistente) {
                     autorExistente = await prisma.autor_libro.create({
-                        data: {
-                            nombre_au: autor.nombre_au,
-                            apellido_au: autor.apellido_au
-                        }
+                        data: { nombre_au: autor.nombre_au, apellido_au: autor.apellido_au }
                     });
-                    console.log(`👤 NUEVO autor registrado: ${autorExistente.nombre_au} ${autorExistente.apellido_au} (ID: ${autorExistente.id_autor})`);
-                } else {
-                    console.log(`🔍 Autor ya existía, reutilizando: ${autorExistente.nombre_au} ${autorExistente.apellido_au} (ID: ${autorExistente.id_autor})`);
                 }
 
                 await prisma.libro_Autor.create({
-                    data: {
-                        id_libro: nuevoLibro.id_libro,
-                        id_autor: autorExistente.id_autor
-                    }
+                    data: { id_libro: nuevoLibro.id_libro, id_autor: autorExistente.id_autor }
                 });
-                console.log(`🔗 Relación creada: Libro [${nuevoLibro.id_libro}] <---> Autor [${autorExistente.id_autor}]`);
             }
         }
 
-        console.log("--- FIN DEL REGISTRO EXITOSO ---");
-        res.status(201).json({ mensaje: "✅ Libro, ejemplares y autores registrados con éxito", libro: nuevoLibro });
+        res.status(201).json({ mensaje: "✅ Libro registrado con éxito", libro: nuevoLibro });
     } catch (error) {
-        console.error("❌ Error CRÍTICO al registrar libro:", error);
         res.status(500).json({ error: "Error al guardar el libro en la base de datos" });
+    }
+};
+
+// ===============================================
+// NUEVA FUNCIÓN PARA EDITAR CATEGORÍA
+// ===============================================
+export const editarCategoria = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { nombre_cat } = req.body;
+        
+        if (!nombre_cat) {
+            res.status(400).json({ error: "El nombre de la categoría no puede estar vacío." });
+            return;
+        }
+
+        const categoriaActualizada = await prisma.categoria.update({
+            where: { id_categoria: parseInt(id as string) },
+            data: { nombre_cat }
+        });
+
+        res.status(200).json({ mensaje: "✅ Categoría actualizada exitosamente", categoria: categoriaActualizada });
+    } catch (error) {
+        res.status(500).json({ error: "Error interno al actualizar la categoría" });
     }
 };
 // -------------------------------------------------------------------------------
@@ -235,7 +244,35 @@ export const cambiarEstadoEjemplar = async (req: Request, res: Response): Promis
 
 ////----------------------------------------------------------
 export const editarLibro = async (req: Request, res: Response): Promise<void> => {
-    res.status(200).json({ mensaje: "Operación en mantenimiento" });
+    try {
+        const { id } = req.params;
+        const { 
+            id_categoria, nombre_li, editorial_li, ISBN_li, 
+            ano_li, serie_li, idioma_li, url_imagen_li 
+        } = req.body;
+
+        const libroActualizado = await prisma.libro.update({
+            where: { id_libro: parseInt(id as string) },
+            data: {
+                id_categoria: parseInt(id_categoria),
+                nombre_li, 
+                editorial_li, 
+                ISBN_li,
+                ano_li: ano_li ? parseInt(ano_li) : null,
+                serie_li, 
+                idioma_li, 
+                url_imagen_li
+            }
+        });
+
+        res.status(200).json({ 
+            mensaje: "✅ Información principal del libro actualizada con éxito.", 
+            libro: libroActualizado 
+        });
+    } catch (error) {
+        console.error("Error al editar libro:", error);
+        res.status(500).json({ error: "Error interno al actualizar los datos del libro." });
+    }
 };
 
 
@@ -293,5 +330,78 @@ export const actualizarEstadoFisico = async (req: Request, res: Response): Promi
     } catch (error) {
         console.error("Error al actualizar estado físico:", error);
         res.status(500).json({ error: "Error interno del servidor al actualizar estado." });
+    }
+};
+
+// ==========================================
+// NUEVAS FUNCIONES: CATEGORÍAS Y AUTORES
+// ==========================================
+
+export const obtenerCategorias = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const categorias = await prisma.categoria.findMany({
+            orderBy: { nombre_cat: 'asc' }
+        });
+        res.status(200).json(categorias);
+    } catch (error) {
+        res.status(500).json({ error: "Error al cargar categorías" });
+    }
+};
+
+export const crearCategoria = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { nombre_cat } = req.body;
+        if (!nombre_cat) {
+            res.status(400).json({ error: "El nombre es obligatorio" });
+            return;
+        }
+        const nuevaCategoria = await prisma.categoria.create({
+            data: { nombre_cat }
+        });
+        res.status(201).json({ mensaje: "✅ Categoría agregada", categoria: nuevaCategoria });
+    } catch (error) {
+        res.status(500).json({ error: "Error al crear la categoría" });
+    }
+};
+
+export const obtenerAutores = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const autores = await prisma.autor_libro.findMany({
+            orderBy: { nombre_au: 'asc' }
+        });
+        res.status(200).json(autores);
+    } catch (error) {
+        res.status(500).json({ error: "Error al cargar autores" });
+    }
+};
+
+// NUEVA FUNCIÓN: Agregar autor independiente a la BD
+export const crearAutor = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { nombre_au, apellido_au } = req.body;
+        
+        if (!nombre_au || !apellido_au) {
+            res.status(400).json({ error: "Nombre y apellido son obligatorios" });
+            return;
+        }
+
+        // Evitar duplicados exactos en la base de datos
+        const existe = await prisma.autor_libro.findFirst({
+            where: { nombre_au: nombre_au, apellido_au: apellido_au }
+        });
+
+        if (existe) {
+            res.status(400).json({ error: "Este autor ya está registrado en la base de datos." });
+            return;
+        }
+
+        const nuevoAutor = await prisma.autor_libro.create({
+            data: { nombre_au, apellido_au }
+        });
+
+        res.status(201).json({ mensaje: "✅ Autor registrado exitosamente en la BD", autor: nuevoAutor });
+    } catch (error) {
+        console.error("Error al crear autor:", error);
+        res.status(500).json({ error: "Error al registrar el autor" });
     }
 };

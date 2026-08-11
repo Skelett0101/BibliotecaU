@@ -203,6 +203,13 @@
                 <h2 id="titulo-pagina" class="font-headline-lg text-headline-lg font-bold text-on-surface mb-1">Añadir Nuevo Libro</h2>
             </div>
             <div class="flex gap-3 shrink-0">
+                <!-- NUEVO BOTÓN EDITAR -->
+                <button id="btn-abrir-editar" class="mt-4 bg-surface-variant text-on-surface-variant font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 border border-outline-variant/50">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                    <span>Editar Libro</span>
+                </button>
+                
+                <!-- TU BOTÓN GUARDAR ACTUAL -->
                 <button id="btn-guardar" class="mt-4 bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">save</span>
                     <span id="texto-btn-guardar">Guardar Registro</span>
@@ -215,46 +222,70 @@
             <!-- Left Column: Form (8 cols) -->
             <div class="lg:col-span-8 flex flex-col gap-6">
                 <!-- Card: Información Principal -->
-                <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5">
+                <div class="bg-surface rounded-xl p-6 shadow-sm border border-black/5 overflow-hidden">
                     <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3 flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">info</span>
                         Información Principal
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                        <div class="md:col-span-1">
-                            <label class="form-label">Categoría (ID)</label>
-                            <select id="id_categoria" class="w-full form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
-                                <option value="1">CAT-01 (Ficción Clásica)</option>
-                                <option value="2">CAT-02 (Ensayo Histórico)</option>
-                                <option value="3">CAT-03 (Ciencias Exactas)</option>
-                            </select>
+                    
+                    <!-- Cambiamos a gap-6 y nos aseguramos de que el grid respete los anchos -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Bloque de Categoría (Columna 1) -->
+                        <div class="flex flex-col min-w-0">
+                            <label class="form-label mb-1">Categoría</label>
+                            <div class="flex gap-2 items-center w-full">
+                                <!-- min-w-0 y truncate obligan al select a no desbordarse -->
+                                <select id="id_categoria" class="flex-1 min-w-0 w-full form-input truncate appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                                    <option value="">Cargando...</option>
+                                </select>
+                                
+                                <!-- shrink-0 evita que los botones se deformen -->
+                                <button type="button" id="btn-nueva-categoria" class="shrink-0 bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center border border-outline-variant/50" title="Añadir nueva categoría">
+                                    <span class="material-symbols-outlined text-[20px]">add</span>
+                                </button>
+
+                                <button type="button" id="btn-abrir-editar-cat" class="shrink-0 bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center border border-outline-variant/50" title="Editar categoría seleccionada">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="md:col-span-1">
-                            <label class="form-label">ISBN (ISBN_li)</label>
+                        
+                        <!-- Bloque de ISBN (Columna 2) -->
+                        <div class="flex flex-col min-w-0">
+                            <label class="form-label mb-1">ISBN (ISBN_li)</label>
                             <input id="ISBN_li" class="w-full form-input placeholder:text-outline font-mono text-sm" placeholder="978-3-16-148410-0" type="text" />
                         </div>
-                        <div class="md:col-span-2">
-                            <label class="form-label">Título del Libro (nombre_li)</label>
+                        
+                        <!-- Resto de campos (Ocupan las 2 columnas) -->
+                        <div class="md:col-span-2 flex flex-col min-w-0">
+                            <label class="form-label mb-1">Título del Libro (nombre_li)</label>
                             <input id="nombre_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. El ingenioso hidalgo Don Quijote..." type="text" />
                         </div>
-                        <div class="md:col-span-2">
-                            <label class="form-label">Editorial (editorial_li)</label>
+                        <div class="md:col-span-2 flex flex-col min-w-0">
+                            <label class="form-label mb-1">Editorial (editorial_li)</label>
                             <input id="editorial_li" class="w-full form-input placeholder:text-outline" placeholder="Ej. Editorial Alfaguara" type="text" />
                         </div>
-                        <!-- NUEVO: SECCIÓN DE AUTORES -->
-                        <div class="md:col-span-2 border-t border-outline-variant pt-4 mt-2">
+                        
+                        <!-- SECCIÓN DE AUTORES -->
+                        <div class="md:col-span-2 border-t border-outline-variant pt-4 mt-2 flex flex-col min-w-0">
                             <label class="form-label font-semibold text-primary mb-2 flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[18px]">person_add</span>
                                 Autor(es) del Libro
                             </label>
-                            <div class="flex flex-col sm:flex-row gap-2 mb-3">
-                                <input id="nombre_autor_input" class="form-input flex-1 placeholder:text-outline" placeholder="Nombre(s) del autor" type="text" />
-                                <input id="apellido_autor_input" class="form-input flex-1 placeholder:text-outline" placeholder="Apellido(s) del autor" type="text" />
-                                <button type="button" id="btn-add-autor" class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md hover:bg-[#bac7e3] transition-colors shrink-0">
-                                    + Agregar Autor
+                            <div class="flex flex-col sm:flex-row gap-2 mb-3 w-full">
+                                <select id="select-autor-bd" class="flex-1 min-w-0 w-full truncate form-input appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                                    <option value="">Cargando autores...</option>
+                                </select>
+
+                                <button type="button" id="btn-nuevo-autor-bd" class="shrink-0 bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center border border-outline-variant/50" title="Crear nuevo autor en BD">
+                                    <span class="material-symbols-outlined text-[20px]">person_add</span>
+                                </button>
+
+                                <button type="button" id="btn-add-autor" class="shrink-0 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md hover:bg-[#bac7e3] transition-colors">
+                                    + Añadir al Libro
                                 </button>
                             </div>
-                            <!-- Aquí aparecerán los autores agregados antes de guardar -->
                             <div id="lista-autores-badges" class="flex flex-wrap gap-2"></div>
                         </div>
                     </div>
@@ -407,6 +438,128 @@
                         <!-- Se llena dinámicamente -->
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODALES DE DISEÑO ================= -->
+
+    <!-- MODAL NUEVA CATEGORÍA -->
+    <div id="modal-categoria" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-sm p-6 shadow-2xl border border-black/10">
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">category</span> Nueva Categoría
+            </h3>
+            <label class="form-label mb-1">Nombre de la Categoría</label>
+            <input type="text" id="input-nueva-cat" class="form-input w-full mb-6 placeholder:text-outline" placeholder="Ej. Ciencia Ficción">
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btn-cerrar-cat" class="px-4 py-2 font-label-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">Cancelar</button>
+                <button type="button" id="btn-guardar-cat" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NUEVO AUTOR -->
+    <div id="modal-autor" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-sm p-6 shadow-2xl border border-black/10">
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">person_add</span> Nuevo Autor BD
+            </h3>
+            <div class="flex flex-col gap-4 mb-6">
+                <div>
+                    <label class="form-label mb-1">Nombre(s)</label>
+                    <input type="text" id="input-nuevo-autor-nom" class="form-input w-full placeholder:text-outline" placeholder="Ej. Gabriel">
+                </div>
+                <div>
+                    <label class="form-label mb-1">Apellido(s)</label>
+                    <input type="text" id="input-nuevo-autor-ape" class="form-input w-full placeholder:text-outline" placeholder="Ej. García Márquez">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btn-cerrar-autor" class="px-4 py-2 font-label-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">Cancelar</button>
+                <button type="button" id="btn-guardar-autor" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Registrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR LIBRO PRINCIPAL -->
+    <div id="modal-editar" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-black/10 flex flex-col">
+            <div class="flex justify-between items-center border-b border-outline-variant pb-4 mb-4">
+                <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">edit_document</span> Editar Información del Libro
+                </h3>
+                <button type="button" id="btn-cerrar-editar" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-2xl">close</span></button>
+            </div>
+            
+            <!-- Buscador -->
+            <div class="flex gap-2 mb-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50">
+                <input type="text" id="edit-search-isbn" class="form-input flex-1 font-mono" placeholder="Ingresa el ISBN para buscar el libro...">
+                <button type="button" id="btn-buscar-editar" class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md">Buscar</button>
+            </div>
+
+            <!-- Formulario de Edición (Oculto hasta buscar) -->
+            <div id="form-editar-campos" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+                <input type="hidden" id="edit-id-libro">
+                <div class="sm:col-span-2">
+                    <label class="form-label">Título</label>
+                    <input type="text" id="edit-titulo" class="form-input w-full">
+                </div>
+                <div>
+                    <label class="form-label">ISBN (Precaución al cambiar)</label>
+                    <input type="text" id="edit-isbn" class="form-input w-full font-mono">
+                </div>
+                <!-- Cambio de Input a Select para ver nombres en lugar de IDs -->
+                <div>
+                    <label class="form-label">Categoría</label>
+                    <div class="flex gap-2">
+                        <select id="edit-categoria" class="form-input flex-1 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2352443a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right bg-origin-content pr-8">
+                            <!-- Se llena por JavaScript -->
+                        </select>
+                        <button type="button" id="btn-abrir-editar-cat" class="bg-surface-variant text-on-surface-variant p-2 rounded-lg hover:bg-outline-variant transition-colors border border-outline-variant/50" title="Editar Nombre de esta Categoría">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">Editorial</label>
+                    <input type="text" id="edit-editorial" class="form-input w-full">
+                </div>
+                <div>
+                    <label class="form-label">Año</label>
+                    <input type="number" id="edit-ano" class="form-input w-full">
+                </div>
+                <div>
+                    <label class="form-label">Idioma</label>
+                    <input type="text" id="edit-idioma" class="form-input w-full">
+                </div>
+                <div>
+                    <label class="form-label">Serie</label>
+                    <input type="text" id="edit-serie" class="form-input w-full">
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="form-label">URL Portada</label>
+                    <input type="text" id="edit-url" class="form-input w-full">
+                </div>
+                <div class="sm:col-span-2 flex justify-end mt-4">
+                    <button type="button" id="btn-guardar-edicion" class="bg-primary text-white px-6 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- MODAL EDITAR CATEGORÍA -->
+    <div id="modal-editar-cat" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-surface rounded-2xl w-11/12 max-w-sm p-6 shadow-2xl border border-black/10">
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">edit</span> Editar Categoría
+            </h3>
+            <input type="hidden" id="input-edit-cat-id">
+            <label class="form-label mb-1">Nuevo Nombre</label>
+            <input type="text" id="input-edit-cat-nom" class="form-input w-full mb-6 placeholder:text-outline">
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btn-cerrar-edit-cat" class="px-4 py-2 font-label-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">Cancelar</button>
+                <button type="button" id="btn-guardar-edit-cat" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:shadow-md transition-all">Actualizar</button>
             </div>
         </div>
     </div>

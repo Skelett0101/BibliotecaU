@@ -2,24 +2,35 @@
 import { Router } from 'express';
 import { registrarLibro, cambiarEstadoEjemplar, editarLibro, actualizarEstadoFisico, buscarLibros, buscarLibrosAlumnos } from '../controllers/libroController';
 import { verificarToken, verificarRol } from '../middlewares/authMiddleware';
+import { obtenerCategorias, crearCategoria, editarCategoria, obtenerAutores, crearAutor } from '../controllers/libroController';
 
 const router = Router();
 
+// ==========================================
+// RUTAS PÚBLICAS (Solo requieren Token válido)
+// ==========================================
 router.get('/', verificarToken, buscarLibros);
 router.get('/buscar', verificarToken, buscarLibros);
+router.get('/categorias', verificarToken, obtenerCategorias);
+router.get('/autores', verificarToken, obtenerAutores);
+router.get('/:id', verificarToken, buscarLibrosAlumnos); 
 
-router.get('/:id', verificarToken, buscarLibrosAlumnos); // Buscar libro por ID
+// ==========================================
+// RUTAS PRIVADAS (Admin y Bibliotecario)
+// ==========================================
+// Categorías
+router.post('/categorias', verificarToken, verificarRol(['admin', 'bibliotecario']), crearCategoria);
+router.put('/categorias/:id', verificarToken, verificarRol(['admin', 'bibliotecario']), editarCategoria);
 
-// Crear libro (Admin y Bibliotecario)
-router.post('/', verificarToken, verificarRol(['admin']), registrarLibro);
+// Autores
+router.post('/autores', verificarToken, verificarRol(['admin', 'bibliotecario']), crearAutor);
 
-// Editar datos generales del libro (PUT /api/libros/5)
-router.put('/:id', verificarToken, verificarRol(['admin']), editarLibro);
+// Gestión Principal de Libros
+router.post('/', verificarToken, verificarRol(['admin', 'bibliotecario']), registrarLibro);
+router.put('/:id', verificarToken, verificarRol(['admin', 'bibliotecario']), editarLibro);
 
-// Cambiar el estado del ejemplar físico por ID (PATCH /api/libros/ejemplar/3/estado)
-router.patch('/ejemplar/:id_ejemplar/estado', verificarToken, verificarRol(['admin']), cambiarEstadoEjemplar);
-
-// NUEVO: Actualizar el estado físico de los ejemplares buscando por ISBN
-router.put('/ejemplares/actualizar-estado', verificarToken, verificarRol(['admin']), actualizarEstadoFisico);
+// Ejemplares Físicos
+router.patch('/ejemplar/:id_ejemplar/estado', verificarToken, verificarRol(['admin', 'bibliotecario']), cambiarEstadoEjemplar);
+router.put('/ejemplares/actualizar-estado', verificarToken, verificarRol(['admin', 'bibliotecario']), actualizarEstadoFisico);
 
 export default router;
